@@ -54,3 +54,6 @@ export const authReducer = slice.reducer;
 // export const authActions = slice.actions;
 
 export const authThunks = { register, login };
+
+
+
