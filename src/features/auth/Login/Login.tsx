@@ -1,5 +1,4 @@
-import { ILoginDto } from '../auth.api.interfaces';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { authThunks } from '../auth.slice';
 import {
     Checkbox,
@@ -18,30 +17,28 @@ import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React, { useState } from 'react';
+import { Navigate, NavLink } from 'react-router-dom';
+import { MSG_VALIDATE } from '../../../common/constans/constans';
 
-type LoginForm = {
+interface ILoginForm {
     email: string;
     password: string;
     rememberMe: boolean;
-};
+}
 
 const emailValidate = {
-    required: 'Email is required',
+    required: MSG_VALIDATE.REQUIRED('Email'),
     pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: ' НЕкоректный емейл',
+        message: MSG_VALIDATE.INCORRECT('email'),
     },
 } as const;
 
 const passwordValidate = {
-    required: 'Password is required',
+    required: MSG_VALIDATE.REQUIRED('Password'),
     minLength: {
         value: 8,
-        message: 'Password must be at least 8 characters long',
-    },
-    maxLength: {
-        value: 30,
-        message: 'Password must be less than 30 characters',
+        message: MSG_VALIDATE.PASSWORD_LENGTH,
     },
 } as const;
 
@@ -51,29 +48,28 @@ export const Login = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+    const dispatch = useAppDispatch();
 
-    const loginHandler = (loginDto: LoginForm) => {
+    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
+
+    const loginHandler = (loginDto: ILoginForm) => {
         dispatch(authThunks.login(loginDto));
     };
-
-    const dispatch = useAppDispatch();
-    // const isLogged = useAppSelector((state) => state.auth.);
 
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<LoginForm>();
+    } = useForm<ILoginForm>();
 
-    const onSubmit = (data: LoginForm) => {
+    const onSubmit = (data: ILoginForm) => {
         loginHandler(data);
     };
-    // if (isLogged) {
-    //     return <Navigate to={"/"}/>;
-    // }
 
     // console.log(watch()); log input values
+
+    if (isAppInitialized) return <Navigate to={'/'} />;
     return (
         <Grid container justifyContent="center" marginTop={5}>
             <Grid item justifyContent="center">
@@ -125,6 +121,8 @@ export const Login = () => {
                         </FormGroup>
                     </form>
                 </FormControl>
+                <div>Already have an account?</div>
+                <NavLink to={'/register'}>Sign Up</NavLink>
             </Grid>
         </Grid>
     );

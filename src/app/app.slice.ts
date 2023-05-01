@@ -1,6 +1,5 @@
 import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
 
-
 const slice = createSlice({
     name: 'app',
     initialState: {

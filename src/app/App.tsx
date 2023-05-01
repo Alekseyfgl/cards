@@ -8,6 +8,7 @@ import { CircularIndeterminate } from '../features/Loader/Loader';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { Login } from '../features/auth/Login/Login';
+import { Register } from '../features/auth/Register/Register';
 
 const App = () => {
     const isLoading = useAppSelector((state) => state.app.isLoadingApp);
@@ -31,6 +32,7 @@ const App = () => {
             <Routes>
                 <Route path={'/'} element={<Counter />} />
                 <Route path={'/login'} element={<Login />} />
+                <Route path={'/register'} element={<Register />} />
                 <Route path={'/404'} element={<div>Not found</div>} />
                 <Route path={'*'} element={<Navigate to={'/404'} />} />
             </Routes>
