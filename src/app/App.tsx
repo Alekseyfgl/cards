@@ -1,25 +1,41 @@
-import {useAppDispatch, useAppSelector} from "./hooks";
-import {useEffect} from "react";
-import {Counter} from "../features/counter/Counter";
-import {appActions} from "./app.slice";
+import { useAppDispatch, useAppSelector } from './hooks';
+import s from './styles.module.css';
+import React, { useEffect } from 'react';
+import { Counter } from '../features/counter/Counter';
+import { appActions } from './app.slice';
+import { ResponsiveAppBar } from '../features/Header/Header';
+import { CircularIndeterminate } from '../features/Loader/Loader';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import { Login } from '../features/auth/Login/Login';
 
-function App() {
-  const isLoading = useAppSelector((state) => state.app.isLoading);
+const App = () => {
+    const isLoading = useAppSelector((state) => state.app.isLoadingApp);
 
-  const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(appActions.setIsLoading({ isLoading: false }));
-    }, 3000);
-  }, []);
+    useEffect(() => {
+        setTimeout(() => {
+            dispatch(appActions.setIsLoadingApp({ isLoadingApp: false }));
+        }, 1000);
+    }, []);
 
-  return (
-      <div className="App">
-        {isLoading && <h1>Loader...</h1>}
-        <Counter />
-      </div>
-  );
-}
+    if (isLoading) {
+        return <CircularIndeterminate />;
+    }
+
+    return (
+        <div>
+            <ResponsiveAppBar />
+
+            <Routes>
+                <Route path={'/'} element={<Counter />} />
+                <Route path={'/login'} element={<Login />} />
+                <Route path={'/404'} element={<div>Not found</div>} />
+                <Route path={'*'} element={<Navigate to={'/404'} />} />
+            </Routes>
+        </div>
+    );
+};
 
 export default App;
