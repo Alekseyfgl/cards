@@ -19,12 +19,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { Navigate, NavLink } from 'react-router-dom';
 import { MSG_VALIDATE } from '../../../common/constans/constans';
-
-interface ILoginForm {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-}
+import { ILoginDto } from '../auth.api.interfaces';
 
 const emailValidate = {
     required: MSG_VALIDATE.REQUIRED('Email'),
@@ -52,7 +47,7 @@ export const Login = () => {
 
     const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
 
-    const loginHandler = (loginDto: ILoginForm) => {
+    const loginHandler = (loginDto: ILoginDto) => {
         dispatch(authThunks.login(loginDto));
     };
 
@@ -61,9 +56,9 @@ export const Login = () => {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<ILoginForm>();
+    } = useForm<ILoginDto>();
 
-    const onSubmit = (data: ILoginForm) => {
+    const onSubmit = (data: ILoginDto) => {
         loginHandler(data);
     };
 
