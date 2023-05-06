@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { authThunks } from '../auth.slice';
+import { authActions, authThunks } from '../auth.slice';
 import {
     Checkbox,
     FormControl,
@@ -16,7 +16,7 @@ import {
 import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, NavLink } from 'react-router-dom';
 import { MSG_VALIDATE } from '../../../common/constans/constans';
 import { ILoginDto } from '../auth.api.interfaces';
@@ -43,28 +43,29 @@ export const Login = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    const dispatch = useAppDispatch();
-
-    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
-
-    const loginHandler = (loginDto: ILoginDto) => {
-        dispatch(authThunks.login(loginDto));
-    };
-
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm<ILoginDto>();
-
     const onSubmit = (data: ILoginDto) => {
         loginHandler(data);
     };
+    const loginHandler = (loginDto: ILoginDto) => {
+        dispatch(authThunks.login(loginDto));
+    };
+    useEffect(() => {
+        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({ isMadeRegister: false }));
+    }, []);
+
+    const dispatch = useAppDispatch();
+
+    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
+    const isMadeRegister = useAppSelector((state) => state.auth.isMadeRegister);
 
     // console.log(watch()); log input values
 
-    if (isAppInitialized) return <Navigate to={'/'} />;
     return (
         <Grid container justifyContent="center" marginTop={5}>
             <Grid item justifyContent="center">

@@ -14,7 +14,7 @@ export function Counter() {
 
     const incrementValue = Number(incrementAmount) || 0;
 
-    if (!isAppInitialized) return <Navigate to={'/login'} />;
+    if (!isAppInitialized) return <Navigate to={'/register'} />;
     return (
         <div>
             <div className={styles.row}>

@@ -9,8 +9,8 @@ export const store = configureStore({
     app: appReducer,
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(logger),
+  // middleware: (getDefaultMiddleware) =>
+  //     getDefaultMiddleware().concat(logger),
 });
 
 export type AppDispatch = typeof store.dispatch;

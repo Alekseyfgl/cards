@@ -1,11 +1,10 @@
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { ILoginDto, IRegisterDto } from '../auth.api.interfaces';
-
+import { IRegisterDto } from '../auth.api.interfaces';
 import { authThunks } from '../auth.slice';
 import { MSG_VALIDATE } from '../../../common/constans/constans';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useNavigate } from 'react-router-dom';
 import {
     FormControl,
     FormGroup,
@@ -50,32 +49,29 @@ const confirmPasswordValidate = {
 
 export const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
-    const dispatch = useAppDispatch();
-
-    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
-
-    const loginHandler = (registerDto: IRegisterDto) => {
-        dispatch(authThunks.register(registerDto));
-    };
-
+    const handleClickShowPassword = (): void => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>): void => event.preventDefault();
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm<IRegisterDto & { confirmPassword: string }>();
-
     const onSubmit = (data: IRegisterDto) => {
-        loginHandler(data);
+        registerHandler(data);
     };
+    const registerHandler = (registerDto: IRegisterDto) => {
+        dispatch(authThunks.register(registerDto));
+    };
+
+
+    const dispatch = useAppDispatch();
+    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
+    const isMadeRegister: boolean = useAppSelector((state) => state.auth.isMadeRegister);
 
     // console.log(watch()); log input values
 
-    if (isAppInitialized) return <Navigate to={'/'} />;
+    if (isMadeRegister) return <Navigate to={'/login'} />;
 
     return (
         <Grid container justifyContent="center" marginTop={5}>
