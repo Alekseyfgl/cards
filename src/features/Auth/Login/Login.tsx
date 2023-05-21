@@ -1,12 +1,9 @@
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { IRegisterDto } from '../auth.api.interfaces';
-import { authThunks } from '../auth.slice';
-import { MSG_VALIDATE } from '../../../common/constans/constans';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Navigate, NavLink, useNavigate } from 'react-router-dom';
+import { authActions, authThunks } from '../auth.slice';
 import {
+    Checkbox,
     FormControl,
+    FormControlLabel,
     FormGroup,
     FormHelperText,
     Grid,
@@ -16,12 +13,14 @@ import {
     OutlinedInput,
     TextField,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-
-import { watch } from 'fs/promises';
+import { useForm } from 'react-hook-form';
 import Button from '@mui/material/Button';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { MSG_VALIDATE } from '../../../common/constans/constans';
+import { ILoginDto } from '../auth.api.interfaces';
 
-const MIN_LENGTH = 8;
 const emailValidate = {
     required: MSG_VALIDATE.REQUIRED('Email'),
     pattern: {
@@ -33,50 +32,47 @@ const emailValidate = {
 const passwordValidate = {
     required: MSG_VALIDATE.REQUIRED('Password'),
     minLength: {
-        value: MIN_LENGTH,
+        value: 8,
         message: MSG_VALIDATE.PASSWORD_LENGTH,
     },
 } as const;
 
-const confirmPasswordValidate = {
-    required: MSG_VALIDATE.REQUIRED('Confirm Password'),
-    minLength: {
-        value: MIN_LENGTH,
-        message: MSG_VALIDATE.PASSWORD_LENGTH,
-    },
-    validate: (value: string, values: any) => value === values.password || 'Passwords do not match',
-} as const;
+export const Login = () => {
+    const isAppInit: boolean = useAppSelector((state) => state.app.isAppInit);
 
-export const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = (): void => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>): void => event.preventDefault();
+    const navigate = useNavigate();
+    const userEmail = useAppSelector((state) => state.auth?.profile?.email);
+    const isMadeRegister = useAppSelector((state) => state.auth.isMadeRegister);
+    const dispatch = useAppDispatch();
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<IRegisterDto & { confirmPassword: string }>();
-    const onSubmit = (data: IRegisterDto) => {
-        registerHandler(data);
+    } = useForm<ILoginDto>();
+    const onSubmit = (data: ILoginDto) => {
+        loginHandler(data);
     };
-    const registerHandler = (registerDto: IRegisterDto) => {
-        dispatch(authThunks.register(registerDto));
+    const loginHandler = (loginDto: ILoginDto) => {
+        dispatch(authThunks.login(loginDto));
     };
 
-
-    const dispatch = useAppDispatch();
-    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
-    const isMadeRegister: boolean = useAppSelector((state) => state.auth.isMadeRegister);
+    useEffect(() => {
+        if (isAppInit) navigate('/');
+        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({ isMadeRegister: false }));
+    }, [isAppInit]);
 
     // console.log(watch()); log input values
-
-    if (isMadeRegister) return <Navigate to={'/login'} />;
 
     return (
         <Grid container justifyContent="center" marginTop={5}>
             <Grid item justifyContent="center">
-                <div>Sign Up</div>
+                <div>Sign in</div>
                 <FormControl>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGroup>
@@ -114,33 +110,10 @@ export const Register = () => {
                                     </FormHelperText>
                                 )}
                             </FormControl>
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                <OutlinedInput
-                                    {...register('confirmPassword', confirmPasswordValidate)}
-                                    id="confirmPassword"
-                                    type={showPassword ? 'text' : 'password'}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                    label="ConfirmPassword"
-                                    error={!!errors.confirmPassword}
-                                />
-                                {!!errors.confirmPassword && (
-                                    <FormHelperText error id="accountId-error">
-                                        {errors.confirmPassword?.message}
-                                    </FormHelperText>
-                                )}
-                            </FormControl>
+                            <FormControlLabel
+                                label={'Remember me'}
+                                control={<Checkbox {...register('rememberMe')} />}
+                            />
                             <Button type="submit" variant="contained" color="primary">
                                 Login
                             </Button>
@@ -148,7 +121,7 @@ export const Register = () => {
                     </form>
                 </FormControl>
                 <div>Already have an account?</div>
-                <NavLink to={'/login'}>Sign In</NavLink>
+                <NavLink to={'/register'}>Sign Up</NavLink>
             </Grid>
         </Grid>
     );

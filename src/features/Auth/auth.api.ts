@@ -1,6 +1,6 @@
 import { instance } from '../../common/api/common.api';
 import { AxiosResponse } from 'axios';
-import { ILoginDto, IRegisterDto, IRegisterRes, IProfile } from './auth.api.interfaces';
+import { ILoginDto, IProfile, IRegisterDto, IRegisterRes } from './auth.api.interfaces';
 
 const base = 'auth' as const;
 

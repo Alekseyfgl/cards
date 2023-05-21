@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { decrement, increment, incrementByAmount, incrementAsync, incrementIfOdd, selectCount } from './counterSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { decrement, increment, incrementAsync, incrementByAmount, incrementIfOdd, selectCount } from './counterSlice';
 import styles from './Counter.module.css';
 import { Navigate } from 'react-router-dom';
 
 export function Counter() {
     const count = useAppSelector(selectCount);
-    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
+    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInit);
 
     const dispatch = useAppDispatch();
     const [incrementAmount, setIncrementAmount] = useState('2');
 
     const incrementValue = Number(incrementAmount) || 0;
 
-    if (!isAppInitialized) return <Navigate to={'/register'} />;
+    if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
         <div>
             <div className={styles.row}>

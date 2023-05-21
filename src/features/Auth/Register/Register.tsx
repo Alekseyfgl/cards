@@ -1,9 +1,12 @@
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { authActions, authThunks } from '../auth.slice';
+import { IRegisterDto } from '../auth.api.interfaces';
+import { authThunks } from '../auth.slice';
+import { MSG_VALIDATE } from '../../../common/constans/constans';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Navigate, NavLink } from 'react-router-dom';
 import {
-    Checkbox,
     FormControl,
-    FormControlLabel,
     FormGroup,
     FormHelperText,
     Grid,
@@ -13,14 +16,10 @@ import {
     OutlinedInput,
     TextField,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import Button from '@mui/material/Button';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
-import { Navigate, NavLink } from 'react-router-dom';
-import { MSG_VALIDATE } from '../../../common/constans/constans';
-import { ILoginDto } from '../auth.api.interfaces';
+import Button from '@mui/material/Button';
 
+const MIN_LENGTH = 8;
 const emailValidate = {
     required: MSG_VALIDATE.REQUIRED('Email'),
     pattern: {
@@ -32,44 +31,49 @@ const emailValidate = {
 const passwordValidate = {
     required: MSG_VALIDATE.REQUIRED('Password'),
     minLength: {
-        value: 8,
+        value: MIN_LENGTH,
         message: MSG_VALIDATE.PASSWORD_LENGTH,
     },
 } as const;
 
-export const Login = () => {
+const confirmPasswordValidate = {
+    required: MSG_VALIDATE.REQUIRED('Confirm Password'),
+    minLength: {
+        value: MIN_LENGTH,
+        message: MSG_VALIDATE.PASSWORD_LENGTH,
+    },
+    validate: (value: string, values: any) => value === values.password || 'Passwords do not match',
+} as const;
+
+export const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
+    const handleClickShowPassword = (): void => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>): void => event.preventDefault();
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<ILoginDto>();
-    const onSubmit = (data: ILoginDto) => {
-        loginHandler(data);
+    } = useForm<IRegisterDto & { confirmPassword: string }>();
+    const onSubmit = (data: IRegisterDto) => {
+        registerHandler(data);
     };
-    const loginHandler = (loginDto: ILoginDto) => {
-        dispatch(authThunks.login(loginDto));
+    const registerHandler = (registerDto: IRegisterDto) => {
+        dispatch(authThunks.register(registerDto));
     };
-    useEffect(() => {
-        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({ isMadeRegister: false }));
-    }, []);
 
     const dispatch = useAppDispatch();
-
-    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
-    const isMadeRegister = useAppSelector((state) => state.auth.isMadeRegister);
+    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInit);
+    const isMadeRegister: boolean = useAppSelector((state) => state.auth.isMadeRegister);
 
     // console.log(watch()); log input values
+
+    if (isMadeRegister) return <Navigate to={'/login'} />;
 
     return (
         <Grid container justifyContent="center" marginTop={5}>
             <Grid item justifyContent="center">
-                <div>Sign in</div>
+                <div>Sign Up</div>
                 <FormControl>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGroup>
@@ -107,10 +111,33 @@ export const Login = () => {
                                     </FormHelperText>
                                 )}
                             </FormControl>
-                            <FormControlLabel
-                                label={'Remember me'}
-                                control={<Checkbox {...register('rememberMe')} />}
-                            />
+                            <FormControl margin="normal">
+                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                <OutlinedInput
+                                    {...register('confirmPassword', confirmPasswordValidate)}
+                                    id="confirmPassword"
+                                    type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    label="ConfirmPassword"
+                                    error={!!errors.confirmPassword}
+                                />
+                                {!!errors.confirmPassword && (
+                                    <FormHelperText error id="accountId-error">
+                                        {errors.confirmPassword?.message}
+                                    </FormHelperText>
+                                )}
+                            </FormControl>
                             <Button type="submit" variant="contained" color="primary">
                                 Login
                             </Button>
@@ -118,7 +145,7 @@ export const Login = () => {
                     </form>
                 </FormControl>
                 <div>Already have an account?</div>
-                <NavLink to={'/register'}>Sign Up</NavLink>
+                <NavLink to={'/login'}>Sign In</NavLink>
             </Grid>
         </Grid>
     );

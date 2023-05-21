@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { memo } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +13,6 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { memo } from 'react';
 import { useAppSelector } from '../../app/hooks';
 
 const pages = ['Products', 'Pricing', 'Blog'];
@@ -21,7 +21,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export const ResponsiveAppBar = memo(() => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInitialized);
+    const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInit);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
