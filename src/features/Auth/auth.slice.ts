@@ -19,20 +19,20 @@ export const login = createAppAsyncThunk<
     },
     ILoginDto
 >('Auth/login', async (arg: ILoginDto, thunkAPI) => {
-    const {dispatch, getState, rejectWithValue} = thunkAPI;
+    const { dispatch, getState, rejectWithValue } = thunkAPI;
     const res = await authApi.login(arg);
-    return {profile: res.data};
+    return { profile: res.data };
 });
 
 const slice = createSlice({
     name: 'auth',
     initialState: {
         profile: null as IProfile | null,
-        isMadeRegister: false,
+        isRegistered: false,
     },
     reducers: {
-        setIsMadeRegister: (state, action: PayloadAction<{ isMadeRegister: boolean }>) => {
-            state.isMadeRegister = action.payload.isMadeRegister;
+        setIsMadeRegister: (state, action: PayloadAction<{ isRegistered: boolean }>) => {
+            state.isRegistered = action.payload.isRegistered;
         },
     },
     extraReducers: (builder) => {
@@ -41,7 +41,7 @@ const slice = createSlice({
             appActions.initialiseApp({ isAppInit: true });
         });
         builder.addCase(register.fulfilled, (state, action) => {
-            state.isMadeRegister = true;
+            state.isRegistered = true;
         });
     },
 });

@@ -43,7 +43,7 @@ export const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const userEmail = useAppSelector((state) => state.auth?.profile?.email);
-    const isMadeRegister = useAppSelector((state) => state.auth.isMadeRegister);
+    const isMadeRegister = useAppSelector((state) => state.auth.isRegistered);
     const dispatch = useAppDispatch();
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,7 +64,7 @@ export const Login = () => {
 
     useEffect(() => {
         if (isAppInit) navigate('/');
-        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({ isMadeRegister: false }));
+        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({ isRegistered: false }));
     }, [isAppInit]);
 
     // console.log(watch()); log input values

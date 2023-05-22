@@ -64,7 +64,7 @@ export const Register = () => {
 
     const dispatch = useAppDispatch();
     const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInit);
-    const isMadeRegister: boolean = useAppSelector((state) => state.auth.isMadeRegister);
+    const isMadeRegister: boolean = useAppSelector((state) => state.auth.isRegistered);
 
     // console.log(watch()); log input values
 
