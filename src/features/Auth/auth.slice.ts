@@ -1,39 +1,38 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { authApi } from './auth.api';
 import { ILoginDto, IProfile, IRegisterDto, IUser } from './auth.api.interfaces';
-import { createAppAsyncThunk } from '../../store/appAsyncThunk';
+import { createAppAsyncThunk } from '../../common/utils/appAsyncThunk';
 import { appActions } from '../../app/app.slice';
+import { thunkTryCatch } from '../../common/utils/thunkTryCatch';
 
-const register = createAppAsyncThunk<{ addedUser: IUser }, IRegisterDto>(
-    'Auth/register',
-    async (arg: IRegisterDto, thunkAPI) => {
-        const { dispatch, getState, rejectWithValue } = thunkAPI;
+const register = createAppAsyncThunk<{ addedUser: IUser }, IRegisterDto>
+('Auth/register', async (arg: IRegisterDto, thunkAPI) => {
+    const { dispatch, getState, rejectWithValue } = thunkAPI;
+    return thunkTryCatch(thunkAPI, async () => {
         const res = await authApi.register(arg);
         return { addedUser: res.data.addedUser };
-    }
-);
+    });
+});
 //первый параметр то что Thunk возвращает, второй параметр то что принимает
-export const login = createAppAsyncThunk<
-    {
-        profile: IProfile;
-    },
-    ILoginDto
->('Auth/login', async (arg: ILoginDto, thunkAPI) => {
+export const login = createAppAsyncThunk<{ profile: IProfile; }, ILoginDto>
+('Auth/login', async (arg: ILoginDto, thunkAPI) => {
     const { dispatch, getState, rejectWithValue } = thunkAPI;
-    const res = await authApi.login(arg);
-    return { profile: res.data };
+    return thunkTryCatch(thunkAPI, async () => {
+        const res = await authApi.login(arg);
+        return { profile: res.data };
+    });
 });
 
 const slice = createSlice({
     name: 'auth',
     initialState: {
         profile: null as IProfile | null,
-        isRegistered: false,
+        isRegistered: false
     },
     reducers: {
         setIsMadeRegister: (state, action: PayloadAction<{ isRegistered: boolean }>) => {
             state.isRegistered = action.payload.isRegistered;
-        },
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
@@ -43,7 +42,7 @@ const slice = createSlice({
         builder.addCase(register.fulfilled, (state, action) => {
             state.isRegistered = true;
         });
-    },
+    }
 });
 
 export const authReducer = slice.reducer;

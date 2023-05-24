@@ -7,6 +7,7 @@ import { CircularIndeterminate } from '../features/Loader/Loader';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Login } from '../features/Auth/Login/Login';
 import { Register } from '../features/Auth/Register/Register';
+import { GlobalError } from '../common/components/GlobalError/GlobalError';
 
 const App = () => {
     const isLoading = useAppSelector((state) => state.app.isLoadingApp);
@@ -24,8 +25,8 @@ const App = () => {
 
     return (
         <div>
+            <GlobalError />
             <ResponsiveAppBar />
-
             <Routes>
                 <Route path={'/'} element={<Counter />} />
                 <Route path={'/login'} element={<Login />} />

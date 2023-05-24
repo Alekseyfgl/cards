@@ -11,36 +11,36 @@ import {
     InputAdornment,
     InputLabel,
     OutlinedInput,
-    TextField,
+    TextField
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import Button from '@mui/material/Button';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { MSG_VALIDATE } from '../../../common/constans/constans';
 import { ILoginDto } from '../auth.api.interfaces';
+import { SendRequestButton } from '../../../common/components/ButtonSendRequest/SendRequestButton';
 
 const emailValidate = {
     required: MSG_VALIDATE.REQUIRED('Email'),
     pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: MSG_VALIDATE.INCORRECT('email'),
-    },
+        message: MSG_VALIDATE.INCORRECT('email')
+    }
 } as const;
 
 const passwordValidate = {
     required: MSG_VALIDATE.REQUIRED('Password'),
     minLength: {
         value: 8,
-        message: MSG_VALIDATE.PASSWORD_LENGTH,
-    },
+        message: MSG_VALIDATE.PASSWORD_LENGTH
+    }
 } as const;
 
 export const Login = () => {
-    const isAppInit: boolean = useAppSelector((state) => state.app.isAppInit);
-
     const [showPassword, setShowPassword] = useState(false);
+    const [isSentRequest, setIsSentRequest] = useState(false);
+    const isAppInit: boolean = useAppSelector((state) => state.app.isAppInit);
     const navigate = useNavigate();
     const userEmail = useAppSelector((state) => state.auth?.profile?.email);
     const isMadeRegister = useAppSelector((state) => state.auth.isRegistered);
@@ -53,13 +53,16 @@ export const Login = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors },
+        formState: { errors }
     } = useForm<ILoginDto>();
     const onSubmit = (data: ILoginDto) => {
         loginHandler(data);
     };
     const loginHandler = (loginDto: ILoginDto) => {
-        dispatch(authThunks.login(loginDto));
+        setIsSentRequest(true);
+        dispatch(authThunks.login(loginDto)).finally(() => {
+            setIsSentRequest(false);
+        });
     };
 
     useEffect(() => {
@@ -70,42 +73,42 @@ export const Login = () => {
     // console.log(watch()); log input values
 
     return (
-        <Grid container justifyContent="center" marginTop={5}>
-            <Grid item justifyContent="center">
+        <Grid container justifyContent='center' marginTop={5}>
+            <Grid item justifyContent='center'>
                 <div>Sign in</div>
                 <FormControl>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGroup>
                             <TextField
-                                label="Email"
-                                margin="normal"
+                                label='Email'
+                                margin='normal'
                                 {...register('email', emailValidate)}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                             />
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <FormControl margin='normal'>
+                                <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                 <OutlinedInput
                                     {...register('password', passwordValidate)}
-                                    id="outlined-adornment-password"
+                                    id='outlined-adornment-password'
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
-                                        <InputAdornment position="end">
+                                        <InputAdornment position='end'>
                                             <IconButton
-                                                aria-label="toggle password visibility"
+                                                aria-label='toggle password visibility'
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
-                                                edge="end"
+                                                edge='end'
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Password"
+                                    label='Password'
                                     error={!!errors.password}
                                 />
                                 {!!errors.password && (
-                                    <FormHelperText error id="accountId-error">
+                                    <FormHelperText error id='accountId-error'>
                                         {errors.password?.message}
                                     </FormHelperText>
                                 )}
@@ -114,9 +117,12 @@ export const Login = () => {
                                 label={'Remember me'}
                                 control={<Checkbox {...register('rememberMe')} />}
                             />
-                            <Button type="submit" variant="contained" color="primary">
+                            <SendRequestButton isSentRequest={isSentRequest}>
                                 Login
-                            </Button>
+                            </SendRequestButton>
+                            {/*<LoadingButton type='submit' variant='contained' color='primary' loading={isSentRequest}>*/}
+                            {/*    Login*/}
+                            {/*</LoadingButton>*/}
                         </FormGroup>
                     </form>
                 </FormControl>

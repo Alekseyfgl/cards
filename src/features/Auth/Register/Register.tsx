@@ -14,52 +14,56 @@ import {
     InputAdornment,
     InputLabel,
     OutlinedInput,
-    TextField,
+    TextField
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Button from '@mui/material/Button';
+import { SendRequestButton } from '../../../common/components/ButtonSendRequest/SendRequestButton';
 
 const MIN_LENGTH = 8;
 const emailValidate = {
     required: MSG_VALIDATE.REQUIRED('Email'),
     pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: MSG_VALIDATE.INCORRECT('email'),
-    },
+        message: MSG_VALIDATE.INCORRECT('email')
+    }
 } as const;
 
 const passwordValidate = {
     required: MSG_VALIDATE.REQUIRED('Password'),
     minLength: {
         value: MIN_LENGTH,
-        message: MSG_VALIDATE.PASSWORD_LENGTH,
-    },
+        message: MSG_VALIDATE.PASSWORD_LENGTH
+    }
 } as const;
 
 const confirmPasswordValidate = {
     required: MSG_VALIDATE.REQUIRED('Confirm Password'),
     minLength: {
         value: MIN_LENGTH,
-        message: MSG_VALIDATE.PASSWORD_LENGTH,
+        message: MSG_VALIDATE.PASSWORD_LENGTH
     },
-    validate: (value: string, values: any) => value === values.password || 'Passwords do not match',
+    validate: (value: string, values: any) => value === values.password || 'Passwords do not match'
 } as const;
 
 export const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const [isSentRequest, setIsSentRequest] = useState(false);
     const handleClickShowPassword = (): void => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>): void => event.preventDefault();
     const {
         register,
         handleSubmit,
         watch,
-        formState: { errors },
+        formState: { errors }
     } = useForm<IRegisterDto & { confirmPassword: string }>();
     const onSubmit = (data: IRegisterDto) => {
         registerHandler(data);
     };
     const registerHandler = (registerDto: IRegisterDto) => {
-        dispatch(authThunks.register(registerDto));
+        setIsSentRequest(true);
+        dispatch(authThunks.register(registerDto)).finally(() => {
+            setIsSentRequest(false);
+        });
     };
 
     const dispatch = useAppDispatch();
@@ -71,76 +75,76 @@ export const Register = () => {
     if (isMadeRegister) return <Navigate to={'/login'} />;
 
     return (
-        <Grid container justifyContent="center" marginTop={5}>
-            <Grid item justifyContent="center">
+        <Grid container justifyContent='center' marginTop={5}>
+            <Grid item justifyContent='center'>
                 <div>Sign Up</div>
                 <FormControl>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGroup>
                             <TextField
-                                label="Email"
-                                margin="normal"
+                                label='Email'
+                                margin='normal'
                                 {...register('email', emailValidate)}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                             />
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <FormControl margin='normal'>
+                                <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                 <OutlinedInput
                                     {...register('password', passwordValidate)}
-                                    id="outlined-adornment-password"
+                                    id='outlined-adornment-password'
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
-                                        <InputAdornment position="end">
+                                        <InputAdornment position='end'>
                                             <IconButton
-                                                aria-label="toggle password visibility"
+                                                aria-label='toggle password visibility'
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
-                                                edge="end"
+                                                edge='end'
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="Password"
+                                    label='Password'
                                     error={!!errors.password}
                                 />
                                 {!!errors.password && (
-                                    <FormHelperText error id="accountId-error">
+                                    <FormHelperText error id='accountId-error'>
                                         {errors.password?.message}
                                     </FormHelperText>
                                 )}
                             </FormControl>
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <FormControl margin='normal'>
+                                <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
                                 <OutlinedInput
                                     {...register('confirmPassword', confirmPasswordValidate)}
-                                    id="confirmPassword"
+                                    id='confirmPassword'
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
-                                        <InputAdornment position="end">
+                                        <InputAdornment position='end'>
                                             <IconButton
-                                                aria-label="toggle password visibility"
+                                                aria-label='toggle password visibility'
                                                 onClick={handleClickShowPassword}
                                                 onMouseDown={handleMouseDownPassword}
-                                                edge="end"
+                                                edge='end'
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
                                         </InputAdornment>
                                     }
-                                    label="ConfirmPassword"
+                                    label='ConfirmPassword'
                                     error={!!errors.confirmPassword}
                                 />
                                 {!!errors.confirmPassword && (
-                                    <FormHelperText error id="accountId-error">
+                                    <FormHelperText error id='accountId-error'>
                                         {errors.confirmPassword?.message}
                                     </FormHelperText>
                                 )}
                             </FormControl>
-                            <Button type="submit" variant="contained" color="primary">
-                                Login
-                            </Button>
+                            <SendRequestButton isSentRequest={isSentRequest}>
+                                Register
+                            </SendRequestButton>
                         </FormGroup>
                     </form>
                 </FormControl>

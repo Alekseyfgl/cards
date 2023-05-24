@@ -6,7 +6,7 @@ const slice = createSlice({
     initialState: {
         error: null as string | null,
         isLoadingApp: true,
-        isAppInit: false,
+        isAppInit: false
     },
     reducers: {
         setIsLoadingApp: (state, action: PayloadAction<{ isLoadingApp: boolean }>) => {
@@ -16,13 +16,15 @@ const slice = createSlice({
         initialiseApp: (state, action: PayloadAction<{ isAppInit: boolean }>) => {
             state.isAppInit = action.payload.isAppInit;
         },
+        setError: (state, action: PayloadAction<{ error: string | null }>) => {
+            state.error = action.payload.error;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
-            console.log('ok');
             state.isAppInit = true;
         });
-    },
+    }
 });
 
 export const appReducer = slice.reducer;
