@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { login } from '../features/Auth/auth.slice';
+import { login, logout, me } from '../features/Auth/auth.slice';
 
 const slice = createSlice({
     name: 'app',
@@ -16,11 +16,24 @@ const slice = createSlice({
         initialiseApp: (state, action: PayloadAction<{ isAppInit: boolean }>) => {
             state.isAppInit = action.payload.isAppInit;
         },
+        setError: (state, action: PayloadAction<{ error: string | null }>) => {
+            state.error = action.payload.error;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
-            console.log('ok');
             state.isAppInit = true;
+        });
+        builder.addCase(me.fulfilled, (state, action) => {
+            state.isAppInit = true;
+            state.isLoadingApp = false;
+        });
+        builder.addCase(me.rejected, (state, action) => {
+            state.isAppInit = false;
+            state.isLoadingApp = false;
+        });
+        builder.addCase(logout.fulfilled, (state, action) => {
+            state.isAppInit = false;
         });
     },
 });

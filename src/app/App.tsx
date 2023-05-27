@@ -1,21 +1,19 @@
 import { useAppDispatch, useAppSelector } from './hooks';
 import React, { useEffect } from 'react';
 import { Counter } from '../features/Counter/Counter';
-import { appActions } from './app.slice';
 import { ResponsiveAppBar } from '../features/Header/Header';
 import { CircularIndeterminate } from '../features/Loader/Loader';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Login } from '../features/Auth/Login/Login';
 import { Register } from '../features/Auth/Register/Register';
+import { GlobalError } from '../common/components/GlobalError/GlobalError';
+import { authThunks } from '../features/Auth/auth.slice';
 
 const App = () => {
     const isLoading = useAppSelector((state) => state.app.isLoadingApp);
     const dispatch = useAppDispatch();
-
     useEffect(() => {
-        setTimeout(() => {
-            dispatch(appActions.setIsLoadingApp({ isLoadingApp: false }));
-        }, 1000);
+        dispatch(authThunks.me({}));
     }, []);
 
     if (isLoading) {
@@ -24,8 +22,8 @@ const App = () => {
 
     return (
         <div>
+            <GlobalError />
             <ResponsiveAppBar />
-
             <Routes>
                 <Route path={'/'} element={<Counter />} />
                 <Route path={'/login'} element={<Login />} />

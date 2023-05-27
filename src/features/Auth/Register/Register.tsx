@@ -2,22 +2,12 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { IRegisterDto } from '../auth.api.interfaces';
 import { authThunks } from '../auth.slice';
 import { MSG_VALIDATE } from '../../../common/constans/constans';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, NavLink } from 'react-router-dom';
-import {
-    FormControl,
-    FormGroup,
-    FormHelperText,
-    Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    TextField,
-} from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { FormControl, FormGroup, FormHelperText, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Button from '@mui/material/Button';
+import { SendRequestButton } from '../../../common/components/ButtonSendRequest/SendRequestButton';
 
 const MIN_LENGTH = 8;
 const emailValidate = {
@@ -46,7 +36,10 @@ const confirmPasswordValidate = {
 } as const;
 
 export const Register = () => {
+    const isAppInit: boolean = useAppSelector((state) => state.app.isAppInit);
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const [isSentRequest, setIsSentRequest] = useState(false);
     const handleClickShowPassword = (): void => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>): void => event.preventDefault();
     const {
@@ -59,7 +52,10 @@ export const Register = () => {
         registerHandler(data);
     };
     const registerHandler = (registerDto: IRegisterDto) => {
-        dispatch(authThunks.register(registerDto));
+        setIsSentRequest(true);
+        dispatch(authThunks.register(registerDto)).finally(() => {
+            setIsSentRequest(false);
+        });
     };
 
     const dispatch = useAppDispatch();
@@ -67,8 +63,10 @@ export const Register = () => {
     const isMadeRegister: boolean = useAppSelector((state) => state.auth.isRegistered);
 
     // console.log(watch()); log input values
-
-    if (isMadeRegister) return <Navigate to={'/login'} />;
+    useEffect(() => {
+        if (isMadeRegister) navigate('/login');
+        if (isAppInit) navigate('/');
+    }, []);
 
     return (
         <Grid container justifyContent="center" marginTop={5}>
@@ -77,13 +75,7 @@ export const Register = () => {
                 <FormControl>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <FormGroup>
-                            <TextField
-                                label="Email"
-                                margin="normal"
-                                {...register('email', emailValidate)}
-                                error={!!errors.email}
-                                helperText={errors.email?.message}
-                            />
+                            <TextField label="Email" margin="normal" {...register('email', emailValidate)} error={!!errors.email} helperText={errors.email?.message} />
                             <FormControl margin="normal">
                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                 <OutlinedInput
@@ -92,12 +84,7 @@ export const Register = () => {
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
                                         <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
+                                            <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
                                         </InputAdornment>
@@ -119,12 +106,7 @@ export const Register = () => {
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
                                         <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
+                                            <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
                                         </InputAdornment>
@@ -138,9 +120,7 @@ export const Register = () => {
                                     </FormHelperText>
                                 )}
                             </FormControl>
-                            <Button type="submit" variant="contained" color="primary">
-                                Login
-                            </Button>
+                            <SendRequestButton isSentRequest={isSentRequest}>Register</SendRequestButton>
                         </FormGroup>
                     </form>
                 </FormControl>
