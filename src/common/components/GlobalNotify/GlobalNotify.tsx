@@ -2,15 +2,16 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
 import { appActions } from '../../../app/app.slice';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../utils/hooks';
+import { Nullable } from '../../utils/optionalTypes/optional.types';
 
-export const GlobalError = () => {
-    const error = useAppSelector((state) => state.app.error);
+export const GlobalNotify = () => {
     const dispatch = useAppDispatch();
+    const error: Nullable<string> = useAppSelector((state) => state.app.error);
+    const done: Nullable<string> = useAppSelector((state) => state.app.done);
 
-    if (error !== null) {
-        toast.error(error);
-    }
+    if (error !== null) toast.error(error);
+    if (done !== null) toast.success(done);
 
     // Данный код необходим для того, чтобы занулять ошибку в стейте
     // после того как ошибка установилась.
@@ -20,11 +21,17 @@ export const GlobalError = () => {
                 dispatch(appActions.setError({ error: null }));
             }, 1000);
         }
-    }, [error]);
+
+        if (done !== null) {
+            setTimeout(() => {
+                dispatch(appActions.setDone({ done: null }));
+            }, 1000);
+        }
+    }, [error, done]);
 
     return (
         <ToastContainer
-            position='top-right'
+            position="top-right"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
@@ -33,7 +40,7 @@ export const GlobalError = () => {
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme='colored'
+            theme="colored"
         />
     );
 };

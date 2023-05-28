@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { login, logout, me } from '../features/Auth/auth.slice';
+import { Nullable } from '../common/utils/optionalTypes/optional.types';
 
 const slice = createSlice({
     name: 'app',
     initialState: {
-        error: null as string | null,
+        error: null as Nullable<string>,
+        done: null as Nullable<string>,
         isLoadingApp: true,
         isAppInit: false,
     },
@@ -16,8 +18,11 @@ const slice = createSlice({
         initialiseApp: (state, action: PayloadAction<{ isAppInit: boolean }>) => {
             state.isAppInit = action.payload.isAppInit;
         },
-        setError: (state, action: PayloadAction<{ error: string | null }>) => {
+        setError: (state, action: PayloadAction<{ error: Nullable<string> }>) => {
             state.error = action.payload.error;
+        },
+        setDone: (state, action: PayloadAction<{ done: Nullable<string> }>) => {
+            state.done = action.payload.done;
         },
     },
     extraReducers: (builder) => {

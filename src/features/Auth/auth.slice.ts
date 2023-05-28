@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { authApi } from './auth.api';
 import { ILoginDto, IProfile, IRegisterDto, IUser } from './auth.api.interfaces';
-import { createAppAsyncThunk } from '../../common/utils/appAsyncThunk';
+import { createAppAsyncThunk } from '../../common/utils/thunks/appAsyncThunk';
 import { appActions } from '../../app/app.slice';
-import { thunkTryCatch } from '../../common/utils/thunkTryCatch';
+import { thunkTryCatch } from '../../common/utils/thunks/thunkTryCatch';
 
 const register = createAppAsyncThunk<
     {
@@ -32,10 +32,16 @@ export const login = createAppAsyncThunk<
 });
 
 export const me = createAppAsyncThunk<{ profile: IProfile }, {}>('Auth/me', async (arg, thunkAPI) => {
-    return thunkTryCatch(thunkAPI, async () => {
-        const res = await authApi.me({});
-        return { profile: res.data };
-    });
+    return thunkTryCatch(
+        thunkAPI,
+        async () => {
+            const res = await authApi.me({});
+            return { profile: res.data };
+        },
+        //this boolean turn off global errors for this thunk
+        //in other cases global errors are enabled by default
+        false
+    );
 });
 
 export const logout = createAppAsyncThunk<{ info: string }, {}>('Auth/logout', async (arg, thunkAPI) => {
