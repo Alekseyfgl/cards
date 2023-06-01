@@ -3,12 +3,14 @@ import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FormControl, Grid } from '@mui/material';
 import { RegisterForm } from './Form/RegisterForm';
+import { selectorIsAppInit } from '../../../app/app.selector';
+import { selectorIsRegistered } from '../auth.selector';
 
 export const Register = () => {
-    const isAppInit: boolean = useAppSelector((state) => state.app.isAppInit);
+    const isAppInit: boolean = useAppSelector(selectorIsAppInit);
     const navigate = useNavigate();
 
-    const isMadeRegister: boolean = useAppSelector((state) => state.auth.isRegistered);
+    const isMadeRegister: boolean = useAppSelector(selectorIsRegistered);
 
     useEffect(() => {
         if (isMadeRegister) navigate('/login');

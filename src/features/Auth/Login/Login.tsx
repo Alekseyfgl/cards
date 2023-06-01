@@ -4,13 +4,15 @@ import { FormControl, Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { LoginForm } from './Form/LoginForm';
+import { selectorIsAppInit } from '../../../app/app.selector';
+import { selectorIsRegistered } from '../auth.selector';
 
 export const Login = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const isAppInit: boolean = useAppSelector((state) => state.app.isAppInit);
-    const isMadeRegister = useAppSelector((state) => state.auth.isRegistered);
+    const isAppInit: boolean = useAppSelector(selectorIsAppInit);
+    const isMadeRegister: boolean = useAppSelector(selectorIsRegistered);
 
     useEffect(() => {
         if (isAppInit) navigate('/');

@@ -8,9 +8,10 @@ import { Login } from '../features/Auth/Login/Login';
 import { Register } from '../features/Auth/Register/Register';
 import { GlobalNotify } from '../common/components/GlobalNotify/GlobalNotify';
 import { authThunks } from '../features/Auth/auth.slice';
+import { selectorIsLoadingApp } from './app.selector';
 
 export const App = () => {
-    const isLoading = useAppSelector((state) => state.app.isLoadingApp);
+    const isLoading = useAppSelector(selectorIsLoadingApp);
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(authThunks.me({}));

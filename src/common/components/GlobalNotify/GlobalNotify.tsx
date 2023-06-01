@@ -4,11 +4,12 @@ import { appActions } from '../../../app/app.slice';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from '../../utils/hooks';
 import { Nullable } from '../../utils/optionalTypes/optional.types';
+import { selectorDoneApp, selectorErrorApp } from '../../../app/app.selector';
 
 export const GlobalNotify = () => {
     const dispatch = useAppDispatch();
-    const error: Nullable<string> = useAppSelector((state) => state.app.error);
-    const done: Nullable<string> = useAppSelector((state) => state.app.done);
+    const error: Nullable<string> = useAppSelector(selectorErrorApp);
+    const done: Nullable<string> = useAppSelector(selectorDoneApp);
 
     if (error !== null) toast.error(error);
     if (done !== null) toast.success(done);

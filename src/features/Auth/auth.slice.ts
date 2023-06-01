@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { authApi } from './auth.api';
 import { ILoginDto, IProfile, IRegisterDto, IUser } from './auth.api.interfaces';
-import { createAppAsyncThunk } from '../../common/utils/thunks/appAsyncThunk';
+import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
 import { appActions } from '../../app/app.slice';
-import { thunkTryCatch } from '../../common/utils/thunks/thunkTryCatch';
 
 const register = createAppAsyncThunk<
     {

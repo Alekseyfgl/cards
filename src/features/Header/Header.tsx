@@ -13,6 +13,8 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { authThunks } from '../Auth/auth.slice';
 import { useNavigate } from 'react-router-dom';
 import { UserAvatar } from '../../common/components/CustomAvatar/CustomAvatar';
+import { selectorUserName, selectorUserPhoto } from '../Auth/auth.selector';
+import { Optional } from '../../common/utils/optionalTypes/optional.types';
 
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -20,8 +22,9 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export const ResponsiveAppBar = memo(() => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const userName = useAppSelector((state) => state?.auth?.profile?.name);
-    const userPhoto = useAppSelector((state) => state?.auth?.profile?.avatar);
+
+    const userName: Optional<string> = useAppSelector(selectorUserName);
+    const userPhoto: Optional<string> = useAppSelector(selectorUserPhoto);
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -95,8 +98,7 @@ export const ResponsiveAppBar = memo(() => {
                         <Box>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />*/}
-                                    <UserAvatar username={userName!} avatarUrl={userPhoto!} />
+                                    <UserAvatar username={userName || 'N'} avatarUrl={userPhoto!} />
                                 </IconButton>
                             </Tooltip>
                             <Menu
