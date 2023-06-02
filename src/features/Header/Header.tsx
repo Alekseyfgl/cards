@@ -98,7 +98,7 @@ export const ResponsiveAppBar = memo(() => {
                         <Box>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <UserAvatar username={userName || 'N'} avatarUrl={userPhoto!} />
+                                    <UserAvatar username={userName!} avatarUrl={userPhoto} />
                                 </IconButton>
                             </Tooltip>
                             <Menu
