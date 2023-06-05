@@ -2,12 +2,14 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import counterReducer from '../features/Counter/counterSlice';
 import { appReducer } from '../app/app.slice';
 import { authReducer } from '../features/Auth/auth.slice';
+import { packReducer } from '../features/Packs/packs.slice';
 
 export const store = configureStore({
     reducer: {
         counter: counterReducer,
         app: appReducer,
         auth: authReducer,
+        packs: packReducer,
     },
     // middleware: (getDefaultMiddleware) =>
     //     getDefaultMiddleware().concat(logger),

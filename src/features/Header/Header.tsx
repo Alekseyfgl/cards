@@ -15,7 +15,6 @@ import { useNavigate } from 'react-router-dom';
 import { UserAvatar } from '../../common/components/CustomAvatar/CustomAvatar';
 import { selectorUserName, selectorUserPhoto } from '../Auth/auth.selector';
 import { Optional } from '../../common/utils/optionalTypes/optional.types';
-
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -59,9 +58,6 @@ export const ResponsiveAppBar = memo(() => {
                 <Toolbar>
                     <Typography
                         variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -73,14 +69,11 @@ export const ResponsiveAppBar = memo(() => {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        MEMORY
                     </Typography>
 
                     <Typography
                         variant="h5"
-                        noWrap
-                        component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
@@ -92,7 +85,7 @@ export const ResponsiveAppBar = memo(() => {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        MEMORY
                     </Typography>
                     {isAppInitialized && (
                         <Box>

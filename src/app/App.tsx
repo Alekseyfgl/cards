@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from './hooks';
 import React, { useEffect } from 'react';
-import { Counter } from '../features/Counter/Counter';
 import { ResponsiveAppBar } from '../features/Header/Header';
 import { CircularIndeterminate } from '../features/Loader/Loader';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { Register } from '../features/Auth/Register/Register';
 import { GlobalNotify } from '../common/components/GlobalNotify/GlobalNotify';
 import { authThunks } from '../features/Auth/auth.slice';
 import { selectorIsLoadingApp } from './app.selector';
+import { Packs } from '../features/Packs/Packs/Packs';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -26,7 +26,7 @@ export const App = () => {
             <GlobalNotify />
             <ResponsiveAppBar />
             <Routes>
-                <Route path={'/'} element={<Counter />} />
+                <Route path={'/'} element={<Packs />} />
                 <Route path={'/login'} element={<Login />} />
                 <Route path={'/register'} element={<Register />} />
                 <Route path={'/404'} element={<div>Not found</div>} />
