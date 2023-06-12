@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Alekseyfgl/cards-fe/static/css/main.2acd4b45.css",
+    "main.js": "/Alekseyfgl/cards-fe/static/js/main.e2e52430.js",
+    "static/js/787.5089830e.chunk.js": "/Alekseyfgl/cards-fe/static/js/787.5089830e.chunk.js",
+    "index.html": "/Alekseyfgl/cards-fe/index.html",
+    "main.2acd4b45.css.map": "/Alekseyfgl/cards-fe/static/css/main.2acd4b45.css.map",
+    "main.e2e52430.js.map": "/Alekseyfgl/cards-fe/static/js/main.e2e52430.js.map",
+    "787.5089830e.chunk.js.map": "/Alekseyfgl/cards-fe/static/js/787.5089830e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2acd4b45.css",
+    "static/js/main.e2e52430.js"
+  ]
+}
