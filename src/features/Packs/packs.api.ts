@@ -1,9 +1,9 @@
-import { instance } from '../../common/api/common.api';
-import { IPacks } from './packs.interfaces';
+import { instance } from "../../common/api/common.api";
+import { IPacks } from "./packs.interfaces";
 
-const base = 'cards';
+const base = "cards";
 export const packsApi = {
-    allPacks: () => {
-        return instance.get<IPacks>(`${base}/pack`);
-    },
+  allPacks: (query: any) => {
+    return instance.get<IPacks>(`${base}/pack`, { params: query });
+  }
 };
