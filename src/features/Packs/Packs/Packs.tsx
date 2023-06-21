@@ -9,12 +9,12 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
-import { Order, THeaderPack } from "./HeaderPack/THeaderPack";
+import { THeaderPack } from "./HeaderPack/THeaderPack";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { PaginationCustom } from "../PaginationCustom/Pagination";
-import { IPack, IPacks } from "../packs.interfaces";
+import { IPack, IPacks, PackSortRequestTypes, PackSortTypes } from "../packs.interfaces";
 import { Nullable, Optional } from "../../../common/utils/optionalTypes/optional.types";
 import { selectorCardPacks, selectorPacks } from "../packs.selector";
 
@@ -47,20 +47,22 @@ export const Packs = () => {
   const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
   const cardPacks: Optional<IPack[]> = useAppSelector(selectorCardPacks);
 
-  const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof PacksRow>("name");
+
+  const [sortBy, setSortBy] = useState<PackSortRequestTypes>("0name");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [searchParams, setSearchParams] = useSearchParams({ page: page.toString(), pageCount: rowsPerPage.toString() });
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: page.toString(),
+    pageCount: rowsPerPage.toString(),
+    sortBy: sortBy || ""
+  });
 
   useEffect(() => {
     dispatch(packThunks.getAllPacks(searchParams));
-  }, [searchParams, dispatch]);
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof PacksRow) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+  }, [searchParams, sortBy, dispatch]);
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: PackSortTypes) => {
+    setSortBy(`0${property}`);
   };
 
   const handleClick = (event: MouseEvent<unknown>, _id: string) => {
@@ -82,7 +84,7 @@ export const Packs = () => {
   };
 
   const onChangePagination = (newPage: number, rowsPerPage: number) => {
-    setSearchParams({ page: newPage.toString(), pageCount: rowsPerPage.toString() });
+    setSearchParams({ page: newPage.toString(), pageCount: rowsPerPage.toString(), sortBy: sortBy || "" });
   };
   const handleChangePage = (event: unknown, newPage: number) => {
     console.log("handleChangePage", newPage);
@@ -92,27 +94,21 @@ export const Packs = () => {
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const rowsPerPage: number = +event.target.value;
-    console.log("handleChangeRowsPerPage", rowsPerPage);
     setRowsPerPage(rowsPerPage);
     setPage(1);
     onChangePagination(1, rowsPerPage);
   };
 
-  // const visibleRows = useMemo(
-  //     () => stableSort(createRowPack(cardPacks!), getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-  //     [order, orderBy, page, rowsPerPage]
-  // );
-  console.log("packs", cardPacks);
+
   if (!isAppInitialized) return <Navigate to={"/login"} />;
   return (
     <Container maxWidth="lg">
       <h1 className={s.pack}>Packs</h1>
-
       <Box sx={{ width: "100%" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-              <THeaderPack order={order} orderBy={orderBy} onRequestSort={handleRequestSort} />
+              <THeaderPack orderBy={sortBy} onRequestSort={handleRequestSort} />
 
               <TableBody>
                 {cardPacks &&

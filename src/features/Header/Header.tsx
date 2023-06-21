@@ -24,7 +24,7 @@ export const ResponsiveAppBar = memo(() => {
 
   const userName: Optional<string> = useAppSelector(selectorUserName);
   const userPhoto: Optional<string> = useAppSelector(selectorUserPhoto);
-  
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const isAppInitialized: boolean = useAppSelector((state) => state.app.isAppInit);
 
