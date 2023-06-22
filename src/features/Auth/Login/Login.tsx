@@ -1,11 +1,11 @@
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { authActions } from '../auth.slice';
-import { FormControl, Grid } from '@mui/material';
-import React, { useEffect } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { LoginForm } from './Form/LoginForm';
-import { selectorIsAppInit } from '../../../app/app.selector';
-import { selectorIsRegistered } from '../auth.selector';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {authActions} from '../auth.slice';
+import {FormControl, Grid} from '@mui/material';
+import React, {useEffect} from 'react';
+import {NavLink, useNavigate} from 'react-router-dom';
+import {LoginForm} from './Form/LoginForm';
+import {selectorIsAppInit} from '../../../app/app.selector';
+import {selectorIsRegistered} from '../auth.selector';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -15,8 +15,8 @@ export const Login = () => {
     const isMadeRegister: boolean = useAppSelector(selectorIsRegistered);
 
     useEffect(() => {
-        if (isAppInit) navigate('/');
-        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({ isRegistered: false }));
+        if (isAppInit) navigate('/pack');
+        if (isMadeRegister) dispatch(authActions.setIsMadeRegister({isRegistered: false}));
     }, [isAppInit, isMadeRegister]);
 
     return (
@@ -24,7 +24,7 @@ export const Login = () => {
             <Grid item justifyContent="center">
                 <div>Sign in</div>
                 <FormControl>
-                    <LoginForm />
+                    <LoginForm/>
                 </FormControl>
                 <div>Already have an account?</div>
                 <NavLink to={'/register'}>Sign Up</NavLink>
