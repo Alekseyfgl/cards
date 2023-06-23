@@ -40,7 +40,11 @@ export const Packs = () => {
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
 
+
     useEffect(() => {
+        const param = Object.fromEntries(searchParams);
+        setSortPacks(param.sortPacks as PackSortRequestTypes);
+
         dispatch(packThunks.getAllPacks(searchParams));
     }, [searchParams]);
 
@@ -53,20 +57,7 @@ export const Packs = () => {
     };
 
     const handleClick = (event: MouseEvent<unknown>, _id: string) => {
-        // const selectedIndex = selected.indexOf(_id);
-        // let newSelected: readonly string[] = [];
-        //
-        // if (selectedIndex === -1) {
-        //     newSelected = newSelected.concat(selected, _id);
-        // } else if (selectedIndex === 0) {
-        //     newSelected = newSelected.concat(selected.slice(1));
-        // } else if (selectedIndex === selected.length - 1) {
-        //     newSelected = newSelected.concat(selected.slice(0, -1));
-        // } else if (selectedIndex > 0) {
-        //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        // }
 
-        // setSelected(newSelected);
     };
 
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
