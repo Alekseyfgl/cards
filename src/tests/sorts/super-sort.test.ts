@@ -55,6 +55,13 @@ describe("sorts", () => {
             const result = superSortCreator("actions", "1actions");
             expect(result).toBe("0actions");
         });
+
+
+        it("should check sort by name ASC", () => {
+            const result = superSortCreator("updated", "1name");
+            expect(result).toBe("0updated");
+        });
+
     });
 
     describe("check direction of sort", () => {

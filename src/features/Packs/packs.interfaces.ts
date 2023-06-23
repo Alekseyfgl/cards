@@ -1,3 +1,4 @@
+// =========API==========
 export interface IPack {
   _id: string;
   user_id: string;
@@ -29,7 +30,18 @@ export interface IPacks {
 }
 
 
+// ============DOMAIN============
+export interface PacksRow {
+  _id: string;
+  name: string;
+  cards: number;
+  updated: string;
+  created: string;
+  actions: string;
+}
+
 export type PackSortTypes = `name` | "cardsCount" | "updated" | "created" | "actions"
+
 export type PackSortRequestTypes =
   `${0 | 1}name`
   | `${0 | 1}cardsCount`
