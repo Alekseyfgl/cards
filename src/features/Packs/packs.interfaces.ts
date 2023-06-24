@@ -30,13 +30,12 @@ export interface IPacks {
 }
 
 interface IPackQuery {
-    page: string
-    pageCount: string
-    sortPacks: string
+    page: string;
+    pageCount: string;
+    sortPacks: string;
 }
 
 export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
-
 
 // ============DOMAIN============
 export interface PacksRow {
@@ -48,12 +47,7 @@ export interface PacksRow {
     actions: string;
 }
 
-export type PackSortTypes = `name` | "cardsCount" | "updated" | "created" | "actions"
+export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
+export type SortTypes = '0' | '1';
 
-export type PackSortRequestTypes =
-    `${0 | 1}name`
-    | `${0 | 1}cardsCount`
-    | `${0 | 1}updated`
-    | `${0 | 1}created`
-    | `${0 | 1}actions`
-
+export type PackSortRequestTypes = `${SortTypes}name` | `${SortTypes}cardsCount` | `${SortTypes}updated` | `${SortTypes}created` | `${SortTypes}actions`;
