@@ -8,7 +8,18 @@ import {PackSortRequestTypes, PackSortTypes} from "../packs.interfaces";
  */
 export const superSortCreator = (newCriterionSort: PackSortTypes, currentSort: PackSortRequestTypes): PackSortRequestTypes => {
     const direction = currentSort[0] as "0" | "1";
-    return direction === "0" ? `${1}${newCriterionSort}` : `${0}${newCriterionSort}`;
+
+    
+    if (currentSort === '') {
+        return `${0}${newCriterionSort}`
+    } else if (direction === '0') {
+        return `${1}${newCriterionSort}`
+    } else if (direction === '1') {
+        return ''
+    } else {
+        return ''
+    }
+    // return direction === "0" ? `${1}${newCriterionSort}` : `${0}${newCriterionSort}`;
 };
 
 

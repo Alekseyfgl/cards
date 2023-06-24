@@ -12,6 +12,11 @@ describe("sorts", () => {
             expect(result).toBe("1name");
         });
 
+        it("should check sort by name nullable", () => {
+            const result = superSortCreator("name", "1name");
+            expect(result).toBe('');
+        });
+
 
         it("should check sort by created ASC", () => {
             const result = superSortCreator("created", "0created");
