@@ -19,6 +19,7 @@ import { selectorCardPacks, selectorPacks } from '../packs.selector';
 import { superSortCreator } from '../utils/super-sort';
 import { packThunks } from '../packs.slice';
 import { createPackQuery, createRowPack } from '../utils/mappers/pack.mapper';
+import CustomSearch from '../../../common/components/CustomSearch/CustomSearch';
 
 export const Packs = () => {
     const dispatch = useAppDispatch();
@@ -71,6 +72,7 @@ export const Packs = () => {
     return (
         <Container maxWidth="lg">
             <h1 className={s.pack}>Packs</h1>
+            <CustomSearch placeholder={'write text'} />
             <Box sx={{ width: '100%' }}>
                 <Paper sx={{ width: '100%', mb: 2 }}>
                     <TableContainer>
