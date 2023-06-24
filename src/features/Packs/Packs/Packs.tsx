@@ -1,28 +1,24 @@
 import s from './packs.module.scss';
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectorIsAppInit } from '../../../app/app.selector';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {selectorIsAppInit} from '../../../app/app.selector';
+import {Navigate, useSearchParams} from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
-import { THeaderPack } from './HeaderPack/THeaderPack';
+import {THeaderPack} from './HeaderPack/THeaderPack';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import { PaginationCustom } from '../PaginationCustom/Pagination';
-import { IPack, IPacks, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
-import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
-import { selectorCardPacks, selectorPacks } from '../packs.selector';
-import { superSortCreator } from '../utils/super-sort';
-import { packThunks } from '../packs.slice';
-import { createPackQuery, createRowPack } from '../utils/mappers/pack.mapper';
-
-
-
-
+import {PaginationCustom} from '../PaginationCustom/Pagination';
+import {IPack, IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes} from '../packs.interfaces';
+import {Nullable, Optional} from '../../../common/utils/optionalTypes/optional.types';
+import {selectorCardPacks, selectorPacks} from '../packs.selector';
+import {superSortCreator} from '../utils/super-sort';
+import {packThunks} from '../packs.slice';
+import {createPackQuery, createRowPack} from '../utils/mappers/pack.mapper';
 
 
 export const Packs = () => {
@@ -39,29 +35,28 @@ export const Packs = () => {
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
+    useEffect(() => {
+        const param: PackQueryTypes = Object.fromEntries(searchParams);
+        setSortPacks(param.sortPacks as PackSortRequestTypes);
+    }, []);
 
 
     useEffect(() => {
-        const param = Object.fromEntries(searchParams);
-        setSortPacks(param.sortPacks as PackSortRequestTypes);
-
-        dispatch(packThunks.getAllPacks(searchParams));
+        dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
 
     const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
-        // const targetPropForSort: PackSortRequestTypes = `0${property}`;
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
         setSearchParams(createPackQuery(page, rowsPerPage, prop));
         setSortPacks(prop);
     };
 
-    const handleClick = (event: MouseEvent<unknown>, _id: string) => {
-
-    };
+    // const handleClick = (event: MouseEvent<unknown>, _id: string) => {
+    //
+    // };
 
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
-        // setSearchParams({ page: newPage.toString(), pageCount: rowsPerPage.toString(), sortBy: sortPacks || '' });
         setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -76,15 +71,15 @@ export const Packs = () => {
         onChangePagination(1, rowsPerPage);
     };
 
-    if (!isAppInitialized) return <Navigate to={'/login'} />;
+    if (!isAppInitialized) return <Navigate to={'/login'}/>;
     return (
         <Container maxWidth='lg'>
             <h1 className={s.pack}>Packs</h1>
-            <Box sx={{ width: '100%' }}>
-                <Paper sx={{ width: '100%', mb: 2 }}>
+            <Box sx={{width: '100%'}}>
+                <Paper sx={{width: '100%', mb: 2}}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
-                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
+                        <Table sx={{minWidth: 750}} aria-labelledby='tableTitle'>
+                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort}/>
                             <TableBody>
                                 {cardPacks &&
                                     createRowPack(cardPacks).map((row, index) => {
@@ -92,11 +87,11 @@ export const Packs = () => {
                                         return (
                                             <TableRow
                                                 hover
-                                                onClick={(event) => handleClick(event, row._id as string)}
+                                                // onClick={(event) => handleClick(event, row._id as string)}
                                                 role='checkbox'
                                                 tabIndex={-1}
                                                 key={row._id}
-                                                sx={{ cursor: 'pointer' }}
+                                                sx={{cursor: 'pointer'}}
                                             >
                                                 <TableCell component='th' id={labelId} scope='row' align={'center'}>
                                                     {row.name}

@@ -1,11 +1,12 @@
-import { IPack, PackSortRequestTypes, PackSortTypes, PacksRow } from '../../packs.interfaces';
-import { superSortCreator } from '../super-sort';
+import {IPack, PackSortRequestTypes, PacksRow} from '../../packs.interfaces';
 
 export const createPackQuery = (page: number, pageCount: number, sortPacks: PackSortRequestTypes) => {
+    console.log('sortPacks', sortPacks)
     return {
         page: page.toString(),
         pageCount: pageCount.toString(),
-        sortPacks: superSortCreator(sortPacks.slice(1) as PackSortTypes, sortPacks)
+        // sortPacks: superSortCreator(sortPacks.slice(1) as PackSortTypes, sortPacks)
+        sortPacks: sortPacks
     };
 };
 
