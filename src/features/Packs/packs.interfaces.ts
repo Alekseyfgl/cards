@@ -56,5 +56,4 @@ export type PackSortRequestTypes =
     | `${0 | 1}updated`
     | `${0 | 1}created`
     | `${0 | 1}actions`
-    | ''
 
