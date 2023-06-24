@@ -1,5 +1,5 @@
-import { PacksRow } from "../Packs";
-import { PackSortTypes } from "../../packs.interfaces";
+
+import { PackSortTypes, PacksRow } from '../../packs.interfaces';
 
 export interface PacksCell {
   id: keyof PacksRow;
