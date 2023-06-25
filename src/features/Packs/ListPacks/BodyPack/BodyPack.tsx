@@ -7,6 +7,8 @@ import { Optional } from '../../../../common/utils/optionalTypes/optional.types'
 import { IPack } from '../../packs.interfaces';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
+import { groupButtonRowConst } from '../../utils/constans/GroupButtonRow.const';
+import { IconButton } from '@mui/material';
 
 export const BodyPack = () => {
     const cardPacks: Optional<IPack[]> = useAppSelector(selectorCardPacks);
@@ -30,7 +32,11 @@ export const BodyPack = () => {
                             <TableCell align="center">{row.cards}</TableCell>
                             <TableCell align="center">{row.created}</TableCell>
                             <TableCell align="center">{row.updated}</TableCell>
-                            <TableCell align="center">{row.actions}</TableCell>
+                            <TableCell align="center">
+                                {groupButtonRowConst.map((b) => (
+                                    <IconButton key={b.id}>{b.icon}</IconButton>
+                                ))}
+                            </TableCell>
                         </TableRow>
                     );
                 })}
