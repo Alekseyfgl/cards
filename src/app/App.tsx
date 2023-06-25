@@ -1,14 +1,14 @@
-import {useAppDispatch, useAppSelector} from "./hooks";
-import React, {useEffect} from "react";
-import {ResponsiveAppBar} from "../features/Header/Header";
-import {CircularIndeterminate} from "../features/Loader/Loader";
-import {Navigate, Route, Routes} from "react-router-dom";
-import {Login} from "../features/Auth/Login/Login";
-import {Register} from "../features/Auth/Register/Register";
-import {GlobalNotify} from "../common/components/GlobalNotify/GlobalNotify";
-import {authThunks} from "../features/Auth/auth.slice";
-import {selectorIsLoadingApp} from "./app.selector";
-import {Packs} from "../features/Packs/Packs/Packs";
+import { useAppDispatch, useAppSelector } from './hooks';
+import React, { useEffect } from 'react';
+import { ResponsiveAppBar } from '../features/Header/Header';
+import { CircularIndeterminate } from '../features/Loader/Loader';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Login } from '../features/Auth/Login/Login';
+import { Register } from '../features/Auth/Register/Register';
+import { GlobalNotify } from '../common/components/GlobalNotify/GlobalNotify';
+import { authThunks } from '../features/Auth/auth.slice';
+import { selectorIsLoadingApp } from './app.selector';
+import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -18,20 +18,20 @@ export const App = () => {
     }, [dispatch]);
 
     if (isLoading) {
-        return <CircularIndeterminate/>;
+        return <CircularIndeterminate />;
     }
 
     return (
         <div>
-            <GlobalNotify/>
-            <ResponsiveAppBar/>
+            <GlobalNotify />
+            <ResponsiveAppBar />
             <Routes>
-                <Route path={"/pack"} element={<Packs/>}/>
-                <Route path={"/"} element={<Navigate to={'/pack'}/>}/>
-                <Route path={"/login"} element={<Login/>}/>
-                <Route path={"/register"} element={<Register/>}/>
-                <Route path={"/404"} element={<div>Not found</div>}/>
-                <Route path={"*"} element={<Navigate to={"/404"}/>}/>
+                <Route path={'/pack'} element={<ListPacks />} />
+                <Route path={'/'} element={<Navigate to={'/pack'} />} />
+                <Route path={'/login'} element={<Login />} />
+                <Route path={'/register'} element={<Register />} />
+                <Route path={'/404'} element={<div>Not found</div>} />
+                <Route path={'*'} element={<Navigate to={'/404'} />} />
                 {/*<Route path={'/users/:userId/:messageId'} element={<User />} />*/}
             </Routes>
         </div>

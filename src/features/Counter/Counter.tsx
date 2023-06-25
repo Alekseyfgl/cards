@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { decrement, increment, incrementAsync, incrementByAmount, incrementIfOdd, selectCount } from './counterSlice';
 import styles from './Counter.module.css';
 import { Navigate } from 'react-router-dom';
-import { Packs } from '../Packs/Packs/Packs';
+import { ListPacks } from '../Packs/ListPacks/ListPacks';
 import { selectorIsAppInit } from '../../app/app.selector';
 
 export function Counter() {
@@ -19,7 +19,7 @@ export function Counter() {
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
         <div>
-            <Packs />
+            <ListPacks />
             <div className={styles.row}>
                 <button className={styles.button} aria-label="Decrement value" onClick={() => dispatch(decrement())}>
                     -

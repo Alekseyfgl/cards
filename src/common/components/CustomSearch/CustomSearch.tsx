@@ -13,9 +13,8 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...' }) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputText = event.currentTarget.value;
-        if (inputText) {
-            setValue(inputText.trim());
-        }
+
+        setValue(inputText.trim());
     };
 
     // Fetch API (optional)
@@ -28,11 +27,11 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...' }) => {
         }
     }, [debouncedValue]);
     return (
-        <div>
+        <>
             <form>
-                <div>Search</div>
+                <p>Search</p>
                 <TextField
-                    variant={'standard'}
+                    variant={'outlined'}
                     value={value}
                     onChange={handleChange}
                     InputProps={{
@@ -41,7 +40,7 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...' }) => {
                     }}
                 />
             </form>
-        </div>
+        </>
     );
 };
 

@@ -9,29 +9,26 @@ import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { THeaderPack } from './HeaderPack/THeaderPack';
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
 import { PaginationCustom } from '../PaginationCustom/Pagination';
-import { IPack, IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
-import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
-import { selectorCardPacks, selectorPacks } from '../packs.selector';
+import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
+import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
+import { selectorPacks } from '../packs.selector';
 import { superSortCreator } from '../utils/super-sort';
 import { packThunks } from '../packs.slice';
-import { createPackQuery, createRowPack } from '../utils/mappers/pack.mapper';
-import CustomSearch from '../../../common/components/CustomSearch/CustomSearch';
+import { createPackQuery } from '../utils/mappers/pack.mapper';
+import { PackSettings } from '../Settings/PackSettings';
+import { BodyPack } from './BodyPack/BodyPack';
 
-export const Packs = () => {
+export const ListPacks = () => {
     const dispatch = useAppDispatch();
 
     const isAppInitialized: boolean = useAppSelector(selectorIsAppInit);
     const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
-    const cardPacks: Optional<IPack[]> = useAppSelector(selectorCardPacks);
 
     const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>('0name');
     // const [selected, setSelected] = useState<readonly string[]>([]);
     const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
     useEffect(() => {
@@ -72,36 +69,13 @@ export const Packs = () => {
     return (
         <Container maxWidth="lg">
             <h1 className={s.pack}>Packs</h1>
-            <CustomSearch placeholder={'write text'} />
+            <PackSettings />
             <Box sx={{ width: '100%' }}>
-                <Paper sx={{ width: '100%', mb: 2 }}>
+                <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
-                            <TableBody>
-                                {cardPacks &&
-                                    createRowPack(cardPacks).map((row, index) => {
-                                        const labelId = `enhanced-table-checkbox-${index}`;
-                                        return (
-                                            <TableRow
-                                                hover
-                                                // onClick={(event) => handleClick(event, row._id as string)}
-                                                role="checkbox"
-                                                tabIndex={-1}
-                                                key={row._id}
-                                                sx={{ cursor: 'pointer' }}
-                                            >
-                                                <TableCell component="th" id={labelId} scope="row" align={'center'}>
-                                                    {row.name}
-                                                </TableCell>
-                                                <TableCell align="center">{row.cards}</TableCell>
-                                                <TableCell align="center">{row.created}</TableCell>
-                                                <TableCell align="center">{row.updated}</TableCell>
-                                                <TableCell align="center">{row.actions}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                            </TableBody>
+                            <BodyPack />
                         </Table>
                     </TableContainer>
 
