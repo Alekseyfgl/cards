@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useDebounce } from '../../utils/hooks/useDebounce';
+import { useDebounce } from '../../utils/hooks';
 
 interface SearchInputProps {
     placeholder?: string;
