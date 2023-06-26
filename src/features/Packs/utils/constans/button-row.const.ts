@@ -3,20 +3,20 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import React from 'react';
 
-export const groupButtonRowConst = [
+export const buttonRowConst = [
     {
         id: 'add',
         action: 'add',
-        icon: <SchoolIcon />,
+        icon: SchoolIcon,
     },
     {
         id: 'change',
         action: 'change',
-        icon: <ModeEditOutlineIcon />,
+        icon: ModeEditOutlineIcon,
     },
     {
         id: 'remove',
         action: 'remove',
-        icon: <DeleteForeverIcon />,
+        icon: DeleteForeverIcon,
     },
 ] as const;

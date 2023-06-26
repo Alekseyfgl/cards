@@ -1,4 +1,6 @@
 // =========API==========
+import { buttonRowConst } from './utils/constans/button-row.const';
+
 export interface IPack {
     _id: string;
     user_id: string;
@@ -44,7 +46,7 @@ export interface PacksRow {
     cards: number;
     updated: string;
     created: string;
-    actions: string;
+    actions: typeof buttonRowConst;
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';

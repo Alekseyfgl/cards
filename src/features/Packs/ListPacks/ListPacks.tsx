@@ -1,4 +1,4 @@
-import s from './packs.module.scss';
+import s from './styles.module.scss';
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { selectorIsAppInit } from '../../../app/app.selector';

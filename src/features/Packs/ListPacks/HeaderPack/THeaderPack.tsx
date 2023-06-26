@@ -6,7 +6,7 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import { headCells } from '../../utils/constans/head-packs.const';
 import { PackSortRequestTypes, PackSortTypes } from '../../packs.interfaces';
 import { getDirectionSort } from '../../utils/super-sort';
-import s from './THeaderPack.module.scss';
+import s from './styles.module.scss';
 
 interface EnhancedTableProps {
     onRequestSort: (event: MouseEvent<unknown>, property: PackSortTypes) => void;

@@ -7,7 +7,7 @@ import { Optional } from '../../../../common/utils/optionalTypes/optional.types'
 import { IPack } from '../../packs.interfaces';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
-import { groupButtonRowConst } from '../../utils/constans/GroupButtonRow.const';
+import { buttonRowConst } from '../../utils/constans/button-row.const';
 import { IconButton } from '@mui/material';
 
 export const BodyPack = () => {
@@ -33,8 +33,12 @@ export const BodyPack = () => {
                             <TableCell align="center">{row.created}</TableCell>
                             <TableCell align="center">{row.updated}</TableCell>
                             <TableCell align="center">
-                                {groupButtonRowConst.map((b) => (
-                                    <IconButton key={b.id}>{b.icon}</IconButton>
+                                {buttonRowConst.map((button) => (
+                                    <IconButton key={button.id} onClick={() => {
+                                        console.log('click on ', button.id);
+                                    }}>
+                                        <button.icon />
+                                    </IconButton>
                                 ))}
                             </TableCell>
                         </TableRow>

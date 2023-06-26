@@ -1,4 +1,4 @@
-import s from '../ListPacks/packs.module.scss';
+import s from '../ListPacks/styles.module.scss';
 import CustomSearch from '../../../common/components/CustomSearch/CustomSearch';
 import { Button, ButtonGroup, IconButton } from '@mui/material';
 import { RangeSlider } from '../../../common/components/SupperSlider/SupperSlider';
