@@ -4,6 +4,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
 import { KEYBOARD_KEYS } from '../../utils/constans/keyboard-keys.const';
 import { Nullable } from '../../utils/optionalTypes/optional.types';
+import { useSearchParams } from 'react-router-dom';
+import { createPackQuery } from '../../../features/Packs/utils/mappers/pack.mapper';
+import { PackQueryTypes } from '../../../features/Packs/packs.interfaces';
 
 interface SearchInputProps {
     placeholder?: string;
@@ -13,12 +16,20 @@ interface SearchInputProps {
 const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchHandler }) => {
     const [value, setValue] = useState<Nullable<string>>(null);
     const debouncedValue = useDebounce<Nullable<string>>(value, 500);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        const param: PackQueryTypes = Object.fromEntries(searchParams);
+        if (param.packName !== '') {
+            setValue(param.packName as string);
+        }
+    }, []);
 
     // Fetch API (optional)
     useEffect(() => {
         // if (value !== '') {
 
-            searchHandler(value)
+        searchHandler(value);
         // }
     }, [debouncedValue]);
 

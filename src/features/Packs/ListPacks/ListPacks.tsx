@@ -32,13 +32,11 @@ export const ListPacks = () => {
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
     useEffect(() => {
-        console.log('useEffect_1');
         const param: PackQueryTypes = Object.fromEntries(searchParams);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
     useEffect(() => {
-        console.log('useEffect_2');
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
