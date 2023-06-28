@@ -17,6 +17,7 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchH
     // Fetch API (optional)
     useEffect(() => {
         // if (value !== '') {
+
             searchHandler(value)
         // }
     }, [debouncedValue]);
@@ -38,7 +39,7 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchH
                 <p>Search</p>
                 <TextField
                     variant={'outlined'}
-                    value={value}
+                    value={value ?? ''}
                     onChange={handleChange}
                     InputProps={{
                         startAdornment: <InputAdornment position='start'>{<SearchIcon />}</InputAdornment>,
