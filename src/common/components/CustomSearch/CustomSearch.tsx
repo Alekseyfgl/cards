@@ -3,15 +3,16 @@ import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
 import { KEYBOARD_KEYS } from '../../utils/constans/keyboard-keys.const';
+import { Nullable } from '../../utils/optionalTypes/optional.types';
 
 interface SearchInputProps {
     placeholder?: string;
-    searchHandler: (searchValue: string) => void;
+    searchHandler: (searchValue: Nullable<string>) => void;
 }
 
 const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchHandler }) => {
-    const [value, setValue] = useState<string>('');
-    const debouncedValue = useDebounce<string>(value, 500);
+    const [value, setValue] = useState<Nullable<string>>(null);
+    const debouncedValue = useDebounce<Nullable<string>>(value, 500);
 
     // Fetch API (optional)
     useEffect(() => {

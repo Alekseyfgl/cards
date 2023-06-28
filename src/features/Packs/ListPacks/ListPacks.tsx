@@ -42,12 +42,9 @@ export const ListPacks = () => {
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
-    const searchHandler = (searchValue: string) => {
-        console.log('searchValue==', searchValue);
-        if (searchValue) {
+    const searchHandler = (searchValue: Nullable<string>) => {
+        if (searchValue !== null) {
             setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue));
-        } else {
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
         }
     };
 

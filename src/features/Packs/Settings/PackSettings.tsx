@@ -4,9 +4,10 @@ import { Button, ButtonGroup, IconButton } from '@mui/material';
 import { RangeSlider } from '../../../common/components/SupperSlider/SupperSlider';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import React, { FC } from 'react';
+import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
 
 interface PackSettingsProps {
-    searchHandler: (searchValue: string) => void;
+    searchHandler: (searchValue: Nullable<string>) => void;
 }
 
 export const PackSettings: FC<PackSettingsProps> = (props) => {
