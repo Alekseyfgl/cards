@@ -23,6 +23,10 @@ const slice = createSlice({
     initialState: {
         packs: null as Nullable<IPacks>,
         isLoadingPacks: true,
+        settings: {
+            packName: null as Nullable<string>,
+            showPackCards: 'all' as 'my' | 'all'
+        }
     },
     reducers: {
         // setPacks: (state, action: PayloadAction<{ packs: IPacks }>) => {

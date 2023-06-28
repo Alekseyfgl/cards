@@ -29,6 +29,7 @@ export const ListPacks = () => {
     // const [selected, setSelected] = useState<readonly string[]>([]);
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [searchValue, setSearchValue] = useState('');
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
     useEffect(() => {
@@ -42,13 +43,14 @@ export const ListPacks = () => {
 
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
+            setSearchValue(searchValue)
             setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue));
         }
     };
 
     const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
-        setSearchParams(createPackQuery(page, rowsPerPage, prop));
+        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue));
         setSortPacks(prop);
     };
 
@@ -57,7 +59,7 @@ export const ListPacks = () => {
     // };
 
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
-        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks));
+        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
         onChangePagination(newPage, rowsPerPage);
