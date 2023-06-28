@@ -1,31 +1,36 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
+import { KEYBOARD_KEYS } from '../../utils/constans/keyboard-keys.const';
 
 interface SearchInputProps {
     placeholder?: string;
+    searchHandler: (searchValue: string) => void;
 }
 
-const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...' }) => {
+const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchHandler }) => {
     const [value, setValue] = useState<string>('');
     const debouncedValue = useDebounce<string>(value, 500);
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const inputText = event.currentTarget.value;
+    // Fetch API (optional)
+    useEffect(() => {
+        // if (value !== '') {
+            searchHandler(value)
+        // }
+    }, [debouncedValue]);
 
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const inputText: string = event.currentTarget.value;
         setValue(inputText.trim());
     };
 
-    // Fetch API (optional)
-    useEffect(() => {
-        // Do fetch here...
-        // Triggers when "debouncedValue" changes
 
-        if (value !== '') {
-            console.log('debouncedValue', value);
-        }
-    }, [debouncedValue]);
+    const disableKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        if (event.code === 'Enter') event.preventDefault();
+    };
+
+
     return (
         <>
             <form>
@@ -35,9 +40,10 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...' }) => {
                     value={value}
                     onChange={handleChange}
                     InputProps={{
-                        startAdornment: <InputAdornment position="start">{<SearchIcon />}</InputAdornment>,
-                        placeholder,
+                        startAdornment: <InputAdornment position='start'>{<SearchIcon />}</InputAdornment>,
+                        placeholder
                     }}
+                    onKeyDown={disableKeyDown}
                 />
             </form>
         </>

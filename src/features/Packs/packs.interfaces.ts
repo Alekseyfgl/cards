@@ -35,6 +35,7 @@ interface IPackQuery {
     page: string;
     pageCount: string;
     sortPacks: string;
+    packName: string
 }
 
 export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;

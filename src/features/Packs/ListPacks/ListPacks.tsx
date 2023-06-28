@@ -32,13 +32,24 @@ export const ListPacks = () => {
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
     useEffect(() => {
+        console.log('useEffect_1');
         const param: PackQueryTypes = Object.fromEntries(searchParams);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
     useEffect(() => {
+        console.log('useEffect_2');
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
+
+    const searchHandler = (searchValue: string) => {
+        console.log('searchValue==', searchValue);
+        if (searchValue) {
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue));
+        } else {
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
+        }
+    };
 
     const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
@@ -67,13 +78,13 @@ export const ListPacks = () => {
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth='lg'>
             <h1 className={s.pack}>Packs</h1>
-            <PackSettings />
+            <PackSettings searchHandler={searchHandler} />
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+                        <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
                             <BodyPack />
                         </Table>

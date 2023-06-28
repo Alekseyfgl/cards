@@ -1,10 +1,11 @@
 import { IPack, PackSortRequestTypes, PacksRow } from '../../packs.interfaces';
 import { buttonRowConst } from '../constans/button-row.const';
 
-export const createPackQuery = (page: number, pageCount: number, sortPacks: PackSortRequestTypes) => ({
+export const createPackQuery = (page: number, pageCount: number, sortPacks: PackSortRequestTypes, packName: string = '') => ({
     page: page.toString(),
     pageCount: pageCount.toString(),
-    sortPacks: sortPacks
+    sortPacks: sortPacks,
+    packName: packName
 });
 
 export const createRowPack = (packs: IPack[]): PacksRow[] => {
