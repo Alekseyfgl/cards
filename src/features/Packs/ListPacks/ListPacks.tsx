@@ -34,6 +34,8 @@ export const ListPacks = () => {
 
     useEffect(() => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
+        setRowsPerPage(+param.pageCount!)
+        setPage(+param.page!)
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
