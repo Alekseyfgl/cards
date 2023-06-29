@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { THeaderPack } from './HeaderPack/THeaderPack';
 import { PaginationCustom } from '../PaginationCustom/Pagination';
-import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
+import {  IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
 import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
 import { selectorPacks } from '../packs.selector';
 import { superSortCreator } from '../utils/super-sort';
@@ -30,12 +30,14 @@ export const ListPacks = () => {
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchValue, setSearchValue] = useState('');
+    const [accessory, setAccessory] = useState('');
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
     useEffect(() => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
-        setRowsPerPage(+param.pageCount!)
-        setPage(+param.page!)
+        setRowsPerPage(+param.pageCount!);
+        setPage(+param.page!);
+        setAccessory(param.user_id!);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
@@ -45,14 +47,18 @@ export const ListPacks = () => {
 
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
-            setSearchValue(searchValue)
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue));
+            setSearchValue(searchValue);
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory));
         }
+    };
+    const accessoryHandler = (accessory: string) => {
+        setAccessory(accessory);
+        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory));
     };
 
     const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
-        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue));
+        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue, accessory));
         setSortPacks(prop);
     };
 
@@ -61,7 +67,7 @@ export const ListPacks = () => {
     // };
 
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
-        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue));
+        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue, accessory));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
         onChangePagination(newPage, rowsPerPage);
@@ -79,7 +85,9 @@ export const ListPacks = () => {
     return (
         <Container maxWidth='lg'>
             <h1 className={s.pack}>Packs</h1>
-            <PackSettings searchHandler={searchHandler} />
+            <PackSettings searchHandler={searchHandler}
+                          accessoryHandler={accessoryHandler}
+                          accessory={accessory} />
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
