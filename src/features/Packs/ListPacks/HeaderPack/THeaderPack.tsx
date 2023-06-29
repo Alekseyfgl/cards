@@ -3,9 +3,10 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import { headCells } from './titles.thead';
+import { headCells } from '../../utils/constans/head-packs.const';
 import { PackSortRequestTypes, PackSortTypes } from '../../packs.interfaces';
 import { getDirectionSort } from '../../utils/super-sort';
+import s from './styles.module.scss';
 
 interface EnhancedTableProps {
     onRequestSort: (event: MouseEvent<unknown>, property: PackSortTypes) => void;
@@ -23,7 +24,7 @@ export const THeaderPack: FC<EnhancedTableProps> = (props) => {
         <TableHead>
             <TableRow>
                 {headCells.map((headCell) => (
-                    <TableCell key={headCell.id} align={'center'}>
+                    <TableCell className={s.header} key={headCell.id} align={'center'}>
                         <TableSortLabel
                             active={headCell.sortBy === orderBy.slice(1)}
                             onClick={createSortHandler(headCell.sortBy)}
