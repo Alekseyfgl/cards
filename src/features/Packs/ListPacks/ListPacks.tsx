@@ -34,11 +34,11 @@ export const ListPacks = () => {
     const [amountCards, setAmountCards] = useState<number[]>([1, 10]);
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
-
     useEffect(() => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
         setRowsPerPage(+param.pageCount!);
         setPage(+param.page!);
+        setSearchValue(param.packName!);
         setAccessory(param.user_id!);
         setAmountCards([+param.min!, +param.max!]);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
@@ -65,7 +65,6 @@ export const ListPacks = () => {
         setSortPacks(prop);
     };
 
-
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
         setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
@@ -88,18 +87,20 @@ export const ListPacks = () => {
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
             <h1 className={s.pack}>Packs</h1>
-            <PackSettings searchHandler={searchHandler}
-                          accessoryHandler={accessoryHandler}
-                          setAmountCards={setAmountCardsHandler}
-                          amountCards={amountCards}
-                          accessory={accessory}
+            <PackSettings
+                searchHandler={searchHandler}
+                accessoryHandler={accessoryHandler}
+                setAmountCards={setAmountCardsHandler}
+                amountCards={amountCards}
+                accessory={accessory}
+                searchValue={searchValue}
             />
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
                             <BodyPack />
                         </Table>

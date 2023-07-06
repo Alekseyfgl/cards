@@ -1,36 +1,24 @@
-import React, { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, KeyboardEvent, memo, useEffect, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
-import { KEYBOARD_KEYS } from '../../utils/constans/keyboard-keys.const';
 import { Nullable } from '../../utils/optionalTypes/optional.types';
-import { useSearchParams } from 'react-router-dom';
-import { createPackQuery } from '../../../features/Packs/utils/mappers/pack.mapper';
-import { PackQueryTypes } from '../../../features/Packs/packs.interfaces';
 
 interface SearchInputProps {
     placeholder?: string;
+    searchValue: string;
     searchHandler: (searchValue: Nullable<string>) => void;
 }
 
-const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchHandler }) => {
-    const [value, setValue] = useState<Nullable<string>>(null);
-    const debouncedValue = useDebounce<Nullable<string>>(value, 500);
-    const [searchParams, setSearchParams] = useSearchParams();
+const CustomSearch: FC<SearchInputProps> = memo((props) => {
+    const { placeholder = 'Search...', searchHandler, searchValue } = props;
 
-    useEffect(() => {
-        const param: PackQueryTypes = Object.fromEntries(searchParams);
-        if (param.packName !== '') {
-            setValue(param.packName as string);
-        }
-    }, []);
+    const [value, setValue] = useState<Nullable<string>>(searchValue || null);
+    const debouncedValue = useDebounce<Nullable<string>>(value, 1000);
 
     // Fetch API (optional)
     useEffect(() => {
-        // if (value !== '') {
-
         searchHandler(value);
-        // }
     }, [debouncedValue]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,11 +26,9 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchH
         setValue(inputText.trim());
     };
 
-
     const disableKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.code === 'Enter') event.preventDefault();
     };
-
 
     return (
         <>
@@ -50,17 +36,18 @@ const CustomSearch: FC<SearchInputProps> = ({ placeholder = 'Search...', searchH
                 <p>Search</p>
                 <TextField
                     variant={'outlined'}
-                    value={value ?? ''}
+                    //first init get from params, then get from input
+                    value={value === null ? searchValue : value}
                     onChange={handleChange}
                     InputProps={{
-                        startAdornment: <InputAdornment position='start'>{<SearchIcon />}</InputAdornment>,
-                        placeholder
+                        startAdornment: <InputAdornment position="start">{<SearchIcon />}</InputAdornment>,
+                        placeholder,
                     }}
                     onKeyDown={disableKeyDown}
                 />
             </form>
         </>
     );
-};
+});
 
 export default CustomSearch;
