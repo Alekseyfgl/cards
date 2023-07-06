@@ -87,8 +87,8 @@ export const ListPacks = () => {
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth="lg">
-            <h1 className={s.pack}>Packs</h1>
+        <Container maxWidth="lg" sx={{ p: 8 }}>
+            <h1 className={s.title}>Packs</h1>
             <PackSettings
                 searchHandler={searchHandler}
                 accessoryHandler={accessoryHandler}
