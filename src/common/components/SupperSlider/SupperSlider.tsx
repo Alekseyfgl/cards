@@ -1,27 +1,32 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import { InputNumber } from '../InputNumber/InputNumber';
 import s from './styles.module.scss';
 import { useDebounce } from '../../utils/hooks';
-import { Nullable } from '../../utils/optionalTypes/optional.types';
 
 interface RangeSliderProps {
     amountCards: number[];
     setAmountCards: (amountCards: number[]) => void;
 }
 
-export const RangeSlider: FC<RangeSliderProps> = (props) => {
+//@TODO нужно решить проблему с 1 заходом на страницу 1 лишний рендер и не применяются сразу параметры
+export const RangeSlider: FC<RangeSliderProps> = memo((props) => {
     const { setAmountCards, amountCards } = props;
-    const [value, setValue] = useState<number[]>([1, 100]);
-    const debouncedValue = useDebounce<Nullable<number[]>>(value, 500);
+
+    const [value, setValue] = useState<number[]>(amountCards);
+    const debouncedValue = useDebounce<number[]>(value, 1000);
+
+    useEffect(() => {
+        setAmountCards(value);
+    }, [debouncedValue]);
 
     const handleChange = (event: unknown, newValue: number | number[]) => {
         setValue(newValue as number[]);
-        // setAmountCards(newValue as number[]);
     };
 
     const changeMinValue = (minValue: number) => {
+        // if (value === null) return;
         if (minValue < value[1]) {
             handleChange({}, [minValue, value[1]]);
         } else {
@@ -30,19 +35,13 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
     };
 
     const changeMaxValue = (maxValue: number) => {
+        // if (value === null) return;
         if (maxValue > value[0]) {
             handleChange({}, [value[0], maxValue]);
         } else {
             handleChange({}, [maxValue, value[0]]);
         }
     };
-
-    // useEffect(() => {
-    //     console.log('debouncedValue');
-    //     // if (value !== '') {
-    //     setAmountCards(value);
-    //     // }
-    // }, [debouncedValue]);
 
     return (
         <div>
@@ -54,4 +53,4 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
             </div>
         </div>
     );
-};
+});

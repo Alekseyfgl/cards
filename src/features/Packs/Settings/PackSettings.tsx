@@ -13,7 +13,7 @@ interface PackSettingsProps {
     amountCards: number[];
     searchHandler: (searchValue: Nullable<string>) => void;
     accessoryHandler: (value: string) => void;
-    setAmountCards: (amountCards: Nullable<number[]>) => void;
+    setAmountCards: (amountCards: number[]) => void;
 }
 
 export const PackSettings: FC<PackSettingsProps> = memo((props) => {

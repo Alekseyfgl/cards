@@ -1,7 +1,7 @@
 import { styled } from '@mui/styles';
 import { TextField } from '@mui/material';
 import * as React from 'react';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 interface InputNumberProps {
     width?: number;
@@ -20,7 +20,7 @@ const NoArrowsNumberInput = styled(TextField)({
     },
 });
 
-export const InputNumber: FC<InputNumberProps> = (props) => {
+export const InputNumber: FC<InputNumberProps> = memo((props) => {
     const { value, height = 100, width = 60, onChange } = props;
 
     const handleInputChange = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -47,4 +47,4 @@ export const InputNumber: FC<InputNumberProps> = (props) => {
             sx={{ width, height }}
         />
     );
-};
+});

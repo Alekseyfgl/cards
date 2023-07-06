@@ -31,7 +31,7 @@ export const ListPacks = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchValue, setSearchValue] = useState('');
     const [accessory, setAccessory] = useState('');
-    const [amountCards, setAmountCards] = useState<number[]>([1, 10]);
+    const [amountCards, setAmountCards] = useState<number[]>([1, 100]);
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
 
     useEffect(() => {
@@ -55,11 +55,9 @@ export const ListPacks = () => {
         }
     };
 
-    const setAmountCardsHandler = (amountCards: Nullable<number[]>) => {
-        if (searchValue !== null) {
-            setAmountCards(amountCards as number[]);
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards as number[]));
-        }
+    const setAmountCardsHandler = (amountCards: number[]) => {
+        setAmountCards(amountCards!);
+        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
     const accessoryHandler = (accessory: string) => {
         setAccessory(accessory);
@@ -73,7 +71,7 @@ export const ListPacks = () => {
     };
 
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
-        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
+        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue, accessory, amountCards as number[]));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
         onChangePagination(newPage, rowsPerPage);
