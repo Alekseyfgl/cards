@@ -9,12 +9,14 @@ import { useAppSelector } from '../../../app/hooks';
 
 interface PackSettingsProps {
     accessory: string;
+    amountCards:number[]
     searchHandler: (searchValue: Nullable<string>) => void;
     accessoryHandler: (value: string) => void;
+    setAmountCards: (amountCards: number[]) => void
 }
 
 export const PackSettings: FC<PackSettingsProps> = (props) => {
-    const { searchHandler, accessoryHandler, accessory } = props;
+    const { searchHandler, accessoryHandler,setAmountCards, accessory, amountCards } = props;
     const myId: Optional<string> = useAppSelector(state => state.auth!.profile!._id!);
     return (
         <div className={s.setting_panel}>
@@ -32,7 +34,7 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
                 </ButtonGroup>
             </div>
 
-            <RangeSlider />
+            <RangeSlider setAmountCards={setAmountCards} amountCards={amountCards} />
 
             <IconButton aria-label='delete' size='small'>
                 <FilterAltOffIcon fontSize='medium' />

@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { THeaderPack } from './HeaderPack/THeaderPack';
 import { PaginationCustom } from '../PaginationCustom/Pagination';
-import {  IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
+import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
 import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
 import { selectorPacks } from '../packs.selector';
 import { superSortCreator } from '../utils/super-sort';
@@ -31,13 +31,16 @@ export const ListPacks = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchValue, setSearchValue] = useState('');
     const [accessory, setAccessory] = useState('');
+    const [amountCards, setAmountCards] = useState<number[]>([1, 10]);
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
+
 
     useEffect(() => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
         setRowsPerPage(+param.pageCount!);
         setPage(+param.page!);
         setAccessory(param.user_id!);
+        setAmountCards([+param.min!, +param.max!]);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
@@ -48,26 +51,23 @@ export const ListPacks = () => {
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
             setSearchValue(searchValue);
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory));
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
         }
     };
     const accessoryHandler = (accessory: string) => {
         setAccessory(accessory);
-        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory));
+        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
 
     const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
-        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue, accessory));
+        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue, accessory, amountCards));
         setSortPacks(prop);
     };
 
-    // const handleClick = (event: MouseEvent<unknown>, _id: string) => {
-    //
-    // };
 
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
-        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue, accessory));
+        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
         onChangePagination(newPage, rowsPerPage);
@@ -81,13 +81,21 @@ export const ListPacks = () => {
         onChangePagination(1, rowsPerPage);
     };
 
+    const setAmountCardsHandler = (amountCards: number[]) => {
+        setAmountCards(amountCards);
+        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
+    };
+
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
         <Container maxWidth='lg'>
             <h1 className={s.pack}>Packs</h1>
             <PackSettings searchHandler={searchHandler}
                           accessoryHandler={accessoryHandler}
-                          accessory={accessory} />
+                          setAmountCards={setAmountCardsHandler}
+                          amountCards={amountCards}
+                          accessory={accessory}
+            />
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
