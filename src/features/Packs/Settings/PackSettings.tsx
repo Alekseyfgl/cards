@@ -5,6 +5,7 @@ import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import React, { FC, memo } from 'react';
 import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
 import { useAppSelector } from '../../../app/hooks';
+import { RangeSlider } from '../../../common/components/SupperSlider/SupperSlider';
 
 interface PackSettingsProps {
     accessory: string;
@@ -12,7 +13,7 @@ interface PackSettingsProps {
     amountCards: number[];
     searchHandler: (searchValue: Nullable<string>) => void;
     accessoryHandler: (value: string) => void;
-    setAmountCards: (amountCards: number[]) => void;
+    setAmountCards: (amountCards: Nullable<number[]>) => void;
 }
 
 export const PackSettings: FC<PackSettingsProps> = memo((props) => {
@@ -34,7 +35,7 @@ export const PackSettings: FC<PackSettingsProps> = memo((props) => {
                 </ButtonGroup>
             </div>
 
-            {/*<RangeSlider setAmountCards={setAmountCards} amountCards={amountCards} />*/}
+            <RangeSlider setAmountCards={setAmountCards} amountCards={amountCards} />
 
             <IconButton aria-label="delete" size="small">
                 <FilterAltOffIcon fontSize="medium" />

@@ -1,49 +1,48 @@
 import { styled } from '@mui/styles';
 import { TextField } from '@mui/material';
 import * as React from 'react';
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+
+interface InputNumberProps {
+    width?: number;
+    height?: number;
+    value: number;
+    onChange: (value: number) => void;
+}
 
 const NoArrowsNumberInput = styled(TextField)({
     '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
         '-webkit-appearance': 'none',
-        margin: 0
+        margin: 0,
     },
     '& input[type=number]': {
-        '-moz-appearance': 'textfield'
-    }
+        '-moz-appearance': 'textfield',
+    },
 });
-
-interface InputNumberProps {
-    width?: number,
-    height?: number,
-    value: number,
-    onChange: (value: number) => void
-}
 
 export const InputNumber: FC<InputNumberProps> = (props) => {
     const { value, height = 100, width = 60, onChange } = props;
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let inputValue = +event.currentTarget.value;
         if (inputValue <= 100) {
             onChange(inputValue);
         }
-        // inputValue = 100;
     };
     return (
         <NoArrowsNumberInput
             value={value.toString()}
-            type='number'
-            variant='outlined'
+            type="number"
+            variant="outlined"
             fullWidth
             onChange={handleInputChange}
             InputLabelProps={{
-                shrink: true
+                shrink: true,
             }}
             InputProps={{
                 inputProps: {
-                    max: 100
-                }
+                    max: 100,
+                },
             }}
             sx={{ width, height }}
         />

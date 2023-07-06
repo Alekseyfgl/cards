@@ -54,6 +54,13 @@ export const ListPacks = () => {
             setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
         }
     };
+
+    const setAmountCardsHandler = (amountCards: Nullable<number[]>) => {
+        if (searchValue !== null) {
+            setAmountCards(amountCards as number[]);
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards as number[]));
+        }
+    };
     const accessoryHandler = (accessory: string) => {
         setAccessory(accessory);
         setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
@@ -78,11 +85,6 @@ export const ListPacks = () => {
         setRowsPerPage(rowsPerPage);
         setPage(1);
         onChangePagination(1, rowsPerPage);
-    };
-
-    const setAmountCardsHandler = (amountCards: number[]) => {
-        setAmountCards(amountCards);
-        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
