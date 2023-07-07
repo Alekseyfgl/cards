@@ -26,24 +26,25 @@ export const ListPacks = () => {
     const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
 
     const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>('0name');
-    // const [selected, setSelected] = useState<readonly string[]>([]);
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [searchValue, setSearchValue] = useState('');
-    const [accessory, setAccessory] = useState('');
+
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
-    const [amountCards, setAmountCards] = useState<number[]>([+Object.fromEntries(searchParams).min,+Object.fromEntries(searchParams).max]);
+    const [searchValue, setSearchValue] = useState(Object.fromEntries(searchParams).packName);
+    const [accessory, setAccessory] = useState(Object.fromEntries(searchParams).user_id);
+    const [amountCards, setAmountCards] = useState<number[]>([+Object.fromEntries(searchParams).min, +Object.fromEntries(searchParams).max]);
 
     useEffect(() => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
         setRowsPerPage(+param.pageCount!);
         setPage(+param.page!);
-        setSearchValue(param.packName!);
-        setAccessory(param.user_id!);
+        // setSearchValue(param.packName!);
+        // setAccessory(param.user_id!);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
     useEffect(() => {
+        console.log('useEffect');
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
@@ -52,6 +53,10 @@ export const ListPacks = () => {
             setSearchValue(searchValue);
             setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
         }
+    };
+
+    const resetAllFilters = () => {
+        searchHandler('')
     };
 
     const setAmountCardsHandler = (amountCards: number[]) => {
@@ -86,12 +91,13 @@ export const ListPacks = () => {
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth="lg" sx={{ p: 8 }}>
+        <Container maxWidth='lg' sx={{ p: 8 }}>
             <h1 className={s.title}>Packs</h1>
             <PackSettings
                 searchHandler={searchHandler}
                 accessoryHandler={accessoryHandler}
                 setAmountCards={setAmountCardsHandler}
+                resetAllFilters={resetAllFilters}
                 amountCards={amountCards}
                 accessory={accessory}
                 searchValue={searchValue}
@@ -99,7 +105,7 @@ export const ListPacks = () => {
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+                        <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
                             <BodyPack />
                         </Table>
