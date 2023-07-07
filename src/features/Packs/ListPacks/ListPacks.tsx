@@ -31,8 +31,8 @@ export const ListPacks = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchValue, setSearchValue] = useState('');
     const [accessory, setAccessory] = useState('');
-    const [amountCards, setAmountCards] = useState<number[]>([1, 100]);
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
+    const [amountCards, setAmountCards] = useState<number[]>([+Object.fromEntries(searchParams).min,+Object.fromEntries(searchParams).max]);
 
     useEffect(() => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
@@ -40,7 +40,6 @@ export const ListPacks = () => {
         setPage(+param.page!);
         setSearchValue(param.packName!);
         setAccessory(param.user_id!);
-        setAmountCards([+param.min!, +param.max!]);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 

@@ -16,7 +16,7 @@ interface PackSettingsProps {
     setAmountCards: (amountCards: number[]) => void;
 }
 
-export const PackSettings: FC<PackSettingsProps> = memo((props) => {
+export const PackSettings: FC<PackSettingsProps> = (props) => {
     const { searchHandler, accessoryHandler, setAmountCards, accessory, amountCards, searchValue } = props;
     const myId: Optional<string> = useAppSelector((state) => state.auth!.profile!._id!);
     return (
@@ -42,4 +42,4 @@ export const PackSettings: FC<PackSettingsProps> = memo((props) => {
             </IconButton>
         </div>
     );
-});
+};

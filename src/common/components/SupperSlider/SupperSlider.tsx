@@ -10,23 +10,24 @@ interface RangeSliderProps {
     setAmountCards: (amountCards: number[]) => void;
 }
 
-//@TODO нужно решить проблему с 1 заходом на страницу 1 лишний рендер и не применяются сразу параметры
-export const RangeSlider: FC<RangeSliderProps> = memo((props) => {
+export const RangeSlider: FC<RangeSliderProps> = (props) => {
     const { setAmountCards, amountCards } = props;
 
     const [value, setValue] = useState<number[]>(amountCards);
+    const [init, setInit] = useState(false);
     const debouncedValue = useDebounce<number[]>(value, 1000);
 
+
     useEffect(() => {
-        setAmountCards(value);
+        if (init) setAmountCards(value);
     }, [debouncedValue]);
 
     const handleChange = (event: unknown, newValue: number | number[]) => {
+        !init && setInit(true);
         setValue(newValue as number[]);
     };
 
     const changeMinValue = (minValue: number) => {
-        // if (value === null) return;
         if (minValue < value[1]) {
             handleChange({}, [minValue, value[1]]);
         } else {
@@ -35,7 +36,6 @@ export const RangeSlider: FC<RangeSliderProps> = memo((props) => {
     };
 
     const changeMaxValue = (maxValue: number) => {
-        // if (value === null) return;
         if (maxValue > value[0]) {
             handleChange({}, [value[0], maxValue]);
         } else {
@@ -48,9 +48,9 @@ export const RangeSlider: FC<RangeSliderProps> = memo((props) => {
             <p>Number of cards</p>
             <div className={s.container}>
                 <InputNumber value={value[0]} onChange={changeMinValue} />
-                <Slider value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />
+                <Slider value={value} onChange={handleChange} valueLabelDisplay='auto' sx={{ width: 200 }} />
                 <InputNumber value={value[1]} onChange={changeMaxValue} />
             </div>
         </div>
     );
-});
+};
