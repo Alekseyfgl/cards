@@ -38,13 +38,10 @@ export const ListPacks = () => {
         const param: PackQueryTypes = Object.fromEntries(searchParams);
         setRowsPerPage(+param.pageCount!);
         setPage(+param.page!);
-        // setSearchValue(param.packName!);
-        // setAccessory(param.user_id!);
         setSortPacks(param.sortPacks as PackSortRequestTypes);
     }, []);
 
     useEffect(() => {
-        console.log('useEffect');
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 

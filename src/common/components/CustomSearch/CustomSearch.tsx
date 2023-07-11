@@ -14,16 +14,18 @@ interface SearchInputProps {
 const CustomSearch: FC<SearchInputProps> = memo((props) => {
     const { placeholder = 'Search...', searchHandler, searchValue } = props;
 
+    //null need for first render
     const [value, setValue] = useState<Nullable<string>>(searchValue || null);
     const debouncedValue = useDebounce<Nullable<string>>(value, 1000);
 
     // Fetch API (optional)
     useEffect(() => {
+        if (value === null) return;
         searchHandler(value);
     }, [debouncedValue]);
 
     useEffect(() => {
-        if (searchValue === '') setValue('');
+        if (searchValue === '' && value !== null) setValue('');
     }, [searchValue]);
 
 
@@ -35,7 +37,6 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
     const disableKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         if (event.code === 'Enter') event.preventDefault();
     };
-
 
     return (
         <>
