@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, memo, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import { InputNumber } from '../InputNumber/InputNumber';
 import s from './styles.module.scss';
@@ -17,10 +17,16 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
     const [init, setInit] = useState(false);
     const debouncedValue = useDebounce<number[]>(value, 1000);
 
+    useEffect(() => {
+        if (init) {
+            setAmountCards(value);
+            setInit(false);
+        }
+    }, [debouncedValue]);
 
     useEffect(() => {
-        if (init) setAmountCards(value);
-    }, [debouncedValue]);
+        setValue(amountCards);
+    }, [amountCards]);
 
     const handleChange = (event: unknown, newValue: number | number[]) => {
         !init && setInit(true);
@@ -48,7 +54,7 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
             <p>Number of cards</p>
             <div className={s.container}>
                 <InputNumber value={value[0]} onChange={changeMinValue} />
-                <Slider value={value} onChange={handleChange} valueLabelDisplay='auto' sx={{ width: 200 }} />
+                <Slider value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />
                 <InputNumber value={value[1]} onChange={changeMaxValue} />
             </div>
         </div>

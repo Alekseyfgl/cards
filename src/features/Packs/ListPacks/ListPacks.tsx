@@ -26,16 +26,14 @@ export const ListPacks = () => {
     const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
 
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery());
-    const params: PackQueryTypes = Object.fromEntries(searchParams)
-
+    const params: PackQueryTypes = Object.fromEntries(searchParams);
 
     const [page, setPage] = useState(params.page || '1');
     const [rowsPerPage, setRowsPerPage] = useState(params.pageCount || '5');
-    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>(params.sortPacks as PackSortRequestTypes || '0name');
+    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>((params.sortPacks as PackSortRequestTypes) || '0name');
     const [searchValue, setSearchValue] = useState(params.packName || '');
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
-
 
     useEffect(() => {
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
@@ -49,11 +47,14 @@ export const ListPacks = () => {
     };
 
     const resetAllFilters = () => {
-        searchHandler('');
+        setSearchValue('');
+        setAccessory('');
+        setAmountCards([1, 100]);
+        setSearchParams(createPackQuery(page, rowsPerPage));
     };
 
     const setAmountCardsHandler = (amountCards: number[]) => {
-        setAmountCards(amountCards!);
+        setAmountCards(amountCards);
         setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
     const accessoryHandler = (accessory: string) => {
@@ -84,7 +85,7 @@ export const ListPacks = () => {
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth='lg' sx={{ p: 8 }}>
+        <Container maxWidth="lg" sx={{ p: 8 }}>
             <h1 className={s.title}>Packs</h1>
             <PackSettings
                 searchHandler={searchHandler}
@@ -98,7 +99,7 @@ export const ListPacks = () => {
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
                             <BodyPack />
                         </Table>

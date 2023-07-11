@@ -8,7 +8,6 @@ interface SearchInputProps {
     placeholder?: string;
     searchValue: string;
     searchHandler: (searchValue: Nullable<string>) => void;
-    resetAllFilters: (reset: () => void) => void;
 }
 
 const CustomSearch: FC<SearchInputProps> = memo((props) => {
@@ -27,7 +26,6 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
     useEffect(() => {
         if (searchValue === '' && value !== null) setValue('');
     }, [searchValue]);
-
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputText: string = event.currentTarget.value;
@@ -48,8 +46,8 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
                     value={value === null ? searchValue : value}
                     onChange={handleChange}
                     InputProps={{
-                        startAdornment: <InputAdornment position='start'>{<SearchIcon />}</InputAdornment>,
-                        placeholder
+                        startAdornment: <InputAdornment position="start">{<SearchIcon />}</InputAdornment>,
+                        placeholder,
                     }}
                     onKeyDown={disableKeyDown}
                 />
