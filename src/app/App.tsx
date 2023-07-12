@@ -1,25 +1,48 @@
-import {useAppDispatch, useAppSelector} from "./hooks";
-import {useEffect} from "react";
-import {Counter} from "../features/counter/Counter";
-import {appActions} from "./app.slice";
+import { useAppDispatch, useAppSelector } from './hooks';
+import React, { useEffect } from 'react';
+import { ResponsiveAppBar } from '../features/Header/Header';
+import { CircularIndeterminate } from '../features/Loader/Loader';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Login } from '../features/Auth/Login/Login';
+import { Register } from '../features/Auth/Register/Register';
+import { GlobalNotify } from '../common/components/GlobalNotify/GlobalNotify';
+import { authThunks } from '../features/Auth/auth.slice';
+import { selectorIsLoadingApp } from './app.selector';
+import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
 
-function App() {
-  const isLoading = useAppSelector((state) => state.app.isLoading);
+export const App = () => {
+    const isLoading = useAppSelector(selectorIsLoadingApp);
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(authThunks.me({}));
+    }, [dispatch]);
 
-  const dispatch = useAppDispatch();
+    if (isLoading) {
+        return <CircularIndeterminate />;
+    }
 
-  useEffect(() => {
-    setTimeout(() => {
-      dispatch(appActions.setIsLoading({ isLoading: false }));
-    }, 3000);
-  }, []);
+    return (
+        <div>
+            <GlobalNotify />
+            <ResponsiveAppBar />
 
-  return (
-      <div className="App">
-        {isLoading && <h1>Loader...</h1>}
-        <Counter />
-      </div>
-  );
-}
+            <Routes>
+                <Route path={'/pack'} element={<ListPacks />} />
+                <Route path={'/'} element={<Navigate to={'/pack'} />} />
+                <Route path={'/login'} element={<Login />} />
+                <Route path={'/register'} element={<Register />} />
+                <Route path={'/404'} element={<div>Not found</div>} />
+                <Route path={'*'} element={<Navigate to={'/404'} />} />
+                {/*<Route path={'/users/:userId/:messageId'} element={<User />} />*/}
+            </Routes>
+        </div>
+    );
+};
 
-export default App;
+// const User = () => {
+//     const [searchParams, setSearchParams] = useSearchParams();
+//     const params = Object.fromEntries(searchParams);
+//     console.log(params);
+//     setSearchParams({ a: 'b' });
+//     return <div>hi</div>;
+// };

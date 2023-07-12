@@ -1,0 +1,20 @@
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+
+.my_data_grid .MuiDataGrid-cell:focus-visible {
+  outline: none;
+}
+
+
+.setting_panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
