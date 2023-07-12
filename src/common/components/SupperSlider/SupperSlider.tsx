@@ -20,7 +20,7 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
     useEffect(() => {
         if (init) {
             setAmountCards(value);
-            setInit(false);
+            // setInit(false);
         }
     }, [debouncedValue]);
 

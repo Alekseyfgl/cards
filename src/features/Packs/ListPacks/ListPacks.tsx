@@ -50,6 +50,7 @@ export const ListPacks = () => {
         setSearchValue('');
         setAccessory('');
         setAmountCards([1, 100]);
+        setSortPacks('0name')
         setSearchParams(createPackQuery(page, rowsPerPage));
     };
 
