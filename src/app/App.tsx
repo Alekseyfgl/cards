@@ -25,6 +25,7 @@ export const App = () => {
         <div>
             <GlobalNotify />
             <ResponsiveAppBar />
+
             <Routes>
                 <Route path={'/pack'} element={<ListPacks />} />
                 <Route path={'/'} element={<Navigate to={'/pack'} />} />

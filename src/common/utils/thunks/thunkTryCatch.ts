@@ -7,8 +7,13 @@ export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<RootState, any, AppDi
     const { dispatch, rejectWithValue } = thunkAPI;
     try {
         return await logic();
-    } catch (e) {
+    } catch (e: any) {
+        if (e.name === 'CanceledError') {
+            console.log('Request canceled');
+            return rejectWithValue(null);
+        }
         const err = e as Error | AxiosError<{ error: string }>;
+
         if (isAxiosError(err)) {
             showGlobalError && dispatch(appActions.setError({ error: err?.response?.data?.error || err.message }));
         } else {

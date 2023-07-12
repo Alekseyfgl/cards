@@ -1,25 +1,62 @@
 import * as React from 'react';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
+import { FC, useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
+import { InputNumber } from '../InputNumber/InputNumber';
+import s from './styles.module.scss';
+import { useDebounce } from '../../utils/hooks';
 
-function valuetext(value: number) {
-    return `${value}°C`;
+interface RangeSliderProps {
+    amountCards: number[];
+    setAmountCards: (amountCards: number[]) => void;
 }
 
-export const RangeSlider = () => {
-    const [value, setValue] = useState<number[]>([1, 20]);
+export const RangeSlider: FC<RangeSliderProps> = (props) => {
+    const { setAmountCards, amountCards } = props;
 
-    const handleChange = (event: Event, newValue: number | number[]) => {
+    const [value, setValue] = useState<number[]>(amountCards);
+    const [init, setInit] = useState(false);
+    const debouncedValue = useDebounce<number[]>(value, 1000);
+
+    useEffect(() => {
+        if (init) {
+            setAmountCards(value);
+            // setInit(false);
+        }
+    }, [debouncedValue]);
+
+    useEffect(() => {
+        setValue(amountCards);
+    }, [amountCards]);
+
+    const handleChange = (event: unknown, newValue: number | number[]) => {
+        !init && setInit(true);
         setValue(newValue as number[]);
+    };
+
+    const changeMinValue = (minValue: number) => {
+        if (minValue < value[1]) {
+            handleChange({}, [minValue, value[1]]);
+        } else {
+            handleChange({}, [value[1], minValue]);
+        }
+    };
+
+    const changeMaxValue = (maxValue: number) => {
+        if (maxValue > value[0]) {
+            handleChange({}, [value[0], maxValue]);
+        } else {
+            handleChange({}, [maxValue, value[0]]);
+        }
     };
 
     return (
         <div>
             <p>Number of cards</p>
-            <Box sx={{ width: 200 }}>
-                <Slider getAriaLabel={() => 'Temperature range'} value={value} onChange={handleChange} valueLabelDisplay="auto" getAriaValueText={valuetext} />
-            </Box>
+            <div className={s.container}>
+                <InputNumber value={value[0]} onChange={changeMinValue} />
+                <Slider value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />
+                <InputNumber value={value[1]} onChange={changeMaxValue} />
+            </div>
         </div>
     );
 };

@@ -1,6 +1,5 @@
 {
   "name": "rtk-cards",
-  "homepage": "https://github.com/Alekseyfgl/cards-fe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

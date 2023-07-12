@@ -25,19 +25,15 @@ export const ListPacks = () => {
     const isAppInitialized: boolean = useAppSelector(selectorIsAppInit);
     const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
 
-    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>('0name');
-    // const [selected, setSelected] = useState<readonly string[]>([]);
-    const [page, setPage] = useState(1);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [searchValue, setSearchValue] = useState('');
-    const [searchParams, setSearchParams] = useSearchParams(createPackQuery(page, rowsPerPage, sortPacks));
+    const [searchParams, setSearchParams] = useSearchParams(createPackQuery());
+    const params: PackQueryTypes = Object.fromEntries(searchParams);
 
-    useEffect(() => {
-        const param: PackQueryTypes = Object.fromEntries(searchParams);
-        setRowsPerPage(+param.pageCount!)
-        setPage(+param.page!)
-        setSortPacks(param.sortPacks as PackSortRequestTypes);
-    }, []);
+    const [page, setPage] = useState(params.page || '1');
+    const [rowsPerPage, setRowsPerPage] = useState(params.pageCount || '5');
+    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>((params.sortPacks as PackSortRequestTypes) || '0name');
+    const [searchValue, setSearchValue] = useState(params.packName || '');
+    const [accessory, setAccessory] = useState(params.user_id || '');
+    const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
 
     useEffect(() => {
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
@@ -45,45 +41,66 @@ export const ListPacks = () => {
 
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
-            setSearchValue(searchValue)
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue));
+            setSearchValue(searchValue);
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
         }
+    };
+
+    const resetAllFilters = () => {
+        setSearchValue('');
+        setAccessory('');
+        setAmountCards([1, 100]);
+        setSortPacks('0name')
+        setSearchParams(createPackQuery(page, rowsPerPage));
+    };
+
+    const setAmountCardsHandler = (amountCards: number[]) => {
+        setAmountCards(amountCards);
+        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
+    };
+    const accessoryHandler = (accessory: string) => {
+        setAccessory(accessory);
+        setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
 
     const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
-        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue));
+        setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue, accessory, amountCards));
         setSortPacks(prop);
     };
 
-    // const handleClick = (event: MouseEvent<unknown>, _id: string) => {
-    //
-    // };
-
     const onChangePagination = (newPage: number, rowsPerPage: number) => {
-        setSearchParams(createPackQuery(newPage, rowsPerPage, sortPacks, searchValue));
+        setSearchParams(createPackQuery(newPage.toString(), rowsPerPage.toString(), sortPacks, searchValue, accessory, amountCards as number[]));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
-        onChangePagination(newPage, rowsPerPage);
-        setPage(newPage);
+        onChangePagination(newPage, +rowsPerPage);
+        setPage(newPage.toString());
     };
 
     const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
         const rowsPerPage: number = +event.target.value;
-        setRowsPerPage(rowsPerPage);
-        setPage(1);
+        setRowsPerPage(rowsPerPage.toString());
+        setPage('1');
         onChangePagination(1, rowsPerPage);
     };
 
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth='lg'>
-            <h1 className={s.pack}>Packs</h1>
-            <PackSettings searchHandler={searchHandler} />
+        <Container maxWidth="lg" sx={{ p: 8 }}>
+            <h1 className={s.title}>Packs</h1>
+            <PackSettings
+                searchHandler={searchHandler}
+                accessoryHandler={accessoryHandler}
+                setAmountCards={setAmountCardsHandler}
+                resetAllFilters={resetAllFilters}
+                amountCards={amountCards}
+                accessory={accessory}
+                searchValue={searchValue}
+            />
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
                             <BodyPack />
                         </Table>
@@ -92,7 +109,7 @@ export const ListPacks = () => {
                     {packs && (
                         <PaginationCustom
                             page={packs.page}
-                            rowsPerPage={rowsPerPage}
+                            rowsPerPage={+rowsPerPage}
                             totalCount={packs.cardPacksTotalCount}
                             handleChangePage={handleChangePage}
                             handleChangeRowsPerPage={handleChangeRowsPerPage}

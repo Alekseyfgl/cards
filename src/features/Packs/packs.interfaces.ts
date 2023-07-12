@@ -31,11 +31,15 @@ export interface IPacks {
     tokenDeathTime: number;
 }
 
+
 interface IPackQuery {
     page: string;
     pageCount: string;
     sortPacks: string;
-    packName: string
+    packName: string;
+    user_id: string;
+    min: string;
+    max: string;
 }
 
 export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
@@ -53,4 +57,9 @@ export interface PacksRow {
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
 export type SortTypes = '0' | '1';
 
-export type PackSortRequestTypes = `${SortTypes}name` | `${SortTypes}cardsCount` | `${SortTypes}updated` | `${SortTypes}created` | `${SortTypes}actions`;
+export type PackSortRequestTypes =
+    `${SortTypes}name`
+    | `${SortTypes}cardsCount`
+    | `${SortTypes}updated`
+    | `${SortTypes}created`
+    | `${SortTypes}actions`;
