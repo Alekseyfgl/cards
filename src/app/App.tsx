@@ -9,6 +9,9 @@ import { GlobalNotify } from '../common/components/GlobalNotify/GlobalNotify';
 import { authThunks } from '../features/Auth/auth.slice';
 import { selectorIsLoadingApp } from './app.selector';
 import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
+import { AddModal } from '../common/components/Modal/AddModal';
+import { RemoveModal } from '../common/components/Modal/RemoveModal';
+
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -25,6 +28,8 @@ export const App = () => {
         <div>
             <GlobalNotify />
             <ResponsiveAppBar />
+            <AddModal />
+            <RemoveModal />
 
             <Routes>
                 <Route path={'/pack'} element={<ListPacks />} />
