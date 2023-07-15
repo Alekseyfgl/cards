@@ -9,9 +9,8 @@ import { GlobalNotify } from '../common/components/GlobalNotify/GlobalNotify';
 import { authThunks } from '../features/Auth/auth.slice';
 import { selectorIsLoadingApp } from './app.selector';
 import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
-import { AddModal } from '../common/components/Modal/AddModal';
-import { RemoveModal } from '../common/components/Modal/RemoveModal';
-
+import { AddModal } from '../common/components/GlobalModal/AddModal/AddModal';
+import { RemoveModal } from '../common/components/GlobalModal/RemoveModal/RemoveModal';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -28,7 +27,7 @@ export const App = () => {
         <div>
             <GlobalNotify />
             <ResponsiveAppBar />
-            <AddModal />
+            <AddModal title={'Add new pack'} />
             <RemoveModal />
 
             <Routes>

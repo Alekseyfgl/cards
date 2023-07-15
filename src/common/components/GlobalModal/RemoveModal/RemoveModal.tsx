@@ -1,7 +1,6 @@
-import { BasicModal } from './GlobalModal';
+import { BasicModal } from '../GlobalModal';
 
-
-export const AddModal = () => {
+export const RemoveModal = () => {
     return (
         <BasicModal>
             <div>
