@@ -7,6 +7,13 @@ import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional
 import { useAppSelector } from '../../../app/hooks';
 import { RangeSlider } from '../../../common/components/SupperSlider/SupperSlider';
 
+const btnStyles = {
+    width: '70px',
+    height: '40px',
+    padding: 0,
+    borderRadius: '2px',
+    '& .MuiButton-label': { justifyContent: 'center' },
+};
 interface PackSettingsProps {
     accessory: string;
     searchValue: string;
@@ -28,32 +35,10 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
             <div>
                 <p>Show pack cards</p>
                 <ButtonGroup variant="contained" color="primary" size={'small'}>
-                    <Button
-                        onClick={() => accessoryHandler(myId)}
-                        color={accessory === myId ? 'secondary' : 'primary'}
-                        size={'small'}
-                        sx={{
-                            width: '70px',
-                            height: '40px',
-                            padding: 0,
-                            borderRadius: '2px',
-                            '& .MuiButton-label': { justifyContent: 'center' },
-                        }}
-                    >
+                    <Button onClick={() => accessoryHandler(myId)} color={accessory === myId ? 'secondary' : 'primary'} size={'small'} sx={btnStyles}>
                         My
                     </Button>
-                    <Button
-                        onClick={() => accessoryHandler('')}
-                        color={accessory === '' ? 'secondary' : 'primary'}
-                        size={'small'}
-                        sx={{
-                            width: '70px',
-                            height: '40px',
-                            padding: 0,
-                            borderRadius: '2px',
-                            '& .MuiButton-label': { justifyContent: 'center' },
-                        }}
-                    >
+                    <Button onClick={() => accessoryHandler('')} color={accessory === '' ? 'secondary' : 'primary'} size={'small'} sx={btnStyles}>
                         All
                     </Button>
                 </ButtonGroup>
