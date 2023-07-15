@@ -42,7 +42,7 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
                 <p>Search</p>
                 <TextField
                     variant={'outlined'}
-                    //first init get from params, then get from input
+                    size={'small'}
                     value={value === null ? searchValue : value}
                     onChange={handleChange}
                     InputProps={{

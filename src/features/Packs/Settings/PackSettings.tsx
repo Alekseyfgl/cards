@@ -27,11 +27,33 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
 
             <div>
                 <p>Show pack cards</p>
-                <ButtonGroup style={{ height: '30px' }} variant="contained" color="primary" size={'small'}>
-                    <Button onClick={() => accessoryHandler(myId)} color={accessory === myId ? 'secondary' : 'primary'} size={'small'}>
+                <ButtonGroup variant="contained" color="primary" size={'small'}>
+                    <Button
+                        onClick={() => accessoryHandler(myId)}
+                        color={accessory === myId ? 'secondary' : 'primary'}
+                        size={'small'}
+                        sx={{
+                            width: '70px',
+                            height: '40px',
+                            padding: 0,
+                            borderRadius: '2px',
+                            '& .MuiButton-label': { justifyContent: 'center' },
+                        }}
+                    >
                         My
                     </Button>
-                    <Button onClick={() => accessoryHandler('')} color={accessory === '' ? 'secondary' : 'primary'} size={'small'}>
+                    <Button
+                        onClick={() => accessoryHandler('')}
+                        color={accessory === '' ? 'secondary' : 'primary'}
+                        size={'small'}
+                        sx={{
+                            width: '70px',
+                            height: '40px',
+                            padding: 0,
+                            borderRadius: '2px',
+                            '& .MuiButton-label': { justifyContent: 'center' },
+                        }}
+                    >
                         All
                     </Button>
                 </ButtonGroup>
@@ -39,7 +61,15 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
 
             <RangeSlider setAmountCards={setAmountCards} amountCards={amountCards} />
 
-            <IconButton onClick={resetAllFilters} aria-label="delete" size="small">
+            <IconButton
+                onClick={resetAllFilters}
+                aria-label="delete"
+                sx={{
+                    padding: '7px 8px',
+                    borderRadius: '2px',
+                    border: '1px solid #E8E8E8',
+                }}
+            >
                 <FilterAltOffIcon fontSize="medium" />
             </IconButton>
         </div>

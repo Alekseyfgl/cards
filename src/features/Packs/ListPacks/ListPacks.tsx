@@ -18,6 +18,8 @@ import { packThunks } from '../packs.slice';
 import { createPackQuery } from '../utils/mappers/pack.mapper';
 import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
+import { Button } from '@mui/material';
+import { AddModal } from '../../../common/components/GlobalModal/AddModal/AddModal';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -34,11 +36,14 @@ export const ListPacks = () => {
     const [searchValue, setSearchValue] = useState(params.packName || '');
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
+    const [addPackModal, setAddPackModal] = useState(false);
 
     useEffect(() => {
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
+    const openModal = () => setAddPackModal(true);
+    const closeModal = () => setAddPackModal(false);
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
             setSearchValue(searchValue);
@@ -50,7 +55,7 @@ export const ListPacks = () => {
         setSearchValue('');
         setAccessory('');
         setAmountCards([1, 100]);
-        setSortPacks('0name')
+        setSortPacks('0name');
         setSearchParams(createPackQuery(page, rowsPerPage));
     };
 
@@ -87,7 +92,13 @@ export const ListPacks = () => {
     if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
         <Container maxWidth="lg" sx={{ p: 8 }}>
-            <h1 className={s.title}>Packs</h1>
+            <AddModal title={'Add new pack'} isOpen={addPackModal} handleClose={closeModal} />
+            <div className={s.wr}>
+                <h1 className={s.title}>Packs</h1>
+                <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
+                    Add new pack
+                </Button>
+            </div>
             <PackSettings
                 searchHandler={searchHandler}
                 accessoryHandler={accessoryHandler}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { FC, ReactNode } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,18 +21,15 @@ const style = {
 interface GlobalModalProps {
     title?: string;
     children: ReactNode;
+    isOpen: boolean;
+    handleClose: () => void;
 }
 
 export const BasicModal: FC<GlobalModalProps> = (props) => {
-    const { title, children } = props;
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
+    const { isOpen, title, handleClose, children } = props;
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
-            <Modal open={open} onClose={handleClose}>
+            <Modal open={isOpen} onClose={handleClose}>
                 <Box sx={style}>
                     <div>
                         <div className={`${s.header} ${s.wr}`}>
@@ -42,6 +38,7 @@ export const BasicModal: FC<GlobalModalProps> = (props) => {
                                 <CloseIcon />
                             </IconButton>
                         </div>
+
                         <div className={s.wr}>{children}</div>
                     </div>
                 </Box>

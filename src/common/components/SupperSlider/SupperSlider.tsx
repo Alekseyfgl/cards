@@ -53,9 +53,9 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
         <div>
             <p>Number of cards</p>
             <div className={s.container}>
-                <InputNumber value={value[0]} onChange={changeMinValue} />
+                <InputNumber value={value[0]} onChange={changeMinValue} marginRight={2} />
                 <Slider value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />
-                <InputNumber value={value[1]} onChange={changeMaxValue} />
+                <InputNumber value={value[1]} onChange={changeMaxValue} marginLeft={2} />
             </div>
         </div>
     );

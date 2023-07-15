@@ -6,21 +6,23 @@ import s from './styles.module.scss';
 
 interface AddModalProps {
     title: string;
+    isOpen: boolean;
+    handleClose: () => void;
     maxLength?: number;
 }
 
 export const AddModal: FC<AddModalProps> = (props) => {
-    const { title, maxLength = 30 } = props;
+    const { isOpen, handleClose, title, maxLength = 30 } = props;
 
     return (
-        <BasicModal title={title}>
+        <BasicModal isOpen={isOpen} title={title} handleClose={handleClose}>
             <div>
                 <TextField label="Name pack" defaultValue="Normal" variant="standard" fullWidth={true} inputProps={{ maxLength }} sx={{ marginBottom: 3 }} />
                 <FormControlLabel control={<Checkbox defaultChecked />} label="Private pack" sx={{ marginBottom: 3 }} />
 
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={false}>Save</SendRequestButton>
-                    <Button variant="contained" color={'inherit'}>
+                    <Button variant="contained" color={'inherit'} onClick={handleClose}>
                         Cancel
                     </Button>
                 </div>
