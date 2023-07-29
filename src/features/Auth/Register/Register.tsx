@@ -18,7 +18,7 @@ export const Register = () => {
     }, [isMadeRegister]);
 
     return (
-        <Grid container justifyContent="center" marginTop={5}>
+        <Grid container justifyContent="center">
             <Grid item justifyContent="center">
                 <div>Sign Up</div>
                 <FormControl>
