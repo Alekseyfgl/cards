@@ -1,30 +1,26 @@
 import s from './styles.module.scss';
-import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {selectorIsAppInit} from '../../../app/app.selector';
-import {Navigate, useSearchParams} from 'react-router-dom';
-import Container from '@mui/material/Container';
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
-import {THeaderPack} from './HeaderPack/THeaderPack';
-import {PaginationCustom} from '../PaginationCustom/Pagination';
-import {IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes} from '../packs.interfaces';
-import {Nullable} from '../../../common/utils/optionalTypes/optional.types';
-import {selectorPacks} from '../packs.selector';
-import {superSortCreator} from '../utils/super-sort';
-import {packThunks} from '../packs.slice';
-import {createPackQuery} from '../utils/mappers/pack.mapper';
-import {PackSettings} from '../Settings/PackSettings';
-import {BodyPack} from './BodyPack/BodyPack';
-import {Button} from '@mui/material';
-import {AddModal} from '../../../common/components/GlobalModal/AddModal/AddModal';
+import { THeaderPack } from './HeaderPack/THeaderPack';
+import { PaginationCustom } from '../PaginationCustom/Pagination';
+import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
+import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
+import { selectorPacks } from '../packs.selector';
+import { superSortCreator } from '../utils/super-sort';
+import { packThunks } from '../packs.slice';
+import { createPackQuery } from '../utils/mappers/pack.mapper';
+import { PackSettings } from '../Settings/PackSettings';
+import { BodyPack } from './BodyPack/BodyPack';
+import { Button } from '@mui/material';
+import { AddModal } from '../../../common/components/GlobalModal/AddModal/AddModal';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
-
-    const isAppInitialized: boolean = useAppSelector(selectorIsAppInit);
     const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
 
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery());
@@ -89,13 +85,12 @@ export const ListPacks = () => {
         onChangePagination(1, rowsPerPage);
     };
 
-    if (!isAppInitialized) return <Navigate to={'/login'}/>;
     return (
         <>
-            <AddModal title={'Add new pack'} isOpen={addPackModal} handleClose={closeModal}/>
+            <AddModal title={'Add new pack'} isOpen={addPackModal} handleClose={closeModal} />
             <div className={s.wr}>
                 <h1 className={s.title}>Packs</h1>
-                <Button onClick={openModal} variant="contained" sx={{borderRadius: 5}}>
+                <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
                     Add new pack
                 </Button>
             </div>
@@ -108,12 +103,12 @@ export const ListPacks = () => {
                 accessory={accessory}
                 searchValue={searchValue}
             />
-            <Box sx={{width: '100%'}}>
+            <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{minWidth: 750}} aria-labelledby="tableTitle">
-                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort}/>
-                            <BodyPack/>
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
+                            <BodyPack />
                         </Table>
                     </TableContainer>
 

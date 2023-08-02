@@ -14,6 +14,7 @@ const btnStyles = {
     borderRadius: '2px',
     '& .MuiButton-label': { justifyContent: 'center' },
 };
+
 interface PackSettingsProps {
     accessory: string;
     searchValue: string;
