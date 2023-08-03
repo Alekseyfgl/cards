@@ -12,13 +12,12 @@ export const thunkTryCatch = async (thunkAPI: BaseThunkAPI<RootState, any, AppDi
             console.log('Request canceled');
             return rejectWithValue(null);
         }
-        const err = e as Error | AxiosError<{ error: string }>;
 
-        if (isAxiosError(err)) {
-            showGlobalError && dispatch(appActions.setError({ error: err?.response?.data?.error || err.message }));
-        } else {
-            showGlobalError && dispatch(appActions.setError({ error: `Native error ${err.message}` }));
-        }
+        // if (isAxiosError(err)) {
+        showGlobalError && dispatch(appActions.setError({ error: e?.response?.data?.error || e.message }));
+        // } else {
+        //     showGlobalError && dispatch(appActions.setError({ error: `Native error ${err.message}` }));
+        // }
         return rejectWithValue(null);
     }
 };
