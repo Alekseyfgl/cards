@@ -1,15 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { authApi } from './auth.api';
 import { ILoginDto, IProfile, IRegisterDto, IUser } from './auth.api.interfaces';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
 import { appActions } from '../../app/app.slice';
 
-const register = createAppAsyncThunk<
-    {
-        addedUser: IUser;
-    },
-    IRegisterDto
->('Auth/register', async (arg: IRegisterDto, thunkAPI) => {
+const register = createAppAsyncThunk<{ addedUser: IUser }, IRegisterDto>('Auth/register', async (arg: IRegisterDto, thunkAPI) => {
     const { dispatch, getState, rejectWithValue } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
         const res = await authApi.register(arg);
@@ -54,20 +49,12 @@ const slice = createSlice({
     name: 'auth',
     initialState: {
         profile: null as IProfile | null,
-        isRegistered: false,
     },
-    reducers: {
-        setIsMadeRegister: (state, action: PayloadAction<{ isRegistered: boolean }>) => {
-            state.isRegistered = action.payload.isRegistered;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
             state.profile = action.payload.profile;
             appActions.initialiseApp({ isAppInit: true });
-        });
-        builder.addCase(register.fulfilled, (state, action) => {
-            state.isRegistered = true;
         });
         builder.addCase(me.fulfilled, (state, action) => {
             state.profile = action.payload.profile;

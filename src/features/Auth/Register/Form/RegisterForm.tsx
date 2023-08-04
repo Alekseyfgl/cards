@@ -1,7 +1,7 @@
 import { FormControl, FormGroup, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IRegisterDto } from '../../auth.api.interfaces';
 import { authThunks } from '../../auth.slice';
@@ -11,7 +11,12 @@ import { confirmPasswordValidate, passwordValidate } from 'common/utils/validati
 import { appActions } from '../../../../app/app.slice';
 import { MSG_AUTH } from '../../../../common/utils/constans/constans';
 
-export const RegisterForm = () => {
+interface IRegisterFormProps {
+    setIsMadeAccount: (isMadeAccount: boolean) => void;
+}
+
+export const RegisterForm: FC<IRegisterFormProps> = (props) => {
+    const { setIsMadeAccount } = props;
     const dispatch = useAppDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const [isSentRequest, setIsSentRequest] = useState(false);
@@ -33,9 +38,10 @@ export const RegisterForm = () => {
             .unwrap()
             .then((r) => {
                 dispatch(appActions.setDone({ done: MSG_AUTH.REGISTERED_SUCCESS(r.addedUser.email) }));
+                setIsMadeAccount(true);
             })
             .catch(() => {
-                console.log('catch');
+                console.log('authThunks.register');
             })
             .finally(() => {
                 setIsSentRequest(false);
