@@ -31,6 +31,11 @@ export interface IPacks {
     tokenDeathTime: number;
 }
 
+export interface INewCardsPackRes {
+    newCardsPack: IPack;
+    token: string;
+    tokenDeathTime: number;
+}
 
 interface IPackQuery {
     page: string;
@@ -40,6 +45,14 @@ interface IPackQuery {
     user_id: string;
     min: string;
     max: string;
+}
+
+export interface IAddPack {
+    cardsPack: {
+        name: string;
+        deckCover: string;
+        private: boolean;
+    };
 }
 
 export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
@@ -57,9 +70,4 @@ export interface PacksRow {
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
 export type SortTypes = '0' | '1';
 
-export type PackSortRequestTypes =
-    `${SortTypes}name`
-    | `${SortTypes}cardsCount`
-    | `${SortTypes}updated`
-    | `${SortTypes}created`
-    | `${SortTypes}actions`;
+export type PackSortRequestTypes = `${SortTypes}name` | `${SortTypes}cardsCount` | `${SortTypes}updated` | `${SortTypes}created` | `${SortTypes}actions`;

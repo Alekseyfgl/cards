@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
 import { packsApi } from './packs.api';
-import { IPacks, PackQueryTypes } from './packs.interfaces';
+import { IAddPack, IPacks, PackQueryTypes } from './packs.interfaces';
 import { Nullable } from '../../common/utils/optionalTypes/optional.types';
 
 const getAllPacks = createAppAsyncThunk<
@@ -9,7 +9,8 @@ const getAllPacks = createAppAsyncThunk<
         packs: IPacks;
     },
     PackQueryTypes
->('ListPacks/allPacks', async (arg: PackQueryTypes, thunkAPI) => {
+>('packs/getAllPacks', async (arg: PackQueryTypes, thunkAPI) => {
+    console.log(arg);
     // const params = Object.fromEntries(arg);
     // console.log("getAllPacks", params);
     return thunkTryCatch(thunkAPI, async () => {
@@ -18,21 +19,26 @@ const getAllPacks = createAppAsyncThunk<
     });
 });
 
+const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryParams: PackQueryTypes }>(
+    'packs/addPack',
+    async (arg: { dto: IAddPack; queryParams: PackQueryTypes }, thunkAPI) => {
+        const { dispatch, getState, rejectWithValue } = thunkAPI;
+
+        return thunkTryCatch(thunkAPI, async () => {
+            await packsApi.addPack(arg.dto);
+            const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(arg.queryParams)).unwrap();
+            return { packs: res.packs };
+        });
+    }
+);
+
 const slice = createSlice({
     name: 'packs',
     initialState: {
         packs: null as Nullable<IPacks>,
         isLoadingPacks: true,
-        settings: {
-            packName: null as Nullable<string>,
-            showPackCards: 'all' as 'my' | 'all'
-        }
     },
-    reducers: {
-        // setPacks: (state, action: PayloadAction<{ packs: IPacks }>) => {
-        //     state.packs = { ...action.payload.packs };
-        // },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllPacks.fulfilled, (state, action) => {
             state.packs = action.payload.packs;
@@ -42,4 +48,4 @@ const slice = createSlice({
 
 export const packReducer = slice.reducer;
 export const packActions = slice.actions;
-export const packThunks = { getAllPacks };
+export const packThunks = { getAllPacks, addPack };

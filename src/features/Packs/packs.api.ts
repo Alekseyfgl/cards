@@ -1,6 +1,7 @@
 import { instance } from '../../common/api/common.api';
-import { IPacks, PackQueryTypes } from './packs.interfaces';
+import { IAddPack, INewCardsPackRes, IPacks, PackQueryTypes } from './packs.interfaces';
 import { Nullable } from '../../common/utils/optionalTypes/optional.types';
+import { AxiosResponse } from 'axios';
 
 const base = 'cards';
 let abortController: Nullable<AbortController> = null;
@@ -11,5 +12,8 @@ export const packsApi = {
         abortController = new AbortController();
 
         return instance.get<IPacks>(`${base}/pack`, { params: query, signal: abortController.signal });
+    },
+    addPack: (payload: IAddPack) => {
+        return instance.post<{}, AxiosResponse<INewCardsPackRes>, IAddPack>(`${base}/pack`, payload);
     },
 };

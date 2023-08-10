@@ -17,7 +17,7 @@ import { createPackQuery } from '../utils/mappers/pack.mapper';
 import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
 import { Button } from '@mui/material';
-import { AddModal } from '../../../common/components/GlobalModal/AddModal/AddModal';
+import { AddPackModal } from '../../../common/components/GlobalModal/AddModal/AddPackModal';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ export const ListPacks = () => {
 
     const [page, setPage] = useState(params.page || '1');
     const [rowsPerPage, setRowsPerPage] = useState(params.pageCount || '5');
-    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>((params.sortPacks as PackSortRequestTypes) || '0name');
+    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>((params.sortPacks as PackSortRequestTypes) || '0created');
     const [searchValue, setSearchValue] = useState(params.packName || '');
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
@@ -50,8 +50,8 @@ export const ListPacks = () => {
     const resetAllFilters = () => {
         setSearchValue('');
         setAccessory('');
-        setAmountCards([1, 100]);
-        setSortPacks('0name');
+        setAmountCards([0, 100]);
+        setSortPacks('0created');
         setSearchParams(createPackQuery(page, rowsPerPage));
     };
 
@@ -87,7 +87,7 @@ export const ListPacks = () => {
 
     return (
         <>
-            <AddModal title={'Add new pack'} isOpen={addPackModal} handleClose={closeModal} />
+            <AddPackModal title={'Add new pack'} isOpen={addPackModal} handleClose={closeModal} queryParams={searchParams} />
             <div className={s.wr}>
                 <h1 className={s.title}>Packs</h1>
                 <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>

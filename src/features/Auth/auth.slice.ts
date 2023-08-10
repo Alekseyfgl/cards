@@ -12,12 +12,7 @@ const register = createAppAsyncThunk<{ addedUser: IUser }, IRegisterDto>('Auth/r
     });
 });
 //первый параметр то что Thunk возвращает, второй параметр то что принимает
-export const login = createAppAsyncThunk<
-    {
-        profile: IProfile;
-    },
-    ILoginDto
->('Auth/login', async (arg: ILoginDto, thunkAPI) => {
+export const login = createAppAsyncThunk<{ profile: IProfile }, ILoginDto>('Auth/login', async (arg: ILoginDto, thunkAPI) => {
     const { dispatch, getState, rejectWithValue } = thunkAPI;
     return thunkTryCatch(thunkAPI, async () => {
         const res = await authApi.login(arg);
