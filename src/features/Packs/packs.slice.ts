@@ -10,22 +10,19 @@ const getAllPacks = createAppAsyncThunk<
     },
     PackQueryTypes
 >('packs/getAllPacks', async (arg: PackQueryTypes, thunkAPI) => {
-    console.log(arg);
-    // const params = Object.fromEntries(arg);
-    // console.log("getAllPacks", params);
     return thunkTryCatch(thunkAPI, async () => {
         const res = await packsApi.allPacks(arg);
         return { packs: res.data };
     });
 });
 
-const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryParams: PackQueryTypes }>(
+const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryParams: PackQueryTypes; signal: AbortSignal }>(
     'packs/addPack',
-    async (arg: { dto: IAddPack; queryParams: PackQueryTypes }, thunkAPI) => {
+    async (arg: { dto: IAddPack; queryParams: PackQueryTypes; signal: AbortSignal }, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
 
         return thunkTryCatch(thunkAPI, async () => {
-            await packsApi.addPack(arg.dto);
+            await packsApi.addPack(arg.dto, arg.signal);
             const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(arg.queryParams)).unwrap();
             return { packs: res.packs };
         });

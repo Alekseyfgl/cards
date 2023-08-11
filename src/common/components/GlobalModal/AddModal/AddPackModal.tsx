@@ -1,5 +1,5 @@
 import { BasicModal } from '../GlobalModal';
-import React, { FC, useState } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import { SendRequestButton } from '../../ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
@@ -12,7 +12,7 @@ import { packThunks } from '../../../../features/Packs/packs.slice';
 interface AddModalProps {
     title: string;
     isOpen: boolean;
-    handleClose: () => void;
+    closeModal: () => void;
     maxLength?: number;
     queryParams: any;
 }
@@ -22,34 +22,46 @@ export interface FormValues {
     private: boolean;
 }
 
-export const AddPackModal: FC<AddModalProps> = (props) => {
-    const { isOpen, handleClose, title, maxLength = 30, queryParams } = props;
-    const [isSentRequest, setIsSentRequest] = useState(false);
+export const AddPackModal: FC<AddModalProps> = memo((props) => {
+    const { isOpen, closeModal, title, maxLength = 30, queryParams } = props;
     const dispatch = useAppDispatch();
+    const [isSentRequest, setIsSentRequest] = useState(false);
+    const [controller, setController] = useState<AbortController>();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<FormValues>();
 
+    useEffect(() => {
+        if (isOpen) {
+            setController(new AbortController());
+        }
+    }, [isOpen]);
+
     const addPackHandler = (packDto: FormValues) => {
         setIsSentRequest(true);
         const dto: IAddPack = addPackMapper(packDto);
-        dispatch(packThunks.addPack({ dto, queryParams })).then(() => {
-            setIsSentRequest(false);
-        });
+        // const controller = new AbortController();
+        // setController(controller);
 
-        // dispatch(authThunks.login(loginDto)).finally(() => {
-        //     setIsSentRequest(false);
-        // });
+        dispatch(packThunks.addPack({ dto, queryParams, signal: controller!.signal })).then(() => {
+            setIsSentRequest(false);
+            closeModal();
+        });
     };
 
     const onSubmit = (formValue: FormValues) => {
         addPackHandler(formValue);
     };
 
+    const closeModalHandler = () => {
+        controller?.abort();
+        // setController(new AbortController());
+        closeModal();
+    };
     return (
-        <BasicModal isOpen={isOpen} title={title} handleClose={handleClose}>
+        <BasicModal isOpen={isOpen} title={title} handleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Name pack"
@@ -63,11 +75,11 @@ export const AddPackModal: FC<AddModalProps> = (props) => {
 
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest}>Save</SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={handleClose}>
+                    <Button variant="contained" color={'inherit'} onClick={closeModal}>
                         Cancel
                     </Button>
                 </div>
             </form>
         </BasicModal>
     );
-};
+});

@@ -13,7 +13,7 @@ export const packsApi = {
 
         return instance.get<IPacks>(`${base}/pack`, { params: query, signal: abortController.signal });
     },
-    addPack: (payload: IAddPack) => {
-        return instance.post<{}, AxiosResponse<INewCardsPackRes>, IAddPack>(`${base}/pack`, payload);
+    addPack: (payload: IAddPack, signal: AbortSignal) => {
+        return instance.post<{}, AxiosResponse<INewCardsPackRes>, IAddPack>(`${base}/pack`, payload, { signal });
     },
 };

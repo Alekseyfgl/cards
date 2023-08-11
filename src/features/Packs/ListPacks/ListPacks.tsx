@@ -32,14 +32,14 @@ export const ListPacks = () => {
     const [searchValue, setSearchValue] = useState(params.packName || '');
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
-    const [addPackModal, setAddPackModal] = useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     useEffect(() => {
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
-    const openModal = () => setAddPackModal(true);
-    const closeModal = () => setAddPackModal(false);
+    const openModal = () => setIsOpenModal(true);
+    const closeModal = () => setIsOpenModal(false);
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
             setSearchValue(searchValue);
@@ -87,7 +87,7 @@ export const ListPacks = () => {
 
     return (
         <>
-            <AddPackModal title={'Add new pack'} isOpen={addPackModal} handleClose={closeModal} queryParams={searchParams} />
+            {isOpenModal && <AddPackModal title={'Add new pack'} isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}
             <div className={s.wr}>
                 <h1 className={s.title}>Packs</h1>
                 <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
