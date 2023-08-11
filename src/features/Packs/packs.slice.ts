@@ -16,13 +16,13 @@ const getAllPacks = createAppAsyncThunk<
     });
 });
 
-const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryParams: PackQueryTypes; signal: AbortSignal }>(
+const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryParams: PackQueryTypes }>(
     'packs/addPack',
-    async (arg: { dto: IAddPack; queryParams: PackQueryTypes; signal: AbortSignal }, thunkAPI) => {
+    async (arg: { dto: IAddPack; queryParams: PackQueryTypes }, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
 
         return thunkTryCatch(thunkAPI, async () => {
-            await packsApi.addPack(arg.dto, arg.signal);
+            await packsApi.addPack(arg.dto);
             const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(arg.queryParams)).unwrap();
             return { packs: res.packs };
         });

@@ -1,6 +1,6 @@
 import { IAddPack, IPack, PackSortRequestTypes, PacksRow } from '../../packs.interfaces';
 import { buttonRowConst } from '../constans/button-row.const';
-import { FormValues } from '../../../../common/components/GlobalModal/AddModal/AddPackModal';
+import { FormValues } from '../../../../common/components/GlobalModal/Modals/AddPackModal/AddPackModal';
 
 export const createPackQuery = (
     page: string = '1',

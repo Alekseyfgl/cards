@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../../../app/hooks';
 import { emailValidate } from 'common/utils/validationFormRules/email.validate';
 import { confirmPasswordValidate, passwordValidate } from 'common/utils/validationFormRules/password.validate';
 import { appActions } from '../../../../app/app.slice';
-import { MSG_AUTH } from '../../../../common/utils/constans/constans';
+import { MSG_AUTH } from '../../../../common/utils/constans/app-messages.const';
 import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {

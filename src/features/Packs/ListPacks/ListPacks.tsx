@@ -17,7 +17,7 @@ import { createPackQuery } from '../utils/mappers/pack.mapper';
 import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
 import { Button } from '@mui/material';
-import { AddPackModal } from '../../../common/components/GlobalModal/AddModal/AddPackModal';
+import { AddPackModal } from '../../../common/components/GlobalModal/Modals/AddPackModal/AddPackModal';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();

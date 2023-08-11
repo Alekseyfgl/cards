@@ -1,13 +1,14 @@
-import { BasicModal } from '../GlobalModal';
-import React, { FC, memo, useEffect, useState } from 'react';
+import { BasicModal } from '../../GlobalModal';
+import React, { ChangeEvent, FC, memo, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
-import { SendRequestButton } from '../../ButtonSendRequest/SendRequestButton';
+import { SendRequestButton } from '../../../ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
-import { addPackMapper } from '../../../../features/Packs/utils/mappers/pack.mapper';
-import { IAddPack } from '../../../../features/Packs/packs.interfaces';
-import { useAppDispatch } from '../../../utils/hooks';
-import { packThunks } from '../../../../features/Packs/packs.slice';
+import { addPackMapper } from '../../../../../features/Packs/utils/mappers/pack.mapper';
+import { IAddPack } from '../../../../../features/Packs/packs.interfaces';
+import { useAppDispatch } from '../../../../utils/hooks';
+import { packThunks } from '../../../../../features/Packs/packs.slice';
+import { addPackValidate } from '../../../../utils/validationFormRules/add-pack-modal.validate';
 
 interface AddModalProps {
     title: string;
@@ -26,26 +27,20 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
     const { isOpen, closeModal, title, maxLength = 30, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
-    const [controller, setController] = useState<AbortController>();
+    const [disable, setDisable] = useState(true);
+
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<FormValues>();
-
-    useEffect(() => {
-        if (isOpen) {
-            setController(new AbortController());
-        }
-    }, [isOpen]);
 
     const addPackHandler = (packDto: FormValues) => {
         setIsSentRequest(true);
         const dto: IAddPack = addPackMapper(packDto);
-        // const controller = new AbortController();
-        // setController(controller);
 
-        dispatch(packThunks.addPack({ dto, queryParams, signal: controller!.signal })).then(() => {
+        dispatch(packThunks.addPack({ dto, queryParams })).then(() => {
             setIsSentRequest(false);
             closeModal();
         });
@@ -55,9 +50,18 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         addPackHandler(formValue);
     };
 
+    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const inputValue: string = e.target.value.trimStart();
+        if (inputValue) {
+            disable && setDisable(false);
+            setValue('name', inputValue);
+        } else {
+            setDisable(true);
+        }
+    };
+
     const closeModalHandler = () => {
-        controller?.abort();
-        // setController(new AbortController());
+        if (isSentRequest) return;
         closeModal();
     };
     return (
@@ -69,13 +73,19 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
                     fullWidth={true}
                     inputProps={{ maxLength }}
                     sx={{ marginBottom: 3 }}
-                    {...register('name', { required: true })}
+                    {...register('name', addPackValidate)}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                    onChange={handleNameChange}
+                    disabled={isSentRequest}
                 />
                 <FormControlLabel control={<Checkbox />} label="Private pack" sx={{ marginBottom: 3 }} {...register('private', { required: false })} />
 
                 <div className={s.btns}>
-                    <SendRequestButton isSentRequest={isSentRequest}>Save</SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModal}>
+                    <SendRequestButton isSentRequest={isSentRequest} disabled={disable}>
+                        Save
+                    </SendRequestButton>
+                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
                         Cancel
                     </Button>
                 </div>

@@ -1,4 +1,4 @@
-import { MSG_AUTH } from '../constans/constans';
+import { MSG_AUTH } from '../constans/app-messages.const';
 
 export const emailValidate = {
     required: MSG_AUTH.REQUIRED('Email'),
