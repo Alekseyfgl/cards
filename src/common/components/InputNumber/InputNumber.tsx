@@ -8,6 +8,8 @@ interface InputNumberProps {
     height?: number;
     value: number;
     onChange: (value: number) => void;
+    marginRight?: number;
+    marginLeft?: number;
 }
 
 const NoArrowsNumberInput = styled(TextField)({
@@ -17,11 +19,14 @@ const NoArrowsNumberInput = styled(TextField)({
     },
     '& input[type=number]': {
         '-moz-appearance': 'textfield',
+        textAlign: 'center',
+        height: '23px',
+        padding: '8.5px 0',
     },
 });
 
 export const InputNumber: FC<InputNumberProps> = memo((props) => {
-    const { value, height = 100, width = 60, onChange } = props;
+    const { value, height = 'auto', width = 60, marginLeft = 0, marginRight = 0, onChange } = props;
 
     const handleInputChange = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let inputValue = +event.currentTarget.value;
@@ -44,7 +49,7 @@ export const InputNumber: FC<InputNumberProps> = memo((props) => {
                     max: 100,
                 },
             }}
-            sx={{ width, height }}
+            sx={{ width, height, marginRight, marginLeft }}
         />
     );
 });

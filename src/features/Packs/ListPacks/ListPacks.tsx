@@ -1,9 +1,7 @@
 import s from './styles.module.scss';
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { selectorIsAppInit } from '../../../app/app.selector';
-import { Navigate, useSearchParams } from 'react-router-dom';
-import Container from '@mui/material/Container';
+import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
@@ -18,11 +16,11 @@ import { packThunks } from '../packs.slice';
 import { createPackQuery } from '../utils/mappers/pack.mapper';
 import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
+import { Button } from '@mui/material';
+import { AddPackModal } from '../../../common/components/GlobalModal/Modals/AddPackModal/AddPackModal';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
-
-    const isAppInitialized: boolean = useAppSelector(selectorIsAppInit);
     const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
 
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery());
@@ -30,15 +28,18 @@ export const ListPacks = () => {
 
     const [page, setPage] = useState(params.page || '1');
     const [rowsPerPage, setRowsPerPage] = useState(params.pageCount || '5');
-    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>((params.sortPacks as PackSortRequestTypes) || '0name');
+    const [sortPacks, setSortPacks] = useState<PackSortRequestTypes>((params.sortPacks as PackSortRequestTypes) || '0created');
     const [searchValue, setSearchValue] = useState(params.packName || '');
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     useEffect(() => {
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
     }, [searchParams]);
 
+    const openModal = () => setIsOpenModal(true);
+    const closeModal = () => setIsOpenModal(false);
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
             setSearchValue(searchValue);
@@ -49,8 +50,8 @@ export const ListPacks = () => {
     const resetAllFilters = () => {
         setSearchValue('');
         setAccessory('');
-        setAmountCards([1, 100]);
-        setSortPacks('0name')
+        setAmountCards([0, 100]);
+        setSortPacks('0created');
         setSearchParams(createPackQuery(page, rowsPerPage));
     };
 
@@ -84,10 +85,15 @@ export const ListPacks = () => {
         onChangePagination(1, rowsPerPage);
     };
 
-    if (!isAppInitialized) return <Navigate to={'/login'} />;
     return (
-        <Container maxWidth="lg" sx={{ p: 8 }}>
-            <h1 className={s.title}>Packs</h1>
+        <>
+            {isOpenModal && <AddPackModal title={'Add new pack'} isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}
+            <div className={s.wr}>
+                <h1 className={s.title}>Packs</h1>
+                <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
+                    Add new pack
+                </Button>
+            </div>
             <PackSettings
                 searchHandler={searchHandler}
                 accessoryHandler={accessoryHandler}
@@ -117,6 +123,6 @@ export const ListPacks = () => {
                     )}
                 </Paper>
             </Box>
-        </Container>
+        </>
     );
 };
