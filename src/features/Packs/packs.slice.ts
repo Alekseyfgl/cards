@@ -4,12 +4,7 @@ import { packsApi } from './packs.api';
 import { IAddPack, IPacks, PackQueryTypes } from './packs.interfaces';
 import { Nullable } from '../../common/utils/optionalTypes/optional.types';
 
-const getAllPacks = createAppAsyncThunk<
-    {
-        packs: IPacks;
-    },
-    PackQueryTypes
->('packs/getAllPacks', async (arg: PackQueryTypes, thunkAPI) => {
+const getAllPacks = createAppAsyncThunk<{ packs: IPacks }, PackQueryTypes>('packs/getAllPacks', async (arg: PackQueryTypes, thunkAPI) => {
     return thunkTryCatch(thunkAPI, async () => {
         const res = await packsApi.allPacks(arg);
         return { packs: res.data };
@@ -23,6 +18,18 @@ const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryPar
 
         return thunkTryCatch(thunkAPI, async () => {
             await packsApi.addPack(arg.dto);
+            const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(arg.queryParams)).unwrap();
+            return { packs: res.packs };
+        });
+    }
+);
+
+const removePack = createAppAsyncThunk<{ packs: IPacks }, { dto: { id: string }; queryParams: PackQueryTypes }>(
+    'packs/remove',
+    async (arg: { dto: { id: string }; queryParams: PackQueryTypes }, thunkAPI) => {
+        const { dispatch, getState, rejectWithValue } = thunkAPI;
+        return thunkTryCatch(thunkAPI, async () => {
+            await packsApi.removePack(arg.dto);
             const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(arg.queryParams)).unwrap();
             return { packs: res.packs };
         });
@@ -45,4 +52,4 @@ const slice = createSlice({
 
 export const packReducer = slice.reducer;
 export const packActions = slice.actions;
-export const packThunks = { getAllPacks, addPack };
+export const packThunks = { getAllPacks, addPack, removePack };

@@ -2,68 +2,45 @@ import TableBody from '@mui/material/TableBody';
 import { createRowPack } from '../../utils/mappers/pack.mapper';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import React, { FC } from 'react';
 import { Optional } from '../../../../common/utils/optionalTypes/optional.types';
 import { IPack } from '../../packs.interfaces';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
-import { buttonRowConst } from '../../utils/constans/button-row.const';
-import { IconButton } from '@mui/material';
 import { selectorProfileId } from '../../../Auth/auth.selector';
+import { TableCellBtn } from './TableCellBtn/TableCellBtn';
+import React from 'react';
 
 export const BodyPack = () => {
     const cardPacks: Optional<IPack[]> = useAppSelector(selectorCardPacks);
     const profileId: Optional<string> = useAppSelector(selectorProfileId);
+
+    // const handleClick = (rowPackId: string) => {
+    //     console.log('rowId', rowPackId);
+    // };
     return (
         <TableBody>
             {cardPacks &&
-                createRowPack(cardPacks).map((row, index) => {
+                createRowPack(cardPacks).map((rowPack, index) => {
                     const labelId = `enhanced-table-checkbox-${index}`;
                     return (
                         <TableRow
                             hover
-                            // onClick={(event) => handleClick(event, row._id as string)}
+                            // onClick={(e) => handleClick(rowPack._id)}
                             role="checkbox"
                             tabIndex={-1}
-                            key={row._id}
+                            key={rowPack._id}
                             sx={{ cursor: 'pointer' }}
                         >
                             <TableCell component="th" id={labelId} scope="row" align={'center'}>
-                                {row.name}
+                                {rowPack.name}
                             </TableCell>
-                            <TableCell align="center">{row.cards}</TableCell>
-                            <TableCell align="center">{row.created}</TableCell>
-                            <TableCell align="center">{row.updated}</TableCell>
-                            <TableCellBtn authorId={row.user_id} profileId={profileId!} />
+                            <TableCell align="center">{rowPack.cards}</TableCell>
+                            <TableCell align="center">{rowPack.created}</TableCell>
+                            <TableCell align="center">{rowPack.updated}</TableCell>
+                            <TableCellBtn authorId={rowPack.user_id} profileId={profileId!} rowPackId={rowPack._id} />
                         </TableRow>
                     );
                 })}
         </TableBody>
-    );
-};
-
-interface TableCellBtnProps {
-    authorId: string;
-    profileId: string;
-}
-
-export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
-    const { authorId, profileId } = props;
-
-    const btnsElements = buttonRowConst.filter((btn) => (authorId === profileId ? btn.id : btn.id === 'learn'));
-
-    return (
-        <TableCell align="center">
-            {btnsElements.map((button) => (
-                <IconButton
-                    key={button.id}
-                    onClick={() => {
-                        console.log('click on ', button.id);
-                    }}
-                >
-                    <button.icon />
-                </IconButton>
-            ))}
-        </TableCell>
     );
 };

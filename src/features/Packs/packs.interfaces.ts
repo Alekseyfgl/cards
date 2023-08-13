@@ -31,7 +31,7 @@ export interface IPacks {
     tokenDeathTime: number;
 }
 
-export interface INewCardsPackRes {
+export interface ICardsPackRes {
     newCardsPack: IPack;
     token: string;
     tokenDeathTime: number;
@@ -56,7 +56,7 @@ export interface IAddPack {
 }
 
 export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
-
+export type DeletePackQuery = Partial<Record<'id', string>>;
 // ============DOMAIN============
 export interface PacksRow {
     _id: string;

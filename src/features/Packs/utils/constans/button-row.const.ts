@@ -2,6 +2,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
+export type PackActionTypes = 'learn' | 'change' | 'remove';
 export const buttonRowConst = [
     {
         id: 'learn',
