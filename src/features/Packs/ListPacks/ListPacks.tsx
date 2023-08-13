@@ -42,8 +42,8 @@ export const ListPacks = () => {
     const closeModal = () => setIsOpenModal(false);
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
-            setSearchValue(searchValue);
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
+            setSearchValue(searchValue.trim());
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue.trim(), accessory, amountCards));
         }
     };
 
