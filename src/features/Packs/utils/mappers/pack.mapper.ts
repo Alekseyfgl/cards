@@ -29,6 +29,7 @@ export const createRowPack = (packs: IPack[]): PacksRow[] => {
         created: p.created,
         updated: p.updated,
         actions: buttonRowConst,
+        user_id: p.user_id,
     }));
 };
 

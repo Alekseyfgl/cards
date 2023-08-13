@@ -65,6 +65,7 @@ export interface PacksRow {
     updated: string;
     created: string;
     actions: typeof buttonRowConst;
+    user_id: string;
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
