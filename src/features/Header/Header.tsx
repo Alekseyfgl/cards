@@ -10,18 +10,18 @@ import Container from '@mui/material/Container';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { authThunks } from '../Auth/auth.slice';
-import { useNavigate } from 'react-router-dom';
 import { UserAvatar } from '../../common/components/CustomAvatar/CustomAvatar';
 import { selectorUserName, selectorUserPhoto } from '../Auth/auth.selector';
 import { Nullable, Optional } from '../../common/utils/optionalTypes/optional.types';
+import { authThunks } from '../Auth/auth.slice';
+import { redirect } from 'react-router-dom';
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const CustomAppBar = () => {
-    console.log('AppBar');
+    console.log('CustomAppBar');
+    // const navigate = useNavigate();
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const userName: Optional<string> = useAppSelector(selectorUserName);
     const userPhoto: Optional<string> = useAppSelector(selectorUserPhoto);
@@ -41,7 +41,9 @@ export const CustomAppBar = () => {
         dispatch(authThunks.logout({}))
             .unwrap()
             .then(() => {
-                navigate('/login');
+                // navigate('/login');
+                // <Navigate to={'/login'} />;
+                redirect('/login');
             });
     };
 
