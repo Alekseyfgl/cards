@@ -18,10 +18,11 @@ import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
 import { Button } from '@mui/material';
 import { AddPackModal } from '../Modals/AddPackModal/AddPackModal';
+import { shallowEqual } from 'react-redux';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
-    const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
+    const packs: Nullable<IPacks> = useAppSelector(selectorPacks, shallowEqual);
 
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery());
     const params: PackQueryTypes = Object.fromEntries(searchParams);

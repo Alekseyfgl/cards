@@ -17,7 +17,6 @@ export interface IPack {
     created: string;
     updated: string;
     more_id: string;
-    __v: number;
 }
 
 export interface IPacks {
@@ -27,14 +26,10 @@ export interface IPacks {
     cardPacksTotalCount: number;
     minCardsCount: number;
     maxCardsCount: number;
-    token: string;
-    tokenDeathTime: number;
 }
 
 export interface ICardsPackRes {
     newCardsPack: IPack;
-    token: string;
-    tokenDeathTime: number;
 }
 
 interface IPackQuery {

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { buttonRowConst, PackActionTypes } from '../../../utils/constans/button-row.const';
 import TableCell from '@mui/material/TableCell';
 import { IconButton } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RemovePackModal } from '../../../Modals/RemovePackModal/RemovePackModal';
 import { PackQueryTypes } from '../../../packs.interfaces';
 import { ChangePackModal } from '../../../Modals/ChangePackModal/ChangePackModal';
@@ -22,17 +22,19 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
     const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
     const [isOpenChangeModal, setIsOpenChangeModal] = useState(false);
 
+    const navigate = useNavigate();
+
     const btnsElements = buttonRowConst.filter((btn) => (authorId === profileId ? btn.id : btn.id === 'learn'));
 
     const openDeleteModal = () => setIsOpenRemoveModal(true);
     const closeDeleteModal = () => setIsOpenRemoveModal(false);
     const openChangeModal = () => setIsOpenChangeModal(true);
     const closeChangeModal = () => setIsOpenChangeModal(false);
+
     const onClickHandler = (actionType: PackActionTypes, rowPackId: string) => {
         switch (actionType) {
             case 'learn':
-                console.log('click on ', actionType);
-                console.log('name', rowPackId);
+                navigate(`/card/${rowPackId}`);
                 break;
             case 'remove':
                 openDeleteModal();

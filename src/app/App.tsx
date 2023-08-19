@@ -9,6 +9,7 @@ import { selectorIsLoadingApp } from './app.selector';
 import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
 import { RequireAuth } from '../common/components/RequerAuth/RequireAuth';
 import { Layout } from '../common/components/Layout/Layout';
+import { Card } from '../features/Cards/Card/Card';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -32,6 +33,14 @@ export const App = () => {
                         element={
                             <RequireAuth>
                                 <ListPacks />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="card/:id"
+                        element={
+                            <RequireAuth>
+                                <Card />
                             </RequireAuth>
                         }
                     />
