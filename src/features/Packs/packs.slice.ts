@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
 import { packsApi } from './packs.api';
-import { IAddPack, IPacks, PackQueryTypes } from './packs.interfaces';
+import { IAddPack, IChangePack, IPacks, PackQueryTypes } from './packs.interfaces';
 import { Nullable } from '../../common/utils/optionalTypes/optional.types';
 
 const getAllPacks = createAppAsyncThunk<{ packs: IPacks }, PackQueryTypes>('packs/getAllPacks', async (arg: PackQueryTypes, thunkAPI) => {
@@ -36,6 +36,20 @@ const removePack = createAppAsyncThunk<{ packs: IPacks }, { dto: { id: string };
     }
 );
 
+const updatePack = createAppAsyncThunk<{ packs: IPacks }, { dto: IChangePack; queryParams: PackQueryTypes }>(
+    'packs/updatePack',
+    async (arg: { dto: IChangePack; queryParams: PackQueryTypes }, thunkAPI) => {
+        const { dispatch, getState, rejectWithValue } = thunkAPI;
+
+        return thunkTryCatch(thunkAPI, async () => {
+            const { dto, queryParams } = arg;
+            await packsApi.updatePack(dto);
+            const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(queryParams)).unwrap();
+            return { packs: res.packs };
+        });
+    }
+);
+
 const slice = createSlice({
     name: 'packs',
     initialState: {
@@ -52,4 +66,4 @@ const slice = createSlice({
 
 export const packReducer = slice.reducer;
 export const packActions = slice.actions;
-export const packThunks = { getAllPacks, addPack, removePack };
+export const packThunks = { getAllPacks, addPack, removePack, updatePack };

@@ -1,11 +1,11 @@
 import React, { FC, memo, useState } from 'react';
-import { useAppDispatch } from '../../../../utils/hooks';
-import { BasicModal } from '../../GlobalModal';
+import { useAppDispatch } from '../../../../common/utils/hooks';
+import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import { Button } from '@mui/material';
 import s from '../AddPackModal/styles.module.scss';
-import { SendRequestButton } from '../../../ButtonSendRequest/SendRequestButton';
-import { PackQueryTypes } from '../../../../../features/Packs/packs.interfaces';
-import { packThunks } from '../../../../../features/Packs/packs.slice';
+import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
+import { PackQueryTypes } from '../../packs.interfaces';
+import { packThunks } from '../../packs.slice';
 
 interface RemovePackModalProps {
     isOpen: boolean;

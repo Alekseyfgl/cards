@@ -1,6 +1,7 @@
-import { IAddPack, IPack, PackSortRequestTypes, PacksRow } from '../../packs.interfaces';
+import { IAddPack, IChangePack, IPack, PackSortRequestTypes, PacksRow } from '../../packs.interfaces';
 import { buttonRowConst } from '../constans/button-row.const';
-import { FormValues } from '../../../../common/components/GlobalModal/Modals/AddPackModal/AddPackModal';
+import { AddPackFormValues } from '../../Modals/AddPackModal/AddPackModal';
+import { ChangePackFormValues } from '../../Modals/ChangePackModal/ChangePackModal';
 
 export const createPackQuery = (
     page: string = '1',
@@ -30,9 +31,14 @@ export const createRowPack = (packs: IPack[]): PacksRow[] => {
         updated: p.updated,
         actions: buttonRowConst,
         user_id: p.user_id,
+        private: p.private,
     }));
 };
 
-export const addPackMapper = (dto: FormValues): IAddPack => {
+export const addPackMapper = (dto: AddPackFormValues): IAddPack => {
     return { cardsPack: { name: dto.name, deckCover: 'url or base64', private: dto.private } };
+};
+
+export const changePackMapper = (dto: ChangePackFormValues): IChangePack => {
+    return { cardsPack: { ...dto } };
 };

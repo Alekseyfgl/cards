@@ -55,8 +55,15 @@ export interface IAddPack {
     };
 }
 
+export interface IChangePack {
+    cardsPack: {
+        _id: string;
+        name: string;
+        private: boolean;
+    };
+}
+
 export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
-export type DeletePackQuery = Partial<Record<'id', string>>;
 // ============DOMAIN============
 export interface PacksRow {
     _id: string;
@@ -66,6 +73,7 @@ export interface PacksRow {
     created: string;
     actions: typeof buttonRowConst;
     user_id: string;
+    private: boolean;
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';

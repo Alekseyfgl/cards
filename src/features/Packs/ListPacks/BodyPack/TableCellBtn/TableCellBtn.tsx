@@ -3,24 +3,31 @@ import { buttonRowConst, PackActionTypes } from '../../../utils/constans/button-
 import TableCell from '@mui/material/TableCell';
 import { IconButton } from '@mui/material';
 import { useSearchParams } from 'react-router-dom';
-import { RemovePackModal } from '../../../../../common/components/GlobalModal/Modals/RemovePackModal/RemovePackModal';
+import { RemovePackModal } from '../../../Modals/RemovePackModal/RemovePackModal';
 import { PackQueryTypes } from '../../../packs.interfaces';
+import { ChangePackModal } from '../../../Modals/ChangePackModal/ChangePackModal';
+import { MSG_PACK } from '../../../../../common/utils/constans/app-messages.const';
 
 interface TableCellBtnProps {
     authorId: string;
     profileId: string;
     rowPackId: string;
+    titlePack: string;
+    isPrivatePack: boolean;
 }
 
 export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
-    const { authorId, profileId, rowPackId } = props;
+    const { authorId, profileId, rowPackId, titlePack, isPrivatePack } = props;
     const [queryParams, setQueryParams] = useSearchParams();
-    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
+    const [isOpenChangeModal, setIsOpenChangeModal] = useState(false);
 
     const btnsElements = buttonRowConst.filter((btn) => (authorId === profileId ? btn.id : btn.id === 'learn'));
 
-    const openModal = () => setIsOpenModal(true);
-    const closeModal = () => setIsOpenModal(false);
+    const openDeleteModal = () => setIsOpenRemoveModal(true);
+    const closeDeleteModal = () => setIsOpenRemoveModal(false);
+    const openChangeModal = () => setIsOpenChangeModal(true);
+    const closeChangeModal = () => setIsOpenChangeModal(false);
     const onClickHandler = (actionType: PackActionTypes, rowPackId: string) => {
         switch (actionType) {
             case 'learn':
@@ -28,11 +35,10 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
                 console.log('name', rowPackId);
                 break;
             case 'remove':
-                openModal();
+                openDeleteModal();
                 break;
             case 'change':
-                console.log('click on ', actionType);
-                console.log('name', rowPackId);
+                openChangeModal();
                 break;
         }
     };
@@ -40,10 +46,19 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
     return (
         <TableCell align="center">
             <RemovePackModal
-                closeModal={closeModal}
-                title={'Do you want to remove this pack?'}
-                isOpen={isOpenModal}
+                closeModal={closeDeleteModal}
+                title={MSG_PACK.REMOVE_PACK}
+                isOpen={isOpenRemoveModal}
                 rowPackId={rowPackId}
+                queryParams={queryParams as PackQueryTypes}
+            />
+            <ChangePackModal
+                isPrivatePack={isPrivatePack}
+                rowPackId={rowPackId}
+                title={MSG_PACK.CHANGE_TITLE}
+                titlePack={titlePack}
+                isOpen={isOpenChangeModal}
+                closeModal={closeChangeModal}
                 queryParams={queryParams as PackQueryTypes}
             />
             {btnsElements.map((button) => (

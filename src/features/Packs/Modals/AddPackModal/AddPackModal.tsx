@@ -1,14 +1,14 @@
-import { BasicModal } from '../../GlobalModal';
+import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import React, { ChangeEvent, FC, memo, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
-import { SendRequestButton } from '../../../ButtonSendRequest/SendRequestButton';
+import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
-import { addPackMapper } from '../../../../../features/Packs/utils/mappers/pack.mapper';
-import { IAddPack } from '../../../../../features/Packs/packs.interfaces';
-import { useAppDispatch } from '../../../../utils/hooks';
-import { packThunks } from '../../../../../features/Packs/packs.slice';
-import { addPackValidate } from '../../../../utils/validationFormRules/add-pack-modal.validate';
+import { addPackMapper } from '../../utils/mappers/pack.mapper';
+import { IAddPack } from '../../packs.interfaces';
+import { useAppDispatch } from '../../../../common/utils/hooks';
+import { packThunks } from '../../packs.slice';
+import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 
 interface AddModalProps {
     title: string;
@@ -18,7 +18,7 @@ interface AddModalProps {
     queryParams: any;
 }
 
-export interface FormValues {
+export interface AddPackFormValues {
     name: string;
     private: boolean;
 }
@@ -34,9 +34,9 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<FormValues>();
+    } = useForm<AddPackFormValues>();
 
-    const addPackHandler = (packDto: FormValues) => {
+    const addPackHandler = (packDto: AddPackFormValues) => {
         setIsSentRequest(true);
         const dto: IAddPack = addPackMapper(packDto);
 
@@ -46,7 +46,7 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         });
     };
 
-    const onSubmit = (formValue: FormValues) => {
+    const onSubmit = (formValue: AddPackFormValues) => {
         addPackHandler(formValue);
     };
 

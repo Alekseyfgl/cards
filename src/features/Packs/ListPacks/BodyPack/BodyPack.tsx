@@ -37,7 +37,13 @@ export const BodyPack = () => {
                             <TableCell align="center">{rowPack.cards}</TableCell>
                             <TableCell align="center">{rowPack.created}</TableCell>
                             <TableCell align="center">{rowPack.updated}</TableCell>
-                            <TableCellBtn authorId={rowPack.user_id} profileId={profileId!} rowPackId={rowPack._id} />
+                            <TableCellBtn
+                                authorId={rowPack.user_id}
+                                profileId={profileId!}
+                                rowPackId={rowPack._id}
+                                titlePack={rowPack.name}
+                                isPrivatePack={rowPack.private}
+                            />
                         </TableRow>
                     );
                 })}
