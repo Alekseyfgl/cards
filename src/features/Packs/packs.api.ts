@@ -1,5 +1,5 @@
 import { instance } from '../../common/api/common.api';
-import { IAddPack, INewCardsPackRes, IPacks, PackQueryTypes } from './packs.interfaces';
+import { IAddPack, ICardsPackRes, IChangePack, IPacks, PackQueryTypes } from './packs.interfaces';
 import { Nullable } from '../../common/utils/optionalTypes/optional.types';
 import { AxiosResponse } from 'axios';
 
@@ -14,6 +14,12 @@ export const packsApi = {
         return instance.get<IPacks>(`${base}/pack`, { params: query, signal: abortController.signal });
     },
     addPack: (payload: IAddPack) => {
-        return instance.post<{}, AxiosResponse<INewCardsPackRes>, IAddPack>(`${base}/pack`, payload);
+        return instance.post<{}, AxiosResponse<ICardsPackRes>, IAddPack>(`${base}/pack`, payload);
+    },
+    removePack: (query: { id: string }) => {
+        return instance.delete<{}, AxiosResponse<ICardsPackRes>>(`${base}/pack`, { params: query });
+    },
+    updatePack: (payload: IChangePack) => {
+        return instance.put<{}, AxiosResponse<ICardsPackRes>, IChangePack>(`${base}/pack`, payload);
     },
 };

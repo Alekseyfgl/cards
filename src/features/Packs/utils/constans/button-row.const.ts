@@ -1,12 +1,12 @@
 import SchoolIcon from '@mui/icons-material/School';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import React from 'react';
 
+export type PackActionTypes = 'learn' | 'change' | 'remove';
 export const buttonRowConst = [
     {
-        id: 'add',
-        action: 'add',
+        id: 'learn',
+        action: 'learn',
         icon: SchoolIcon,
     },
     {

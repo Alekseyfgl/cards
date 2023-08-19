@@ -31,7 +31,7 @@ export interface IPacks {
     tokenDeathTime: number;
 }
 
-export interface INewCardsPackRes {
+export interface ICardsPackRes {
     newCardsPack: IPack;
     token: string;
     tokenDeathTime: number;
@@ -55,8 +55,15 @@ export interface IAddPack {
     };
 }
 
-export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
+export interface IChangePack {
+    cardsPack: {
+        _id: string;
+        name: string;
+        private: boolean;
+    };
+}
 
+export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
 // ============DOMAIN============
 export interface PacksRow {
     _id: string;
@@ -65,6 +72,8 @@ export interface PacksRow {
     updated: string;
     created: string;
     actions: typeof buttonRowConst;
+    user_id: string;
+    private: boolean;
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';

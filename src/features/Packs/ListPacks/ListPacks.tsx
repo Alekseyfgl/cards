@@ -17,7 +17,7 @@ import { createPackQuery } from '../utils/mappers/pack.mapper';
 import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
 import { Button } from '@mui/material';
-import { AddPackModal } from '../../../common/components/GlobalModal/Modals/AddPackModal/AddPackModal';
+import { AddPackModal } from '../Modals/AddPackModal/AddPackModal';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -42,8 +42,8 @@ export const ListPacks = () => {
     const closeModal = () => setIsOpenModal(false);
     const searchHandler = (searchValue: Nullable<string>) => {
         if (searchValue !== null) {
-            setSearchValue(searchValue);
-            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
+            setSearchValue(searchValue.trim());
+            setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue.trim(), accessory, amountCards));
         }
     };
 

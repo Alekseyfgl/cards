@@ -29,7 +29,7 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputText: string = event.currentTarget.value;
-        setValue(inputText.trim());
+        setValue(inputText.trimStart());
     };
 
     const disableKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
