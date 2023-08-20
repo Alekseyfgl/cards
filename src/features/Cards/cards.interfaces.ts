@@ -1,6 +1,8 @@
 // ========== API ===============
+import { getAllCardsMapper } from './utils/mappers/card.mapper';
+
 export interface ICardsByPack {
-    cards?: ICard[];
+    cards: ICard[];
     packUserId: string; //author id
     packName: string;
     packPrivate: boolean;
@@ -12,8 +14,6 @@ export interface ICardsByPack {
     cardsTotalCount: number;
     minGrade: number;
     maxGrade: number;
-    token: string;
-    tokenDeathTime: number;
 }
 
 export interface ICard {
@@ -42,4 +42,6 @@ interface ICardQuery {
 }
 export type CardQueryTypes = Partial<Record<keyof ICardQuery, string>>;
 //============ domain ===============
-export type CurrentPackType = Omit<ICardsByPack, 'cards' | 'packUserId'>;
+export type CurrentPackType = Omit<ICardsByPack, 'cards'>;
+
+export type ICardsByPackDomain = ReturnType<typeof getAllCardsMapper>;

@@ -3,6 +3,7 @@ import counterReducer from '../features/Counter/counterSlice';
 import { appReducer } from '../app/app.slice';
 import { authReducer } from '../features/Auth/auth.slice';
 import { packReducer } from '../features/Packs/packs.slice';
+import { cardReducer } from '../features/Cards/cards.slice';
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         app: appReducer,
         auth: authReducer,
         packs: packReducer,
+        cards: cardReducer,
     },
     // middleware: (getDefaultMiddleware) =>
     //     getDefaultMiddleware().concat(logger),

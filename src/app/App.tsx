@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from './hooks';
 import React, { useEffect } from 'react';
 import { CircularIndeterminate } from '../features/Loader/Loader';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from '../features/Auth/Login/Login';
 import { Register } from '../features/Auth/Register/Register';
 import { authThunks } from '../features/Auth/auth.slice';
@@ -46,7 +46,15 @@ export const App = () => {
                     />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/404" element={<div>Not found</div>} />
+                    <Route
+                        path="/404"
+                        element={
+                            <div>
+                                <p>Not found</p>
+                                <NavLink to={'/pack'}>Go to the main age</NavLink>
+                            </div>
+                        }
+                    />
                     <Route path="*" element={<Navigate to={'/404'} />} />
                 </Route>
             </Routes>
