@@ -14,21 +14,6 @@ export interface PaginationProps {
 export const PaginationCustom: FC<PaginationProps> = (props) => {
     const { totalCount, rowsPerPage, page, handleChangeRowsPerPage, handleChangePage } = props;
     return (
-        // <TablePagination
-        //     rowsPerPageOptions={[5, 10, 25]}
-        //     component="div"
-        //     count={totalCount}
-        //     rowsPerPage={rowsPerPage}
-        //     page={page}
-        //     onPageChange={handleChangePage}
-        //     onRowsPerPageChange={handleChangeRowsPerPage}
-        //     labelRowsPerPage="Row per page:"
-        //     labelDisplayedRows={({ page, count }) => `Страница ${page} из ${Math.ceil(count / rowsPerPage)}`}
-        //     backIconButtonProps={{
-        //         disabled: page === 1, // задизейблить кнопку "Previous Page" на первой странице
-        //     }}
-        // />
-
         <div className={s.container}>
             <Pagination count={Math.ceil(totalCount / rowsPerPage)} page={page} onChange={handleChangePage} showFirstButton showLastButton size={'medium'} />
         </div>

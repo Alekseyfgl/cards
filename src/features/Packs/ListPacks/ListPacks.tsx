@@ -75,6 +75,7 @@ export const ListPacks = () => {
         setSearchParams(createPackQuery(newPage.toString(), rowsPerPage.toString(), sortPacks, searchValue, accessory, amountCards as number[]));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
+        if (+page === newPage) return;
         onChangePagination(newPage, +rowsPerPage);
         setPage(newPage.toString());
     };

@@ -14,13 +14,13 @@ import { UserAvatar } from '../../common/components/CustomAvatar/CustomAvatar';
 import { selectorUserName, selectorUserPhoto } from '../Auth/auth.selector';
 import { Nullable, Optional } from '../../common/utils/optionalTypes/optional.types';
 import { authThunks } from '../Auth/auth.slice';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const CustomAppBar = () => {
     console.log('CustomAppBar');
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
     const userName: Optional<string> = useAppSelector(selectorUserName);
@@ -41,9 +41,9 @@ export const CustomAppBar = () => {
         dispatch(authThunks.logout({}))
             .unwrap()
             .then(() => {
-                // navigate('/login');
-                // <Navigate to={'/login'} />;
-                redirect('/login');
+                navigate('/login');
+                // <Navigate to={'/login'} />; // don't use it in functions
+                // redirect('/login');
             });
     };
 
