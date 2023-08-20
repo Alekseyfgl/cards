@@ -9,13 +9,23 @@ export interface PaginationProps {
     page: number;
     handleChangePage: (event: unknown, newPage: number) => void;
     handleChangeRowsPerPage: (event: ChangeEvent<HTMLInputElement>) => void;
+    disabled: boolean;
 }
 
 export const PaginationCustom: FC<PaginationProps> = (props) => {
-    const { totalCount, rowsPerPage, page, handleChangeRowsPerPage, handleChangePage } = props;
+    const { totalCount, rowsPerPage, page, disabled, handleChangeRowsPerPage, handleChangePage } = props;
+    console.log('disabled', disabled);
     return (
         <div className={s.container}>
-            <Pagination count={Math.ceil(totalCount / rowsPerPage)} page={page} onChange={handleChangePage} showFirstButton showLastButton size={'medium'} />
+            <Pagination
+                disabled={disabled}
+                count={Math.ceil(totalCount / rowsPerPage)}
+                page={page}
+                onChange={handleChangePage}
+                showFirstButton
+                showLastButton
+                size={'medium'}
+            />
         </div>
     );
 };

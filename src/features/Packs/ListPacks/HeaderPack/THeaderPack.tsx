@@ -11,10 +11,11 @@ import s from './styles.module.scss';
 interface EnhancedTableProps {
     onRequestSort: (event: MouseEvent<unknown>, property: PackSortTypes) => void;
     orderBy: PackSortRequestTypes;
+    disabled: boolean;
 }
 
 export const THeaderPack: FC<EnhancedTableProps> = (props) => {
-    const { orderBy, onRequestSort } = props;
+    const { orderBy, disabled, onRequestSort } = props;
     const createSortHandler = (property: PackSortTypes) => (event: MouseEvent<unknown>) => {
         // console.log("createSortHandler", property);
         onRequestSort(event, property);
@@ -26,6 +27,7 @@ export const THeaderPack: FC<EnhancedTableProps> = (props) => {
                 {headCells.map((headCell) => (
                     <TableCell className={s.header} key={headCell.id} align={'center'}>
                         <TableSortLabel
+                            disabled={disabled}
                             active={headCell.sortBy === orderBy.slice(1)}
                             onClick={createSortHandler(headCell.sortBy)}
                             direction={getDirectionSort(orderBy)}

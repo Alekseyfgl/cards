@@ -34,9 +34,14 @@ export const ListPacks = () => {
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
     const [isOpenModal, setIsOpenModal] = useState(false);
-
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
+        setIsLoading(true);
+        dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes))
+            .unwrap()
+            .then(() => {
+                setIsLoading(false);
+            });
     }, [searchParams]);
 
     const openModal = () => setIsOpenModal(true);
@@ -97,6 +102,7 @@ export const ListPacks = () => {
                 </Button>
             </div>
             <PackSettings
+                disabled={isLoading}
                 searchHandler={searchHandler}
                 accessoryHandler={accessoryHandler}
                 setAmountCards={setAmountCardsHandler}
@@ -109,13 +115,14 @@ export const ListPacks = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
+                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} disabled={isLoading} />
                             <BodyPack />
                         </Table>
                     </TableContainer>
 
                     {packs && (
                         <PaginationCustom
+                            disabled={isLoading}
                             page={packs.page}
                             rowsPerPage={+rowsPerPage}
                             totalCount={packs.cardPacksTotalCount}

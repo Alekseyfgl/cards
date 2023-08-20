@@ -8,10 +8,11 @@ import { useDebounce } from '../../utils/hooks';
 interface RangeSliderProps {
     amountCards: number[];
     setAmountCards: (amountCards: number[]) => void;
+    disabled: boolean;
 }
 
 export const RangeSlider: FC<RangeSliderProps> = (props) => {
-    const { setAmountCards, amountCards } = props;
+    const { setAmountCards, amountCards, disabled } = props;
 
     const [value, setValue] = useState<number[]>(amountCards);
     const [init, setInit] = useState(false);
@@ -53,9 +54,9 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
         <div>
             <p>Number of cards</p>
             <div className={s.container}>
-                <InputNumber value={value[0]} onChange={changeMinValue} marginRight={2} />
-                <Slider value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />
-                <InputNumber value={value[1]} onChange={changeMaxValue} marginLeft={2} />
+                <InputNumber disabled={disabled} value={value[0]} onChange={changeMinValue} marginRight={2} />
+                <Slider disabled={disabled} value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />
+                <InputNumber disabled={disabled} value={value[1]} onChange={changeMaxValue} marginLeft={2} />
             </div>
         </div>
     );

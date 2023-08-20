@@ -23,10 +23,11 @@ interface PackSettingsProps {
     accessoryHandler: (value: string) => void;
     setAmountCards: (amountCards: number[]) => void;
     resetAllFilters: () => void;
+    disabled: boolean;
 }
 
 export const PackSettings: FC<PackSettingsProps> = (props) => {
-    const { searchHandler, accessoryHandler, setAmountCards, resetAllFilters, accessory, amountCards, searchValue } = props;
+    const { searchHandler, accessoryHandler, setAmountCards, resetAllFilters, accessory, disabled, amountCards, searchValue } = props;
     const myId: Optional<string> = useAppSelector((state) => state.auth!.profile!._id!);
 
     return (
@@ -35,7 +36,7 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
 
             <div>
                 <p>Show pack cards</p>
-                <ButtonGroup variant="contained" color="primary" size={'small'}>
+                <ButtonGroup disabled={disabled} variant="contained" color="primary" size={'small'}>
                     <Button onClick={() => accessoryHandler(myId)} color={accessory === myId ? 'secondary' : 'primary'} size={'small'} sx={btnStyles}>
                         My
                     </Button>
@@ -45,7 +46,7 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
                 </ButtonGroup>
             </div>
 
-            <RangeSlider setAmountCards={setAmountCards} amountCards={amountCards} />
+            <RangeSlider disabled={disabled} setAmountCards={setAmountCards} amountCards={amountCards} />
 
             <IconButton
                 onClick={resetAllFilters}
