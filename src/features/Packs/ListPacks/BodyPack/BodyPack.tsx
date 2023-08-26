@@ -19,9 +19,7 @@ export const BodyPack = () => {
     // };
     const truncateText = (text: string) => {
         const maxLength = 20;
-        if (text.length <= maxLength) {
-            return text;
-        }
+        if (text.length <= maxLength) return text;
         return text.substring(0, maxLength) + '...';
     };
     return (
@@ -40,7 +38,7 @@ export const BodyPack = () => {
                         key={rowPack._id}
                         sx={{ cursor: 'pointer' }}
                     >
-                        <TableCell component='th' id={labelId} scope='row' align={'center'}>
+                        <TableCell  component='th' id={labelId} scope='row' align={'center'}>
                             {isNameTruncated ? (
                                 <Tooltip title={rowPack.name} placement='top'>
                                     <div

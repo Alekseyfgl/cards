@@ -25,7 +25,7 @@ export const THeaderPack: FC<EnhancedTableProps> = (props) => {
         <TableHead>
             <TableRow>
                 {headCells.map((headCell) => (
-                    <TableCell className={s.header} key={headCell.id} align={'center'}>
+                    <TableCell width={210} className={s.header} key={headCell.id} align={'center'}>
                         <TableSortLabel
                             disabled={disabled}
                             active={headCell.sortBy === orderBy.slice(1)}
