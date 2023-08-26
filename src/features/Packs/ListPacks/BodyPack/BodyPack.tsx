@@ -8,6 +8,7 @@ import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';
 import { TableCellBtn } from './TableCellBtn/TableCellBtn';
 import React from 'react';
+import { Tooltip } from '@mui/material';
 
 export const BodyPack = () => {
     const cardPacks: PacksRow[] = useAppSelector(selectorCardPacks);
@@ -16,25 +17,57 @@ export const BodyPack = () => {
     // const handleClick = (rowPackId: string) => {
     //     console.log('rowId', rowPackId);
     // };
+    const truncateText = (text: string) => {
+        const maxLength = 20;
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.substring(0, maxLength) + '...';
+    };
     return (
         <TableBody>
             {cardPacks.map((rowPack, index) => {
+                const truncatedName = truncateText(rowPack.name);
+                const isNameTruncated = rowPack.name.length > 20;
+
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                     <TableRow
                         hover
                         // onClick={(e) => handleClick(rowPack._id)}
-                        role="checkbox"
+                        role='checkbox'
                         tabIndex={-1}
                         key={rowPack._id}
                         sx={{ cursor: 'pointer' }}
                     >
-                        <TableCell component="th" id={labelId} scope="row" align={'center'}>
-                            {rowPack.name}
+                        <TableCell component='th' id={labelId} scope='row' align={'center'}>
+                            {isNameTruncated ? (
+                                <Tooltip title={rowPack.name} placement='top'>
+                                    <div
+                                        style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap'
+                                        }}
+                                    >
+                                        {truncatedName}
+                                    </div>
+                                </Tooltip>
+                            ) : (
+                                <div
+                                    style={{
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    {truncatedName}
+                                </div>
+                            )}
                         </TableCell>
-                        <TableCell align="center">{rowPack.cards}</TableCell>
-                        <TableCell align="center">{rowPack.created}</TableCell>
-                        <TableCell align="center">{rowPack.updated}</TableCell>
+                        <TableCell align='center'>{rowPack.cards}</TableCell>
+                        <TableCell align='center'>{rowPack.created}</TableCell>
+                        <TableCell align='center'>{rowPack.updated}</TableCell>
                         <TableCellBtn
                             authorId={rowPack.user_id}
                             profileId={profileId!}
