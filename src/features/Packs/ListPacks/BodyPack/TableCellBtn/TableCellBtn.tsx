@@ -7,6 +7,7 @@ import { RemovePackModal } from '../../../Modals/RemovePackModal/RemovePackModal
 import { PackQueryTypes } from '../../../packs.interfaces';
 import { ChangePackModal } from '../../../Modals/ChangePackModal/ChangePackModal';
 import { MSG_PACK } from '../../../../../common/utils/constans/app-messages.const';
+import { SkeletonString } from '../../../../../common/components/Skeleton/SkeletonString/SkeletonString';
 
 interface TableCellBtnProps {
     authorId: string;
@@ -14,10 +15,11 @@ interface TableCellBtnProps {
     rowPackId: string;
     titlePack: string;
     isPrivatePack: boolean;
+    isLoading: boolean
 }
 
 export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
-    const { authorId, profileId, rowPackId, titlePack, isPrivatePack } = props;
+    const { authorId, profileId, rowPackId, titlePack, isPrivatePack, isLoading } = props;
     const [queryParams, setQueryParams] = useSearchParams();
     const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
     const [isOpenChangeModal, setIsOpenChangeModal] = useState(false);
@@ -63,7 +65,8 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
                 closeModal={closeChangeModal}
                 queryParams={queryParams as PackQueryTypes}
             />
-            {btnsElements.map((button) => (
+            {
+                isLoading ? <SkeletonString />:    btnsElements.map((button) => (
                 <IconButton
                     key={button.id}
                     name={rowPackId} //id row for different actions
@@ -71,7 +74,8 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
                 >
                     <button.icon />
                 </IconButton>
-            ))}
+            ))
+            }
         </TableCell>
     );
 };

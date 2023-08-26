@@ -2,68 +2,56 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import { Optional } from '../../../../common/utils/optionalTypes/optional.types';
-import { PacksRow } from '../../packs.interfaces';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';
 import { TableCellBtn } from './TableCellBtn/TableCellBtn';
-import React from 'react';
-import { Tooltip } from '@mui/material';
+import React, { FC } from 'react';
 import { truncateText } from '../../../../common/utils/functions/truncate-text/truncate-text';
+import { SkeletonString } from '../../../../common/components/Skeleton/SkeletonString/SkeletonString';
+import { CustomTooltip } from '../../../../common/components/CustomTooltip/CustomTooltip';
 
-export const BodyPack = () => {
-    const cardPacks: PacksRow[] = useAppSelector(selectorCardPacks);
+interface BodyPackProps {
+    isLoading: boolean
+}
+export const BodyPack:FC<BodyPackProps> = (props) => {
+    const {isLoading} = props
+    const cardPacks= useAppSelector(selectorCardPacks);
     const profileId: Optional<string> = useAppSelector(selectorProfileId);
 
     // const handleClick = (rowPackId: string) => {
     //     console.log('rowId', rowPackId);
     // };
 
+
     return (
         <TableBody>
             {cardPacks.map((rowPack, index) => {
-                const truncatedName = truncateText(rowPack.name, 20);
-                const isNameTruncated = rowPack.name.length > 20;
+                const truncatedName: string = truncateText(rowPack.name, 20);
+                const isNameTruncated: boolean = rowPack.name.length > 20;
+                const labelId: string = `enhanced-table-checkbox-${index}`;
 
-                const labelId = `enhanced-table-checkbox-${index}`;
+                const showTooltip: JSX.Element =   isNameTruncated ?
+                    (<CustomTooltip fullText={rowPack.name} truncatedText={truncatedName}/>) :
+                    (<div>{rowPack.name}</div>)
                 return (
                     <TableRow
+
                         hover
                         // onClick={(e) => handleClick(rowPack._id)}
                         role='checkbox'
                         tabIndex={-1}
                         key={rowPack._id}
-                        sx={{ cursor: 'pointer' }}
+                        sx={{ cursor: 'pointer', height:'76px' }}
                     >
-                        <TableCell  component='th' id={labelId} scope='row' align={'center'}>
-                            {isNameTruncated ? (
-                                <Tooltip title={rowPack.name} placement='top'>
-                                    <div
-                                        style={{
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap'
-                                        }}
-                                    >
-                                        {truncatedName}
-                                    </div>
-                                </Tooltip>
-                            ) : (
-                                <div
-                                    style={{
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap'
-                                    }}
-                                >
-                                    {truncatedName}
-                                </div>
-                            )}
+                        <TableCell component='th' id={labelId} scope='row' align={'center'}>
+                            {isLoading ? <SkeletonString/> : showTooltip}
                         </TableCell>
-                        <TableCell align='center'>{rowPack.cards}</TableCell>
-                        <TableCell align='center'>{rowPack.created}</TableCell>
-                        <TableCell align='center'>{rowPack.updated}</TableCell>
+                        <TableCell align='center'>{isLoading ? <SkeletonString/> :rowPack.cards}</TableCell>
+                        <TableCell align='center'>{isLoading ? <SkeletonString/> :rowPack.created}</TableCell>
+                        <TableCell align='center'>{isLoading ? <SkeletonString/> :rowPack.updated}</TableCell>
                         <TableCellBtn
+                            isLoading={isLoading}
                             authorId={rowPack.user_id}
                             profileId={profileId!}
                             rowPackId={rowPack._id}
@@ -76,3 +64,5 @@ export const BodyPack = () => {
         </TableBody>
     );
 };
+
+

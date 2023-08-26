@@ -17,7 +17,6 @@ interface EnhancedTableProps {
 export const THeaderPack: FC<EnhancedTableProps> = (props) => {
     const { orderBy, disabled, onRequestSort } = props;
     const createSortHandler = (property: PackSortTypes) => (event: MouseEvent<unknown>) => {
-        // console.log("createSortHandler", property);
         onRequestSort(event, property);
     };
 

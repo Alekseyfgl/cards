@@ -114,9 +114,9 @@ export const ListPacks = () => {
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+                        <Table  sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} disabled={isLoading} />
-                            <BodyPack />
+                            <BodyPack  isLoading={isLoading}/>
                         </Table>
                     </TableContainer>
 
