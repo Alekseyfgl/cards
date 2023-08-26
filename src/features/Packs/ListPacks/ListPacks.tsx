@@ -96,7 +96,7 @@ export const ListPacks = () => {
         <>
             {isOpenModal && <AddPackModal title={'Add new pack'} isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}
             <div className={s.wr}>
-                <h1 className={s.title}>Packs</h1>
+                <h2 className={s.title}>Packs</h2>
                 <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
                     Add new pack
                 </Button>
