@@ -1,15 +1,16 @@
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
 import { Optional } from '../../../../common/utils/optionalTypes/optional.types';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';
 import React, { FC } from 'react';
-import { truncateText } from 'common/utils/functions/truncate-text/truncate-text';
-import { TableCellBtn } from './TableCellBtn/TableCellBtn';
-import { CustomTooltip } from '../../../../common/components/CustomTooltip/CustomTooltip';
+import s from './styles.module.scss';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
+import { truncateText } from '../../../../common/utils/functions/truncate-text/truncate-text';
+import { CustomTooltip } from '../../../../common/components/CustomTooltip/CustomTooltip';
+import TableRow from '@mui/material/TableRow';
+import { TableBody } from '@mui/material';
+import TableCell from '@mui/material/TableCell';
+import { TableCellBtn } from './TableCellBtn/TableCellBtn';
 
 interface BodyPackProps {
     isLoading: boolean;
@@ -20,10 +21,12 @@ export const BodyPack: FC<BodyPackProps> = (props) => {
     const cardPacks = useAppSelector(selectorCardPacks);
     const profileId: Optional<string> = useAppSelector(selectorProfileId);
 
+
+    if (cardPacks.length === 0 && !isLoading) return <div className={s.wr}>Cards were not found</div>;
     return (
         <TableBody>
             {
-                (cardPacks.length === 0 || isLoading) ?
+                (isLoading) ?
                     <SkeletonTable totalRow={5} /> :
                     cardPacks.map((rowPack, index) => {
                         const truncatedName: string = truncateText(rowPack.name, 20);

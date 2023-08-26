@@ -35,6 +35,7 @@ export const ListPacks = () => {
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         setIsLoading(true);
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes))
@@ -120,7 +121,7 @@ export const ListPacks = () => {
                         </Table>
                     </TableContainer>
 
-                    {packs && (
+                    {packs?.cardPacks.length ?  (
                         <PaginationCustom
                             disabled={isLoading}
                             page={packs.page}
@@ -129,7 +130,7 @@ export const ListPacks = () => {
                             handleChangePage={handleChangePage}
                             handleChangeRowsPerPage={handleChangeRowsPerPage}
                         />
-                    )}
+                    ) : ''}
                 </Paper>
             </Box>
         </>
