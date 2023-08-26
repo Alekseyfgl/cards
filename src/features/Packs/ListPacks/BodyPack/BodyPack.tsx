@@ -9,7 +9,7 @@ import { selectorProfileId } from '../../../Auth/auth.selector';
 import { TableCellBtn } from './TableCellBtn/TableCellBtn';
 import React from 'react';
 import { Tooltip } from '@mui/material';
-import { truncateText } from '../../../../common/utils/functions/truncateText/truncateText';
+import { truncateText } from '../../../../common/utils/functions/truncate-text/truncate-text';
 
 export const BodyPack = () => {
     const cardPacks: PacksRow[] = useAppSelector(selectorCardPacks);
