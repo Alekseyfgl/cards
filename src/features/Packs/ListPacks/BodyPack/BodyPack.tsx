@@ -9,6 +9,7 @@ import { selectorProfileId } from '../../../Auth/auth.selector';
 import { TableCellBtn } from './TableCellBtn/TableCellBtn';
 import React from 'react';
 import { Tooltip } from '@mui/material';
+import { truncateText } from '../../../../common/utils/functions/truncateText/truncateText';
 
 export const BodyPack = () => {
     const cardPacks: PacksRow[] = useAppSelector(selectorCardPacks);
@@ -17,15 +18,11 @@ export const BodyPack = () => {
     // const handleClick = (rowPackId: string) => {
     //     console.log('rowId', rowPackId);
     // };
-    const truncateText = (text: string) => {
-        const maxLength = 20;
-        if (text.length <= maxLength) return text;
-        return text.substring(0, maxLength) + '...';
-    };
+
     return (
         <TableBody>
             {cardPacks.map((rowPack, index) => {
-                const truncatedName = truncateText(rowPack.name);
+                const truncatedName = truncateText(rowPack.name, 20);
                 const isNameTruncated = rowPack.name.length > 20;
 
                 const labelId = `enhanced-table-checkbox-${index}`;
