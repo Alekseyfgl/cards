@@ -1,9 +1,9 @@
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import React, { useEffect, useState } from 'react';
 import { cardThunks } from '../cards.slice';
 import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
-import { CurrentPackType, ICard } from '../cards.interfaces';
+import { ICard } from '../cards.interfaces';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
@@ -14,12 +14,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import s from './styles.module.scss';
 import { selectorProfileId } from '../../Auth/auth.selector';
 import {
-    cardsByPackSelector, cardsTotalCountSelector,
-
-    packUserIdSelector,
-    currentPackTitleSelector
-
+    cardsByPackSelector,
+    cardsTotalCountSelector,
+    currentPackTitleSelector,
+    packUserIdSelector
 } from '../cards.selector';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import TableHead from '@mui/material/TableHead';
+import { cardHeadCells } from '../utils/consts/head-cards.const';
 
 export const Card = () => {
     const { id } = useParams<{ id: string }>();
@@ -41,7 +45,6 @@ export const Card = () => {
 
 
     useEffect(() => {
-
         dispatch(cardThunks.getAllCardsByPack(queryParams))
             .unwrap()
             .catch(() => {
@@ -56,7 +59,7 @@ export const Card = () => {
 
             <Button startIcon={<ArrowBackIcon />} className={s.btn} onClick={() => navigate(-1)} variant='contained'
                     sx={{ borderRadius: 5 }}>
-                go to back
+                back
             </Button>
             <div className={s.wr}>
                 <div className={s.title}>{currentPackTitle}</div>
@@ -69,7 +72,20 @@ export const Card = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby='tableTitle'>
-                            {/*<THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} disabled={isLoading} />*/}
+                            <TableHead>
+                                <TableRow>
+                                    {cardHeadCells.map((headCell) => (
+                                        <TableCell width={210} className={s.header} key={headCell.id} align={'center'}>
+                                            <TableSortLabel
+                                                onClick={() => {}}
+                                            >
+                                                {headCell.label}
+                                            </TableSortLabel>
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+
                             {/*<BodyPack />*/}
                         </Table>
                     </TableContainer>

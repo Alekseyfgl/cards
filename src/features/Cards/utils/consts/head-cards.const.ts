@@ -1,19 +1,18 @@
 
-
-export const packHeadCells = [
+export const cardHeadCells = [
     {
-        id: 'name',
+        id: 'question',
         numeric: false,
         disablePadding: false,
-        label: 'Name',
-        sortBy: 'name',
+        label: 'Question',
+        sortBy: 'question',
     },
     {
-        id: 'cards',
+        id: 'answer',
         numeric: false,
         disablePadding: false,
-        label: 'Cards',
-        sortBy: 'cardsCount',
+        label: 'Answer',
+        sortBy: 'answer',
     },
     {
         id: 'updated',
@@ -23,11 +22,11 @@ export const packHeadCells = [
         sortBy: 'updated',
     },
     {
-        id: 'created',
+        id: 'grate',
         numeric: false,
         disablePadding: false,
-        label: 'Created By',
-        sortBy: 'created',
+        label: 'Grate',
+        sortBy: 'grate',
     },
     {
         id: 'actions',

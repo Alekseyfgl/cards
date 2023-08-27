@@ -3,7 +3,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import { headCells } from '../../utils/constans/head-packs.const';
+import { packHeadCells } from '../../utils/constans/head-packs.const';
 import { PackSortRequestTypes, PackSortTypes } from '../../packs.interfaces';
 import { getDirectionSort } from '../../utils/super-sort';
 import s from './styles.module.scss';
@@ -23,7 +23,7 @@ export const THeaderPack: FC<EnhancedTableProps> = (props) => {
     return (
         <TableHead>
             <TableRow>
-                {headCells.map((headCell) => (
+                {packHeadCells.map((headCell) => (
                     <TableCell width={210} className={s.header} key={headCell.id} align={'center'}>
                         <TableSortLabel
                             disabled={disabled}
