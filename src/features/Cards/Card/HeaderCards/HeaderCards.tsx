@@ -11,9 +11,10 @@ import s from './styles.module.scss';
 interface HeaderCardsProps {
     changeSort: (sortValue: CardSortTypes) => void;
     orderBy: CardSortCurrentTypes;
+    disabled: boolean;
 }
 export const HeaderCards: FC<HeaderCardsProps> = (props) => {
-    const { orderBy, changeSort } = props;
+    const { orderBy, disabled, changeSort } = props;
 
     const changeSortHandler = (property: CardSortTypes) => (e: MouseEvent<unknown>) => {
         changeSort(property);
@@ -24,6 +25,7 @@ export const HeaderCards: FC<HeaderCardsProps> = (props) => {
                 {cardHeadCells.map((headCell) => (
                     <TableCell width={210} className={s.header} key={headCell.id} align={'center'}>
                         <TableSortLabel
+                            disabled={disabled}
                             onClick={changeSortHandler(headCell.sortBy as CardSortTypes)}
                             active={headCell.sortBy === orderBy.slice(1)}
                             direction={getDirectionSort(orderBy)}

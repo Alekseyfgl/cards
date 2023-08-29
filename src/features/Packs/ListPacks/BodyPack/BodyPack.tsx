@@ -21,44 +21,40 @@ export const BodyPack: FC<BodyPackProps> = (props) => {
     const cardPacks = useAppSelector(selectorCardPacks);
     const profileId: Optional<string> = useAppSelector(selectorProfileId);
 
-
     if (cardPacks.length === 0 && !isLoading) return <div className={s.wr}>Cards were not found</div>;
     return (
         <TableBody>
-            {
-                (isLoading) ?
-                    <SkeletonTable totalRow={5} /> :
-                    cardPacks.map((rowPack, index) => {
-                        const truncatedName: string = truncateText(rowPack.name, 20);
-                        const isNameTruncated: boolean = rowPack.name.length > 20;
+            {isLoading ? (
+                <SkeletonTable totalRow={5} />
+            ) : (
+                cardPacks.map((rowPack) => {
+                    const truncatedName: string = truncateText(rowPack.name, 20);
+                    const isNameTruncated: boolean = rowPack.name.length > 20;
 
-                        const showTooltip: JSX.Element = isNameTruncated ?
-                            (<CustomTooltip fullText={rowPack.name} truncatedText={truncatedName} />) :
-                            (<div>{rowPack.name}</div>);
-                        return (
-                            <TableRow
-                                hover
-                                role='checkbox'
-                                tabIndex={-1}
-                                key={rowPack._id}
-                                sx={{ cursor: 'default', height: '76px' }}
-                            >
-                                <TableCell scope='row' align={'center'}>
-                                    {showTooltip}
-                                </TableCell>
-                                <TableCell align='center'>{rowPack.cards}</TableCell>
-                                <TableCell align='center'>{rowPack.created}</TableCell>
-                                <TableCell align='center'>{rowPack.updated}</TableCell>
-                                <TableCellBtn
-                                    authorId={rowPack.user_id}
-                                    profileId={profileId!}
-                                    rowPackId={rowPack._id}
-                                    titlePack={rowPack.name}
-                                    isPrivatePack={rowPack.private}
-                                />
-                            </TableRow>
-                        );
-                    })}
+                    const showTooltip: JSX.Element = isNameTruncated ? (
+                        <CustomTooltip fullText={rowPack.name} truncatedText={truncatedName} />
+                    ) : (
+                        <div>{rowPack.name}</div>
+                    );
+                    return (
+                        <TableRow hover role="checkbox" tabIndex={-1} key={rowPack._id} sx={{ cursor: 'default', height: '76px' }}>
+                            <TableCell scope="row" align={'center'}>
+                                {showTooltip}
+                            </TableCell>
+                            <TableCell align="center">{rowPack.cards}</TableCell>
+                            <TableCell align="center">{rowPack.created}</TableCell>
+                            <TableCell align="center">{rowPack.updated}</TableCell>
+                            <TableCellBtn
+                                authorId={rowPack.user_id}
+                                profileId={profileId!}
+                                rowPackId={rowPack._id}
+                                titlePack={rowPack.name}
+                                isPrivatePack={rowPack.private}
+                            />
+                        </TableRow>
+                    );
+                })
+            )}
         </TableBody>
     );
 };

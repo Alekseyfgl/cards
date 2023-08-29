@@ -40,9 +40,7 @@ export const ListPacks = () => {
         setIsLoading(true);
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes))
             .unwrap()
-            .then(() => {
-                setIsLoading(false);
-            });
+            .finally(() => setIsLoading(false));
     }, [searchParams]);
 
     const openModal = () => setIsOpenModal(true);

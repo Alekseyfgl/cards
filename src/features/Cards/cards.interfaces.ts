@@ -37,7 +37,7 @@ export interface ICardQuery {
     page: string;
     pageCount: string;
     sortCards: CardSortCurrentTypes;
-    // packName: string;
+    cardQuestion: string;
     cardsPack_id: string;
 }
 //============ domain ===============
