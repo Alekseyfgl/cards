@@ -1,4 +1,5 @@
 // =========API==========
+import { SortTypes } from 'common/utils/optionalTypes/sort.types';
 import { buttonRowConst } from './utils/constans/button-row.const';
 
 export interface IPack {
@@ -72,6 +73,5 @@ export interface PacksRow {
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
-export type SortTypes = '0' | '1';
 
 export type PackSortRequestTypes = `${SortTypes}name` | `${SortTypes}cardsCount` | `${SortTypes}updated` | `${SortTypes}created` | `${SortTypes}actions`;

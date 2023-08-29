@@ -115,22 +115,23 @@ export const ListPacks = () => {
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>
-                        <Table  sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} disabled={isLoading} />
-                            <BodyPack  isLoading={isLoading}/>
+                            <BodyPack isLoading={isLoading} />
                         </Table>
                     </TableContainer>
 
-                    {packs?.cardPacks.length ?  (
+                    {packs?.cardPacks.length ? (
                         <PaginationCustom
                             disabled={isLoading}
                             page={packs.page}
                             rowsPerPage={+rowsPerPage}
                             totalCount={packs.cardPacksTotalCount}
                             handleChangePage={handleChangePage}
-                            handleChangeRowsPerPage={handleChangeRowsPerPage}
                         />
-                    ) : ''}
+                    ) : (
+                        ''
+                    )}
                 </Paper>
             </Box>
         </>

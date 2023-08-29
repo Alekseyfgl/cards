@@ -1,5 +1,6 @@
 // ========== API ===============
 import { getAllCardsMapper } from './utils/mappers/card.mapper';
+import { SortTypes } from '../../common/utils/optionalTypes/sort.types';
 
 export interface ICardsByPack {
     cards: ICard[];
@@ -32,16 +33,16 @@ export interface ICard {
     created: string;
     updated: string;
 }
-
-interface ICardQuery {
+export interface ICardQuery {
     page: string;
     pageCount: string;
-    sortCards: '0grade' | '1grade';
-    packName: string;
+    sortCards: CardSortCurrentTypes;
+    // packName: string;
     cardsPack_id: string;
 }
-export type CardQueryTypes = Partial<Record<keyof ICardQuery, string>>;
 //============ domain ===============
 export type CurrentPackType = Omit<ICardsByPack, 'cards'>;
 
 export type ICardsByPackDomain = ReturnType<typeof getAllCardsMapper>;
+export type CardSortTypes = 'question' | 'grade' | 'updated' | 'created';
+export type CardSortCurrentTypes = `${SortTypes}question` | `${SortTypes}grade` | `${SortTypes}updated` | `${SortTypes}created`;

@@ -9,7 +9,7 @@ import { selectorIsLoadingApp } from './app.selector';
 import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
 import { RequireAuth } from '../common/components/RequerAuth/RequireAuth';
 import { Layout } from '../common/components/Layout/Layout';
-import { Card } from '../features/Cards/Card/Card';
+import { CardsList } from '../features/Cards/Card/CardsList';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -40,7 +40,7 @@ export const App = () => {
                         path="card/:id"
                         element={
                             <RequireAuth>
-                                <Card />
+                                <CardsList />
                             </RequireAuth>
                         }
                     />

@@ -1,4 +1,3 @@
-
 export const cardHeadCells = [
     {
         id: 'question',
@@ -35,4 +34,4 @@ export const cardHeadCells = [
         label: 'Actions',
         sortBy: 'actions',
     },
-] as const
+] as const;

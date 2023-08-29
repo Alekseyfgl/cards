@@ -1,9 +1,5 @@
-import { CardQueryTypes, ICardsByPack } from '../../cards.interfaces';
+import { ICardsByPack } from '../../cards.interfaces';
 
-export const queryCardsMapper = (query: CardQueryTypes): CardQueryTypes => {
-    const { sortCards = '0grade', page = '1', pageCount = '10', cardsPack_id } = query;
-    return { sortCards, page, pageCount, cardsPack_id };
-};
 
 export const getAllCardsMapper = (cardsByPack: ICardsByPack) => {
     return {
