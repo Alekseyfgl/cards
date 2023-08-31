@@ -22,7 +22,7 @@ interface GlobalModalProps {
     title?: string;
     children: ReactNode;
     isOpen: boolean;
-    handleClose: () => void;
+    handleClose: (e?: unknown) => void;
 }
 
 export const BasicModal: FC<GlobalModalProps> = (props) => {

@@ -71,7 +71,8 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
         }
     };
 
-    const closeModalHandler = () => {
+    const closeModalHandler = (e?: unknown) => {
+        (e as Event)?.stopPropagation();
         if (isSentRequest) return;
         closeModal();
     };

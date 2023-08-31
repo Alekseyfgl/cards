@@ -1,8 +1,8 @@
-import React, { FC, useState } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { buttonRowConst, PackActionTypes } from '../../../utils/constans/button-row.const';
 import TableCell from '@mui/material/TableCell';
 import { IconButton } from '@mui/material';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { RemovePackModal } from '../../../Modals/RemovePackModal/RemovePackModal';
 import { PackQueryTypes } from '../../../packs.interfaces';
 import { ChangePackModal } from '../../../Modals/ChangePackModal/ChangePackModal';
@@ -22,8 +22,6 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
     const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
     const [isOpenChangeModal, setIsOpenChangeModal] = useState(false);
 
-    const navigate = useNavigate();
-
     const btnsElements = buttonRowConst.filter((btn) => (authorId === profileId ? btn.id : btn.id === 'learn'));
 
     const openDeleteModal = () => setIsOpenRemoveModal(true);
@@ -31,10 +29,11 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
     const openChangeModal = () => setIsOpenChangeModal(true);
     const closeChangeModal = () => setIsOpenChangeModal(false);
 
-    const onClickHandler = (actionType: PackActionTypes, rowPackId: string) => {
+    const onClickHandler = (actionType: PackActionTypes, e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         switch (actionType) {
             case 'learn':
-                navigate(`/card/${rowPackId}`);
+                // navigate(`/card/${rowPackId}`);
                 break;
             case 'remove':
                 openDeleteModal();
@@ -46,7 +45,7 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
     };
 
     return (
-        <TableCell align='center'>
+        <TableCell align="center">
             <RemovePackModal
                 closeModal={closeDeleteModal}
                 title={MSG_PACK.REMOVE_PACK}
@@ -63,17 +62,15 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
                 closeModal={closeChangeModal}
                 queryParams={queryParams as PackQueryTypes}
             />
-            {
-                btnsElements.map((button) => (
-                    <IconButton
-                        key={button.id}
-                        name={rowPackId} //id row for different actions
-                        onClick={() => onClickHandler(button.action, rowPackId)}
-                    >
-                        <button.icon />
-                    </IconButton>
-                ))
-            }
+            {btnsElements.map((button) => (
+                <IconButton
+                    key={button.id}
+                    name={rowPackId} //id row for different actions
+                    onClick={(e) => onClickHandler(button.action, e)}
+                >
+                    <button.icon />
+                </IconButton>
+            ))}
         </TableCell>
     );
 };

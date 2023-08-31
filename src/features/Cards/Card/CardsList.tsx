@@ -18,6 +18,7 @@ import s from './styles.module.scss';
 import { HeaderCards } from './HeaderCards/HeaderCards';
 import { superSortCreator } from '../../Packs/utils/super-sort';
 import { BodyCards } from './BodyCards/BodyCards';
+import CustomSearch from 'common/components/CustomSearch/CustomSearch';
 
 export const CardsList = () => {
     const { id } = useParams<{ id: string }>();
@@ -68,16 +69,16 @@ export const CardsList = () => {
                 back
             </Button>
             <div className={s.wr}>
-                <div className={s.title}>{currentPackTitle}</div>
+                <div className={s.title}>{isLoading ? '' : currentPackTitle}</div>
                 {profilerId === packUserId && (
                     <Button onClick={() => {}} variant="contained" sx={{ borderRadius: 5 }}>
                         Create new card
                     </Button>
                 )}
             </div>
-            {/*<Box>*/}
-            {/*    <CustomSearch placeholder={'write question'} searchHandler={searchHandler} searchValue={params.cardQuestion} />*/}
-            {/*</Box>*/}
+            <div>
+                <CustomSearch placeholder={'write question'} searchHandler={searchHandler} searchValue={params.cardQuestion} />
+            </div>
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>
                     <TableContainer>

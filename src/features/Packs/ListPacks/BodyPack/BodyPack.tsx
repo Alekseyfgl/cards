@@ -2,7 +2,7 @@ import { Optional } from '../../../../common/utils/optionalTypes/optional.types'
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import s from './styles.module.scss';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
 import { truncateText } from '../../../../common/utils/functions/truncate-text/truncate-text';
@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import { TableBody } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import { TableCellBtn } from './TableCellBtn/TableCellBtn';
+import { useNavigate } from 'react-router-dom';
 
 interface BodyPackProps {
     isLoading: boolean;
@@ -18,8 +19,13 @@ interface BodyPackProps {
 
 export const BodyPack: FC<BodyPackProps> = (props) => {
     const { isLoading } = props;
+    const navigate = useNavigate();
     const cardPacks = useAppSelector(selectorCardPacks);
     const profileId: Optional<string> = useAppSelector(selectorProfileId);
+
+    const onClickHandler = (id: string, e: MouseEvent<HTMLTableRowElement>) => {
+        navigate(`/card/${id}`);
+    };
 
     if (cardPacks.length === 0 && !isLoading) return <div className={s.wr}>Cards were not found</div>;
     return (
@@ -28,29 +34,28 @@ export const BodyPack: FC<BodyPackProps> = (props) => {
                 <SkeletonTable totalRow={5} />
             ) : (
                 cardPacks.map((rowPack) => {
-                    const truncatedName: string = truncateText(rowPack.name, 20);
-                    const isNameTruncated: boolean = rowPack.name.length > 20;
+                    const { cards, created, updated, _id, name, user_id } = rowPack;
+                    const truncatedName: string = truncateText(name, 20);
+                    const isNameTruncated: boolean = name.length > 20;
 
-                    const showTooltip: JSX.Element = isNameTruncated ? (
-                        <CustomTooltip fullText={rowPack.name} truncatedText={truncatedName} />
-                    ) : (
-                        <div>{rowPack.name}</div>
-                    );
+                    const showTooltip: JSX.Element = isNameTruncated ? <CustomTooltip fullText={name} truncatedText={truncatedName} /> : <div>{name}</div>;
                     return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={rowPack._id} sx={{ cursor: 'default', height: '76px' }}>
+                        <TableRow
+                            hover
+                            role="checkbox"
+                            tabIndex={-1}
+                            key={_id}
+                            sx={{ cursor: 'pointer', height: '76px' }}
+                            id={_id}
+                            onClick={(e) => onClickHandler(_id, e)}
+                        >
                             <TableCell scope="row" align={'center'}>
                                 {showTooltip}
                             </TableCell>
-                            <TableCell align="center">{rowPack.cards}</TableCell>
-                            <TableCell align="center">{rowPack.created}</TableCell>
-                            <TableCell align="center">{rowPack.updated}</TableCell>
-                            <TableCellBtn
-                                authorId={rowPack.user_id}
-                                profileId={profileId!}
-                                rowPackId={rowPack._id}
-                                titlePack={rowPack.name}
-                                isPrivatePack={rowPack.private}
-                            />
+                            <TableCell align="center">{cards}</TableCell>
+                            <TableCell align="center">{created}</TableCell>
+                            <TableCell align="center">{updated}</TableCell>
+                            <TableCellBtn authorId={user_id} profileId={profileId!} rowPackId={_id} titlePack={name} isPrivatePack={rowPack.private} />
                         </TableRow>
                     );
                 })
