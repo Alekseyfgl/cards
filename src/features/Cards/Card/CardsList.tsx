@@ -56,11 +56,8 @@ export const CardsList = () => {
         setParams({ ...params, sortCards: prop });
     };
 
-    const searchHandler = () => {
-        const searchValue = params.cardQuestion;
-        if (searchValue !== null) {
-            setParams({ ...params, cardQuestion: searchValue.trim() });
-        }
+    const searchHandler = (searchValue: Nullable<string>) => {
+        setParams({ ...params, cardQuestion: searchValue?.trim() ?? '' });
     };
 
     return (
