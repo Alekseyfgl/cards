@@ -52,7 +52,7 @@ export const RangeSlider: FC<RangeSliderProps> = (props) => {
 
     return (
         <div>
-            <p>Number of cards</p>
+            {/*<p>Number of cards</p>*/}
             <div className={s.container}>
                 <InputNumber disabled={disabled} value={value[0]} onChange={changeMinValue} marginRight={2} />
                 <Slider disabled={disabled} value={value} onChange={handleChange} valueLabelDisplay="auto" sx={{ width: 200 }} />

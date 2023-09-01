@@ -32,7 +32,7 @@ export const CardsList = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [params, setParams] = useState<ICardQuery>({
-        sortCards: '0grade',
+        sortCards: '1grade',
         page: '1',
         pageCount: '5',
         cardsPack_id: id!,
@@ -73,7 +73,7 @@ export const CardsList = () => {
                     </Button>
                 )}
             </div>
-            <div>
+            <div className={s.setting_panel}>
                 <CustomSearch placeholder={'write question'} searchHandler={searchHandler} searchValue={params.cardQuestion} />
             </div>
             <Box sx={{ width: '100%' }}>

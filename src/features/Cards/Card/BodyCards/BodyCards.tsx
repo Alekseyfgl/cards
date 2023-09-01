@@ -8,6 +8,7 @@ import TableCell from '@mui/material/TableCell';
 import React, { FC } from 'react';
 import s from '../../../Packs/ListPacks/BodyPack/styles.module.scss';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
+import { Grade } from '../../Grade/Grade';
 
 interface BodyCardsProps {
     isLoading: boolean;
@@ -25,14 +26,15 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
                 <SkeletonTable totalRow={5} />
             ) : (
                 cardsList?.map((rowCard) => {
+                    const { grade, updated, question, answer, _id } = rowCard;
                     return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={rowCard._id} sx={{ cursor: 'default', height: '76px' }}>
+                        <TableRow hover role="checkbox" tabIndex={-1} key={_id} sx={{ cursor: 'default', height: '76px' }}>
                             <TableCell scope="row" align={'center'}>
-                                {rowCard.question}
+                                {question}
                             </TableCell>
-                            <TableCell align="center">{rowCard.answer}</TableCell>
-                            <TableCell align="center">{rowCard.updated}</TableCell>
-                            <TableCell align="center">{rowCard.grade}</TableCell>
+                            <TableCell align="center">{answer}</TableCell>
+                            <TableCell align="center">{updated}</TableCell>
+                            <TableCell align="center">{<Grade value={grade} />}</TableCell>
                             <TableCell align="center">{'actions'}</TableCell>
                         </TableRow>
                     );

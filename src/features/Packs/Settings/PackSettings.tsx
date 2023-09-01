@@ -32,10 +32,10 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
 
     return (
         <div className={s.setting_panel}>
-            <CustomSearch placeholder={'write text'} searchHandler={searchHandler} searchValue={searchValue} />
+            <CustomSearch placeholder={'write pack name'} searchHandler={searchHandler} searchValue={searchValue} />
 
             <div>
-                <p>Show pack cards</p>
+                {/*<p>Show pack cards</p>*/}
                 <ButtonGroup disabled={disabled} variant="contained" color="primary" size={'small'}>
                     <Button onClick={() => accessoryHandler(myId)} color={accessory === myId ? 'secondary' : 'primary'} size={'small'} sx={btnStyles}>
                         My
