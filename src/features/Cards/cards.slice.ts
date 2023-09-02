@@ -48,12 +48,22 @@ const addCard = createAppAsyncThunk<void, DomainDto<ICardDto, null, ICardQuery>>
     async (arg: DomainDto<ICardDto, null, ICardQuery>, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
         return thunkTryCatch(thunkAPI, async () => {
-            console.log('DTO', arg.dto);
             await cardsApi.addCard(arg.dto);
+            await dispatch(cardThunks.getAllCardsByPack(arg.query)).unwrap();
+        });
+    }
+);
+
+const removeCard = createAppAsyncThunk<void, DomainDto<{ id: string }, null, ICardQuery>>(
+    'packs/remove',
+    async (arg: DomainDto<{ id: string }, null, ICardQuery>, thunkAPI) => {
+        const { dispatch, getState, rejectWithValue } = thunkAPI;
+        return thunkTryCatch(thunkAPI, async () => {
+            await cardsApi.removeCard(arg.dto);
             await dispatch(cardThunks.getAllCardsByPack(arg.query)).unwrap();
         });
     }
 );
 export const cardReducer = slice.reducer;
 export const cardActions = slice.actions;
-export const cardThunks = { getAllCardsByPack, addCard };
+export const cardThunks = { getAllCardsByPack, addCard, removeCard };

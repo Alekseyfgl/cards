@@ -17,4 +17,8 @@ export const cardsApi = {
         //I added unknown, because response from server isn't interesting me, I use getAllCardsByPack
         return instance.post<{}, AxiosResponse<unknown>, ICardDto>(`${base}/card`, payload);
     },
+
+    removeCard: (params: { id: string }) => {
+        return instance.delete<{}, AxiosResponse<unknown>, ICardDto>(`${base}/card`, { params });
+    },
 };

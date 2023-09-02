@@ -1,5 +1,5 @@
 import { Nullable } from '../../../../common/utils/types/optional.types';
-import { ICard } from '../../cards.interfaces';
+import { ICard, ICardQuery } from '../../cards.interfaces';
 import { useAppSelector } from '../../../../app/hooks';
 import { cardsByPackSelector } from '../../cards.selector';
 import { TableBody } from '@mui/material';
@@ -14,10 +14,11 @@ import { CellBts } from './CellBtns/CellBts';
 
 interface BodyCardsProps {
     isLoading: boolean;
+    query: ICardQuery;
 }
 
 export const BodyCards: FC<BodyCardsProps> = (props) => {
-    const { isLoading } = props;
+    const { isLoading, query } = props;
 
     const cardsList: Nullable<ICard[]> = useAppSelector(cardsByPackSelector);
     const profileId = useAppSelector(selectorProfileId);
@@ -38,7 +39,7 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
                             <TableCell align="center">{answer}</TableCell>
                             <TableCell align="center">{updated}</TableCell>
                             <TableCell align="center">{<Grade value={grade} />}</TableCell>
-                            <CellBts profileId={profileId!} authorId={user_id} rowPackId={_id} answer={answer} question={question} key={i} />
+                            <CellBts profileId={profileId!} authorId={user_id} cardId={_id} answer={answer} question={question} key={i} query={query} />
                         </TableRow>
                     );
                 })

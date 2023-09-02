@@ -94,7 +94,7 @@ export const CardsList = () => {
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
                             <HeaderCards disabled={isLoading} changeSort={sortCardsHandler} orderBy={params.sortCards} />
-                            <BodyCards isLoading={isLoading} />
+                            <BodyCards isLoading={isLoading} query={params} />
                         </Table>
                     </TableContainer>
 
