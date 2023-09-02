@@ -13,5 +13,8 @@ export const MSG_PACK = {
 };
 
 export const MSG_CARD = {
+    REQUIRED_QUESTION: 'Fill in question',
+    REQUIRED_ANSWER: 'Fill in answer',
     ADD_CARD: 'Write the name of the question and the answer to it if you want to add a card',
+    TITLE_LENGTH: 'Title must be at least 3 characters long',
 };

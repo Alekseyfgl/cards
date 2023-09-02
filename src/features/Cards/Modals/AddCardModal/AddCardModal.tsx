@@ -1,15 +1,15 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import { Button, TextField } from '@mui/material';
-import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 import s from '../../../Packs/Modals/AddPackModal/styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { ICard, ICardDto, ICardQuery } from '../../cards.interfaces';
 import { addCardDtoMapper } from '../../utils/mappers/card.mapper';
 import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
 import { cardThunks } from '../../cards.slice';
+import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 
 interface AddCardProps {
     isOpen: boolean;
@@ -25,7 +25,7 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
     const { isOpen, packId, closeModal, maxLength = 100, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
-    const [disable, setDisable] = useState(true);
+    const [isEmptyQuestion, setIsEmptyQuestion] = useState(true);
 
     const {
         register,
@@ -51,18 +51,17 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
         });
     };
 
-    // const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //     const inputValue: string = e.target.value.trimStart();
-    //     // if (inputValue) {
-    //     //     disable && setDisable(false);
-    //     //     setValue('name', inputValue);
-    //     // } else {
-    //     //     setDisable(true);
-    //     // }
-    // };
-
+    const changeQuestionName = (e: ChangeEvent<HTMLInputElement>) => {
+        const inputValue: string = e.target.value.trimStart();
+        if (inputValue) {
+            isEmptyQuestion && setIsEmptyQuestion(false);
+            setValue('question', inputValue);
+        } else {
+            setIsEmptyQuestion(true);
+        }
+    };
     return (
-        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} handleClose={() => {}}>
+        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} handleClose={closeModal}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Question"
@@ -70,11 +69,11 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
                     fullWidth={true}
                     inputProps={{ maxLength }}
                     sx={{ marginBottom: 3 }}
-                    {...register('question', addPackValidate)}
+                    {...register('question', addQuestionValidate)}
                     error={!!errors.question}
                     helperText={errors.question?.message}
-                    // onChange={handleNameChange}
                     disabled={isSentRequest}
+                    onChange={changeQuestionName}
                 />
                 <TextField
                     label="Answer"
@@ -82,18 +81,17 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
                     fullWidth={true}
                     inputProps={{ maxLength }}
                     sx={{ marginBottom: 3 }}
-                    {...register('answer', addPackValidate)}
+                    {...register('answer', addAnswerValidate)}
                     error={!!errors.answer}
                     helperText={errors.answer?.message}
-                    // onChange={handleNameChange}
                     disabled={isSentRequest}
                 />
 
                 <div className={s.btns}>
-                    <SendRequestButton isSentRequest={isSentRequest} disabled={false}>
+                    <SendRequestButton disabled={isEmptyQuestion} isSentRequest={isSentRequest}>
                         Save
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={() => {}}>
+                    <Button variant="contained" color={'inherit'} onClick={closeModal}>
                         Cancel
                     </Button>
                 </div>

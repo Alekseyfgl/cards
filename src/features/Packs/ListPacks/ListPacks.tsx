@@ -1,5 +1,5 @@
 import s from './styles.module.scss';
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -84,12 +84,12 @@ export const ListPacks = () => {
         setPage(newPage.toString());
     };
 
-    const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-        const rowsPerPage: number = +event.target.value;
-        setRowsPerPage(rowsPerPage.toString());
-        setPage('1');
-        onChangePagination(1, rowsPerPage);
-    };
+    // const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+    //     const rowsPerPage: number = +event.target.value;
+    //     setRowsPerPage(rowsPerPage.toString());
+    //     setPage('1');
+    //     onChangePagination(1, rowsPerPage);
+    // };
 
     return (
         <>
