@@ -3,7 +3,7 @@ import CustomSearch from '../../../common/components/CustomSearch/CustomSearch';
 import { Button, ButtonGroup, IconButton } from '@mui/material';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import React, { FC } from 'react';
-import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
+import { Nullable, Optional } from '../../../common/utils/types/optional.types';
 import { useAppSelector } from '../../../app/hooks';
 import { RangeSlider } from '../../../common/components/SupperSlider/SupperSlider';
 

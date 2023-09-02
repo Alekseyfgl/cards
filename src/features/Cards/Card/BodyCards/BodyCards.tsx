@@ -1,4 +1,4 @@
-import { Nullable } from '../../../../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../../../../common/utils/types/optional.types';
 import { ICard } from '../../cards.interfaces';
 import { useAppSelector } from '../../../../app/hooks';
 import { cardsByPackSelector } from '../../cards.selector';

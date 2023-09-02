@@ -9,7 +9,7 @@ import Table from '@mui/material/Table';
 import { THeaderPack } from './HeaderPack/THeaderPack';
 import { PaginationCustom } from '../PaginationCustom/Pagination';
 import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
-import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../../../common/utils/types/optional.types';
 import { selectorPacks } from '../packs.selector';
 import { superSortCreator } from '../utils/super-sort';
 import { packThunks } from '../packs.slice';

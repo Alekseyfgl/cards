@@ -1,4 +1,4 @@
-import { Optional } from '../../../../common/utils/optionalTypes/optional.types';
+import { Optional } from '../../../../common/utils/types/optional.types';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';

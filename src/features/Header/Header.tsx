@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { UserAvatar } from '../../common/components/CustomAvatar/CustomAvatar';
 import { selectorUserName, selectorUserPhoto } from '../Auth/auth.selector';
-import { Nullable, Optional } from '../../common/utils/optionalTypes/optional.types';
+import { Nullable, Optional } from '../../common/utils/types/optional.types';
 import { authThunks } from '../Auth/auth.slice';
 import { useNavigate } from 'react-router-dom';
 // const pages = ['Products', 'Pricing', 'Blog'];

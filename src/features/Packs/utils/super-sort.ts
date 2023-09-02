@@ -1,4 +1,4 @@
-import { SortTypes } from '../../../common/utils/optionalTypes/sort.types';
+import { SortTypes } from '../../../common/utils/types/sort.types';
 
 /**
  * change sort with direction(asc|desc)

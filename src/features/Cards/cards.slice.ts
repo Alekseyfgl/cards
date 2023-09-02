@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
-import { CurrentPackType, ICard, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
+import { CurrentPackType, ICard, ICardDto, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
 import { cardsApi } from './cards.api';
-import { Nullable } from '../../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../../common/utils/types/optional.types';
 import { getAllCardsMapper } from './utils/mappers/card.mapper';
 import { logout } from '../Auth/auth.slice';
+import { DomainDto } from '../../common/utils/types/domain-request.types';
 
 const slice = createSlice({
     name: 'card',
@@ -36,6 +37,16 @@ const getAllCardsByPack = createAppAsyncThunk<ICardsByPackDomain, ICardQuery>('c
     );
 });
 
+const addCard = createAppAsyncThunk<void, DomainDto<ICardDto, null, ICardQuery>>(
+    'packs/addPack',
+    async (arg: DomainDto<ICardDto, null, ICardQuery>, thunkAPI) => {
+        const { dispatch, getState, rejectWithValue } = thunkAPI;
+        return thunkTryCatch(thunkAPI, async () => {
+            await cardsApi.addCard(arg.dto);
+            await dispatch(cardThunks.getAllCardsByPack(arg.query)).unwrap();
+        });
+    }
+);
 export const cardReducer = slice.reducer;
 export const cardActions = slice.actions;
-export const cardThunks = { getAllCardsByPack };
+export const cardThunks = { getAllCardsByPack, addCard };

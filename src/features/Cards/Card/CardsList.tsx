@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import React, { useEffect, useState } from 'react';
 import { cardThunks } from '../cards.slice';
-import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
+import { Nullable, Optional } from '../../../common/utils/types/optional.types';
 import { CardSortCurrentTypes, CardSortTypes, ICard, ICardQuery } from '../cards.interfaces';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';

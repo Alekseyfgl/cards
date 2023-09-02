@@ -1,6 +1,7 @@
 // ========== API ===============
 import { getAllCardsMapper } from './utils/mappers/card.mapper';
-import { SortTypes } from '../../common/utils/optionalTypes/sort.types';
+import { SortTypes } from '../../common/utils/types/sort.types';
+import { AddCardFormValues } from './Modals/AddCardModal/AddCardModal';
 
 export interface ICardsByPack {
     cards: ICard[];
@@ -33,6 +34,7 @@ export interface ICard {
     created: string;
     updated: string;
 }
+
 export interface ICardQuery {
     page: string;
     pageCount: string;
@@ -40,6 +42,11 @@ export interface ICardQuery {
     cardQuestion: string;
     cardsPack_id: string;
 }
+
+export interface ICardDto {
+    card: AddCardFormValues;
+}
+
 //============ domain ===============
 export type CurrentPackType = Omit<ICardsByPack, 'cards'>;
 

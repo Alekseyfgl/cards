@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, KeyboardEvent, memo, useEffect, useState } from
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
-import { Nullable } from '../../utils/optionalTypes/optional.types';
+import { Nullable } from '../../utils/types/optional.types';
 
 interface SearchInputProps {
     placeholder?: string;

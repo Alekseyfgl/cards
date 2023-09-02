@@ -1,5 +1,5 @@
 // =========API==========
-import { SortTypes } from 'common/utils/optionalTypes/sort.types';
+import { SortTypes } from 'common/utils/types/sort.types';
 import { buttonRowConst } from './utils/constans/button-row.const';
 
 export interface IPack {

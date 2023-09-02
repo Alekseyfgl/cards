@@ -1,5 +1,5 @@
 import { RootState } from '../../store/store';
-import { Nullable, Optional } from '../../common/utils/optionalTypes/optional.types';
+import { Nullable, Optional } from '../../common/utils/types/optional.types';
 import { IPacks } from './packs.interfaces';
 import { createSelector } from '@reduxjs/toolkit';
 import { createRowPack } from './utils/mappers/pack.mapper';
