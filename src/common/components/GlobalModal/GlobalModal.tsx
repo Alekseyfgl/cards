@@ -29,7 +29,7 @@ export const BasicModal: FC<GlobalModalProps> = (props) => {
     const { isOpen, title, handleClose, children } = props;
     return (
         <div>
-            <Modal open={isOpen} onClose={handleClose}>
+            <Modal open={isOpen} onClose={handleClose} onClick={(e) => e.stopPropagation()}>
                 <Box sx={style}>
                     <div>
                         <div className={`${s.header} ${s.wr}`}>
