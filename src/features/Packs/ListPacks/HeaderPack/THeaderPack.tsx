@@ -23,18 +23,26 @@ export const THeaderPack: FC<EnhancedTableProps> = (props) => {
     return (
         <TableHead>
             <TableRow>
-                {packHeadCells.map((headCell) => (
-                    <TableCell width={210} className={s.header} key={headCell.id} align={'center'}>
-                        <TableSortLabel
-                            disabled={disabled}
-                            active={headCell.sortBy === orderBy.slice(1)}
-                            onClick={createSortHandler(headCell.sortBy)}
-                            direction={getDirectionSort(orderBy)}
-                        >
-                            {headCell.label}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
+                {packHeadCells.map((headCell) => {
+                    const { id, sortBy, label } = headCell;
+                    const isActionCell = label === 'Actions';
+                    return (
+                        <TableCell width={210} className={s.header} key={id} align={'center'}>
+                            {isActionCell ? (
+                                label
+                            ) : (
+                                <TableSortLabel
+                                    disabled={disabled}
+                                    active={sortBy === orderBy.slice(1)}
+                                    onClick={createSortHandler(sortBy)}
+                                    direction={getDirectionSort(orderBy)}
+                                >
+                                    {headCell.label}
+                                </TableSortLabel>
+                            )}
+                        </TableCell>
+                    );
+                })}
             </TableRow>
         </TableHead>
     );
