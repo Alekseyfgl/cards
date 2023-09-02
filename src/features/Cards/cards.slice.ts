@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
 import { CurrentPackType, ICard, ICardDto, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
 import { cardsApi } from './cards.api';
@@ -13,7 +13,13 @@ const slice = createSlice({
         cards: null as Nullable<ICard[]>,
         currentPack: null as Nullable<CurrentPackType>,
     },
-    reducers: {},
+    reducers: {
+        resetCurrentPack: (state, action: PayloadAction<{}>) => {
+            // console.log(current(state));
+            state.cards = null;
+            state.currentPack = null;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getAllCardsByPack.fulfilled, (state, action) => {
             state.cards = action.payload.cards;

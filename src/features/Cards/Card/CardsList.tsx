@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import React, { useEffect, useState } from 'react';
-import { cardThunks } from '../cards.slice';
+import { cardActions, cardThunks } from '../cards.slice';
 import { Nullable, Optional } from '../../../common/utils/types/optional.types';
 import { CardSortCurrentTypes, CardSortTypes, ICard, ICardQuery } from '../cards.interfaces';
 import Box from '@mui/material/Box';
@@ -67,10 +67,15 @@ export const CardsList = () => {
         setIsOpenModal(false);
     };
 
+    const backHandler = () => {
+        navigate(-1);
+        dispatch(cardActions.resetCurrentPack({}));
+    };
+
     return (
         <>
             <AddCardModal isOpen={isOpenModal} closeModal={closeModal} queryParams={params} packId={id!} />
-            <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} variant="contained" sx={{ borderRadius: 5, marginBottom: '30px' }}>
+            <Button startIcon={<ArrowBackIcon />} onClick={backHandler} variant="contained" sx={{ borderRadius: 5, marginBottom: '30px' }}>
                 back
             </Button>
             <div className={s.wr}>
