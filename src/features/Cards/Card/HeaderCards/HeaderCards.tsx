@@ -13,27 +13,35 @@ interface HeaderCardsProps {
     orderBy: CardSortCurrentTypes;
     disabled: boolean;
 }
-export const HeaderCards: FC<HeaderCardsProps> = (props) => {
-    const { orderBy, disabled, changeSort } = props;
 
+export const HeaderCards: FC<HeaderCardsProps> = ({ orderBy, disabled, changeSort }) => {
     const changeSortHandler = (property: CardSortTypes) => (e: MouseEvent<unknown>) => {
         changeSort(property);
     };
+
     return (
         <TableHead>
             <TableRow>
-                {cardHeadCells.map((headCell) => (
-                    <TableCell width={210} className={s.header} key={headCell.id} align={'center'}>
-                        <TableSortLabel
-                            disabled={disabled}
-                            onClick={changeSortHandler(headCell.sortBy as CardSortTypes)}
-                            active={headCell.sortBy === orderBy.slice(1)}
-                            direction={getDirectionSort(orderBy)}
-                        >
-                            {headCell.label}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
+                {cardHeadCells.map((headCell) => {
+                    const { id, label, sortBy } = headCell;
+                    const isActionCell = label === 'Actions';
+                    return (
+                        <TableCell width={210} className={s.header} key={id} align={'center'}>
+                            {isActionCell ? (
+                                label
+                            ) : (
+                                <TableSortLabel
+                                    disabled={disabled}
+                                    onClick={changeSortHandler(sortBy as CardSortTypes)}
+                                    active={sortBy === orderBy.slice(1)}
+                                    direction={getDirectionSort(orderBy)}
+                                >
+                                    {label}
+                                </TableSortLabel>
+                            )}
+                        </TableCell>
+                    );
+                })}
             </TableRow>
         </TableHead>
     );

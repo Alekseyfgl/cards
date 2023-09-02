@@ -10,6 +10,7 @@ import s from '../../../Packs/ListPacks/BodyPack/styles.module.scss';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
 import { Grade } from '../../Grade/Grade';
 import { selectorProfileId } from '../../../Auth/auth.selector';
+import { CellBts } from './CellBtns/CellBts';
 
 interface BodyCardsProps {
     isLoading: boolean;
@@ -27,7 +28,7 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
             {isLoading ? (
                 <SkeletonTable totalRow={5} />
             ) : (
-                cardsList?.map((rowCard) => {
+                cardsList?.map((rowCard, i) => {
                     const { grade, updated, question, answer, _id, user_id } = rowCard;
                     return (
                         <TableRow hover role="checkbox" tabIndex={-1} key={_id} sx={{ cursor: 'default', height: '76px' }}>
@@ -37,7 +38,7 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
                             <TableCell align="center">{answer}</TableCell>
                             <TableCell align="center">{updated}</TableCell>
                             <TableCell align="center">{<Grade value={grade} />}</TableCell>
-                            <TableCell align="center">{'actions'}</TableCell>
+                            <CellBts profileId={profileId!} authorId={user_id} rowPackId={_id} answer={answer} question={question} key={i} />
                         </TableRow>
                     );
                 })
