@@ -15,6 +15,6 @@ export const cardsApi = {
     },
     addCard: (payload: ICardDto) => {
         //I added unknown, because response from server isn't interesting me, I use getAllCardsByPack
-        return instance.post<{}, AxiosResponse<unknown>, ICardDto>(`${base}/pack`, payload);
+        return instance.post<{}, AxiosResponse<unknown>, ICardDto>(`${base}/card`, payload);
     },
 };

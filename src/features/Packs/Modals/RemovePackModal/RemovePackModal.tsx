@@ -29,7 +29,8 @@ export const RemovePackModal: FC<RemovePackModalProps> = memo((props) => {
             });
     };
 
-    const closeModalHandler = () => {
+    const closeModalHandler = (e?: unknown) => {
+        (e as Event)?.stopPropagation();
         if (isSentRequest) return;
         closeModal();
     };

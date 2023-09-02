@@ -42,6 +42,7 @@ const addCard = createAppAsyncThunk<void, DomainDto<ICardDto, null, ICardQuery>>
     async (arg: DomainDto<ICardDto, null, ICardQuery>, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
         return thunkTryCatch(thunkAPI, async () => {
+            console.log('DTO', arg.dto);
             await cardsApi.addCard(arg.dto);
             await dispatch(cardThunks.getAllCardsByPack(arg.query)).unwrap();
         });

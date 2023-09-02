@@ -19,9 +19,10 @@ import { HeaderCards } from './HeaderCards/HeaderCards';
 import { superSortCreator } from '../../Packs/utils/super-sort';
 import { BodyCards } from './BodyCards/BodyCards';
 import CustomSearch from 'common/components/CustomSearch/CustomSearch';
+import { AddCardModal } from '../Modals/AddCardModal/AddCardModal';
 
 export const CardsList = () => {
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams<{ id: string }>(); // id pack
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const profilerId: Optional<string> = useAppSelector(selectorProfileId);
@@ -31,8 +32,9 @@ export const CardsList = () => {
     const cardsTotalCount: Optional<number> = useAppSelector(cardsTotalCountSelector);
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const [params, setParams] = useState<ICardQuery>({
-        sortCards: '1grade',
+        sortCards: '0created',
         page: '1',
         pageCount: '5',
         cardsPack_id: id!,
@@ -60,15 +62,21 @@ export const CardsList = () => {
         setParams({ ...params, cardQuestion: searchValue?.trim() ?? '' });
     };
 
+    const closeModal = () => {
+        if (isLoading) return;
+        setIsOpenModal(false);
+    };
+
     return (
         <>
+            <AddCardModal isOpen={isOpenModal} closeModal={closeModal} queryParams={params} packId={id!} />
             <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)} variant="contained" sx={{ borderRadius: 5, marginBottom: '30px' }}>
                 back
             </Button>
             <div className={s.wr}>
                 <div className={s.title}>{isLoading ? '' : currentPackTitle}</div>
                 {profilerId === packUserId && (
-                    <Button onClick={() => {}} variant="contained" sx={{ borderRadius: 5 }}>
+                    <Button onClick={() => setIsOpenModal(true)} variant="contained" sx={{ borderRadius: 5 }}>
                         Create new card
                     </Button>
                 )}

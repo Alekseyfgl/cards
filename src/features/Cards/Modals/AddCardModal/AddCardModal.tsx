@@ -8,19 +8,21 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { ICard, ICardDto, ICardQuery } from '../../cards.interfaces';
 import { addCardDtoMapper } from '../../utils/mappers/card.mapper';
+import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
+import { cardThunks } from '../../cards.slice';
 
 interface AddCardProps {
-    title: string;
     isOpen: boolean;
     closeModal: () => void;
     maxLength?: number;
     queryParams: ICardQuery;
+    packId: string;
 }
 
 export type AddCardFormValues = Pick<ICard, 'cardsPack_id' | 'answer' | 'question'>;
 
 export const AddCardModal: FC<AddCardProps> = (props) => {
-    const { isOpen, closeModal, title, maxLength = 30, queryParams } = props;
+    const { isOpen, packId, closeModal, maxLength = 100, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [disable, setDisable] = useState(true);
@@ -30,7 +32,11 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
         handleSubmit,
         setValue,
         formState: { errors },
-    } = useForm<AddCardFormValues>();
+    } = useForm<AddCardFormValues>({
+        defaultValues: {
+            cardsPack_id: packId,
+        },
+    });
 
     const onSubmit = (formValue: AddCardFormValues) => {
         addCardHandler(formValue);
@@ -39,11 +45,10 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
     const addCardHandler = (cardDto: AddCardFormValues) => {
         setIsSentRequest(true);
         const dto: ICardDto = addCardDtoMapper(cardDto);
-
-        // dispatch(packThunks.addPack({ dto, queryParams })).then(() => {
-        //     setIsSentRequest(false);
-        //     closeModal();
-        // });
+        dispatch(cardThunks.addCard({ dto, params: null, query: queryParams })).finally(() => {
+            setIsSentRequest(false);
+            closeModal();
+        });
     };
 
     // const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +62,7 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
     // };
 
     return (
-        <BasicModal isOpen={false} title={'Add pack'} handleClose={() => {}}>
+        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} handleClose={() => {}}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Question"

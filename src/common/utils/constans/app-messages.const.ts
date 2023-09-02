@@ -11,3 +11,7 @@ export const MSG_PACK = {
     REMOVE_PACK: 'Do you want to remove this pack?',
     CHANGE_TITLE: 'Write new title of pack',
 };
+
+export const MSG_CARD = {
+    ADD_CARD: 'Write the name of the question and the answer to it if you want to add a card',
+};
