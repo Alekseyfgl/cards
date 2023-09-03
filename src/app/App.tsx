@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from './hooks';
 import React, { useEffect } from 'react';
-import { CircularIndeterminate } from '../features/Loader/Loader';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import { Login } from '../features/Auth/Login/Login';
 import { Register } from '../features/Auth/Register/Register';
@@ -10,6 +9,7 @@ import { ListPacks } from '../features/Packs/ListPacks/ListPacks';
 import { RequireAuth } from '../common/components/RequerAuth/RequireAuth';
 import { Layout } from '../common/components/Layout/Layout';
 import { CardsList } from '../features/Cards/Card/CardsList';
+import { CircularIndeterminate } from '../common/components/Loader/Loader';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);

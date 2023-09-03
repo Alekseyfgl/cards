@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/lab';
+import Skeleton from '@mui/material/Skeleton';
 import React, { FC } from 'react';
 
 interface SkeletonStringProps {
@@ -7,5 +7,5 @@ interface SkeletonStringProps {
 
 export const SkeletonString: FC<SkeletonStringProps> = (props) => {
     const { fontSize = '1rem' } = props;
-    return <Skeleton variant='text' sx={{ fontSize }} />;
+    return <Skeleton variant="text" sx={{ fontSize }} />;
 };
