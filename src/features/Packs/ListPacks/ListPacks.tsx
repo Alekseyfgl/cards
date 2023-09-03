@@ -84,13 +84,6 @@ export const ListPacks = () => {
         setPage(newPage.toString());
     };
 
-    // const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    //     const rowsPerPage: number = +event.target.value;
-    //     setRowsPerPage(rowsPerPage.toString());
-    //     setPage('1');
-    //     onChangePagination(1, rowsPerPage);
-    // };
-
     return (
         <>
             {isOpenModal && <AddPackModal title={'Add new pack'} isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}

@@ -49,8 +49,7 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
     const changePackHandler = (packDto: ChangePackFormValues) => {
         setIsSentRequest(true);
         const dto: IChangePack = changePackMapper(packDto);
-        // console.log('dto', dto);
-        //
+
         dispatch(packThunks.updatePack({ dto, queryParams })).then(() => {
             setIsSentRequest(false);
             closeModal();

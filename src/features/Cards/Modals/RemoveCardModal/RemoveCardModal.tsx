@@ -29,8 +29,7 @@ export const RemoveCardModal: FC<RemoveCardModalProps> = memo((props) => {
         });
     };
 
-    const closeModalHandler = (e?: unknown) => {
-        (e as Event)?.stopPropagation();
+    const closeModalHandler = () => {
         if (isSentRequest) return;
         closeModal();
     };

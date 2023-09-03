@@ -29,6 +29,7 @@ export const BasicModal: FC<GlobalModalProps> = (props) => {
     const { isOpen, title, handleClose, children } = props;
     return (
         <div>
+            {/*onClick={(e) => e.stopPropagation()} it's important*/}
             <Modal open={isOpen} onClose={handleClose} onClick={(e) => e.stopPropagation()}>
                 <Box sx={style}>
                     <div>
