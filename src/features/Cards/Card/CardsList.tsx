@@ -98,7 +98,7 @@ export const CardsList = () => {
                         </Table>
                     </TableContainer>
 
-                    {currentPackTitle && (
+                    {cardsList?.length ? (
                         <PaginationCustom
                             disabled={isLoading}
                             page={+params.page}
@@ -106,6 +106,8 @@ export const CardsList = () => {
                             totalCount={cardsTotalCount!}
                             handleChangePage={changePageHandler}
                         />
+                    ) : (
+                        ''
                     )}
                 </Paper>
             </Box>

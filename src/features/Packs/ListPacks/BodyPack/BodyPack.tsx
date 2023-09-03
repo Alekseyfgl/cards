@@ -3,7 +3,6 @@ import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';
 import React, { FC, MouseEvent } from 'react';
-import s from './styles.module.scss';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
 import { truncateText } from '../../../../common/utils/functions/truncate-text/truncate-text';
 import { CustomTooltip } from '../../../../common/components/CustomTooltip/CustomTooltip';
@@ -12,6 +11,8 @@ import { TableBody } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import { TableCellBtn } from './TableCellBtn/TableCellBtn';
 import { useNavigate } from 'react-router-dom';
+import { StubEmptyTableBody } from '../../../../common/components/StubEmptyTableBody/StubEmptyTableBody';
+import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
 
 interface BodyPackProps {
     isLoading: boolean;
@@ -27,7 +28,8 @@ export const BodyPack: FC<BodyPackProps> = (props) => {
         navigate(`/card/${id}`);
     };
 
-    if (cardPacks.length === 0 && !isLoading) return <div className={s.wr}>Cards were not found</div>;
+    if (cardPacks.length === 0 && !isLoading) return <StubEmptyTableBody colSpan={5} text={MSG_CARD.CARDS_NOT_FOUND} />;
+
     return (
         <TableBody>
             {isLoading ? (

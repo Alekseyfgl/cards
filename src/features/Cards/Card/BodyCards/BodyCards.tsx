@@ -6,11 +6,12 @@ import { TableBody } from '@mui/material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import React, { FC } from 'react';
-import s from '../../../Packs/ListPacks/BodyPack/styles.module.scss';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
 import { Grade } from '../../Grade/Grade';
 import { selectorProfileId } from '../../../Auth/auth.selector';
 import { CellBts } from './CellBtns/CellBts';
+import { StubEmptyTableBody } from '../../../../common/components/StubEmptyTableBody/StubEmptyTableBody';
+import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
 
 interface BodyCardsProps {
     isLoading: boolean;
@@ -23,7 +24,7 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
     const cardsList: Nullable<ICard[]> = useAppSelector(cardsByPackSelector);
     const profileId = useAppSelector(selectorProfileId);
 
-    if (cardsList?.length === 0 && !isLoading) return <div className={s.wr}>Cards were not found</div>;
+    if (cardsList?.length === 0 && !isLoading) return <StubEmptyTableBody colSpan={5} text={MSG_CARD.CARDS_NOT_FOUND} />;
     return (
         <TableBody>
             {isLoading ? (
