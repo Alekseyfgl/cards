@@ -1,6 +1,6 @@
 import { Nullable } from '../../common/utils/types/optional.types';
 import { instance } from '../../common/api/common.api';
-import { ICardDto, ICardQuery, ICardsByPack } from './cards.interfaces';
+import { AddCardDto, ICardQuery, ICardsByPack } from './cards.interfaces';
 import { AxiosResponse } from 'axios';
 
 const base = 'cards';
@@ -13,12 +13,12 @@ export const cardsApi = {
 
         return instance.get<ICardsByPack>(`${base}/card`, { params: query });
     },
-    addCard: (payload: ICardDto) => {
+    addCard: (payload: AddCardDto) => {
         //I added unknown, because response from server isn't interesting me, I use getAllCardsByPack
-        return instance.post<{}, AxiosResponse<unknown>, ICardDto>(`${base}/card`, payload);
+        return instance.post<{}, AxiosResponse<unknown>, AddCardDto>(`${base}/card`, payload);
     },
 
     removeCard: (params: { id: string }) => {
-        return instance.delete<{}, AxiosResponse<unknown>, ICardDto>(`${base}/card`, { params });
+        return instance.delete<{}, AxiosResponse<unknown>, AddCardDto>(`${base}/card`, { params });
     },
 };

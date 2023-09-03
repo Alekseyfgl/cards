@@ -5,7 +5,7 @@ import { SendRequestButton } from '../../../../common/components/ButtonSendReque
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../../common/utils/hooks';
-import { ICard, ICardDto, ICardQuery } from '../../cards.interfaces';
+import { AddCardDto, ICard, ICardQuery } from '../../cards.interfaces';
 import { addCardDtoMapper } from '../../utils/mappers/card.mapper';
 import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
 import { cardThunks } from '../../cards.slice';
@@ -30,7 +30,9 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
     const {
         register,
         handleSubmit,
+        clearErrors, // this is for error removal when validation is correct
         setValue,
+        reset,
         formState: { errors },
     } = useForm<AddCardFormValues>({
         defaultValues: {
@@ -40,28 +42,36 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
 
     const onSubmit = (formValue: AddCardFormValues) => {
         addCardHandler(formValue);
+        reset();
     };
 
     const addCardHandler = (cardDto: AddCardFormValues) => {
         setIsSentRequest(true);
-        const dto: ICardDto = addCardDtoMapper(cardDto);
+        const dto: AddCardDto = addCardDtoMapper(cardDto);
         dispatch(cardThunks.addCard({ dto, params: null, query: queryParams })).finally(() => {
             setIsSentRequest(false);
             closeModal();
+            setIsEmptyQuestion(true);
         });
     };
 
+    const closeModalHandler = () => {
+        closeModal();
+        setIsEmptyQuestion(true);
+        reset();
+    };
     const changeQuestionName = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue: string = e.target.value.trimStart();
         if (inputValue) {
             isEmptyQuestion && setIsEmptyQuestion(false);
             setValue('question', inputValue);
+            clearErrors('question'); //this is for error removal when validation is correct
         } else {
             setIsEmptyQuestion(true);
         }
     };
     return (
-        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} handleClose={closeModal}>
+        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} handleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Question"

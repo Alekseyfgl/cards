@@ -1,5 +1,6 @@
-import { ICardDto, ICardsByPack } from '../../cards.interfaces';
+import { AddCardDto, ChangeCardDto, ICardsByPack } from '../../cards.interfaces';
 import { AddCardFormValues } from '../../Modals/AddCardModal/AddCardModal';
+import { ChangeCardFormValues } from '../../Modals/ChangeCardModal/ChangeCardModal';
 
 export const getAllCardsMapper = (cardsByPack: ICardsByPack) => {
     return {
@@ -20,4 +21,5 @@ export const getAllCardsMapper = (cardsByPack: ICardsByPack) => {
     };
 };
 
-export const addCardDtoMapper = (dto: AddCardFormValues): ICardDto => ({ card: dto });
+export const addCardDtoMapper = (dto: AddCardFormValues): AddCardDto => ({ card: dto });
+export const changeCardDtoMapper = (dto: ChangeCardFormValues): ChangeCardDto => ({ card: dto });

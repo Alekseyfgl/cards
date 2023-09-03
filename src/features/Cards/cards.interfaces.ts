@@ -2,6 +2,7 @@
 import { getAllCardsMapper } from './utils/mappers/card.mapper';
 import { SortTypes } from '../../common/utils/types/sort.types';
 import { AddCardFormValues } from './Modals/AddCardModal/AddCardModal';
+import { ChangeCardFormValues } from './Modals/ChangeCardModal/ChangeCardModal';
 
 export interface ICardsByPack {
     cards: ICard[];
@@ -27,6 +28,7 @@ export interface ICard {
     grade: number;
     shots: number;
     answerImg: string;
+    questionImg: string;
     comments: string;
     type: 'card';
     rating: number;
@@ -43,8 +45,11 @@ export interface ICardQuery {
     cardsPack_id: string;
 }
 
-export interface ICardDto {
+export interface AddCardDto {
     card: AddCardFormValues;
+}
+export interface ChangeCardDto {
+    card: ChangeCardFormValues;
 }
 
 //============ domain ===============

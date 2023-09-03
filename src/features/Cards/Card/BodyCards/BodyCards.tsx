@@ -31,7 +31,7 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
                 <SkeletonTable totalRow={5} />
             ) : (
                 cardsList?.map((rowCard, i) => {
-                    const { grade, updated, question, answer, _id, user_id } = rowCard;
+                    const { grade, updated, question, answer, _id, user_id, questionImg } = rowCard;
                     return (
                         <TableRow hover role="checkbox" tabIndex={-1} key={_id} sx={{ cursor: 'default', height: '76px' }}>
                             <TableCell scope="row" align={'center'}>
@@ -40,7 +40,16 @@ export const BodyCards: FC<BodyCardsProps> = (props) => {
                             <TableCell align="center">{answer}</TableCell>
                             <TableCell align="center">{updated}</TableCell>
                             <TableCell align="center">{<Grade value={grade} />}</TableCell>
-                            <CellBts profileId={profileId!} authorId={user_id} cardId={_id} answer={answer} question={question} key={i} query={query} />
+                            <CellBts
+                                profileId={profileId!}
+                                authorId={user_id}
+                                cardId={_id}
+                                answer={answer}
+                                question={question}
+                                key={i}
+                                query={query}
+                                questionImg={questionImg}
+                            />
                         </TableRow>
                     );
                 })

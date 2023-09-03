@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
-import { CurrentPackType, ICard, ICardDto, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
+import { AddCardDto, CurrentPackType, ICard, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
 import { cardsApi } from './cards.api';
 import { Nullable } from '../../common/utils/types/optional.types';
 import { getAllCardsMapper } from './utils/mappers/card.mapper';
@@ -43,9 +43,9 @@ const getAllCardsByPack = createAppAsyncThunk<ICardsByPackDomain, ICardQuery>('c
     );
 });
 
-const addCard = createAppAsyncThunk<void, DomainDto<ICardDto, null, ICardQuery>>(
+const addCard = createAppAsyncThunk<void, DomainDto<AddCardDto, null, ICardQuery>>(
     'packs/addPack',
-    async (arg: DomainDto<ICardDto, null, ICardQuery>, thunkAPI) => {
+    async (arg: DomainDto<AddCardDto, null, ICardQuery>, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
         return thunkTryCatch(thunkAPI, async () => {
             await cardsApi.addCard(arg.dto);

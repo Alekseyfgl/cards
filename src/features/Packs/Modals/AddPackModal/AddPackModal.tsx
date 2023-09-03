@@ -31,6 +31,7 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
 
     const {
         register,
+        clearErrors, // this is for error removal when validation is correct
         handleSubmit,
         setValue,
         formState: { errors },
@@ -55,6 +56,7 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         if (inputValue) {
             disable && setDisable(false);
             setValue('name', inputValue);
+            clearErrors('name'); //this is for error removal when validation is correct
         } else {
             setDisable(true);
         }
