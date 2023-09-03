@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
-import { AddCardDto, CurrentPackType, ICard, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
+import { AddCardDto, ChangeCardDto, CurrentPackType, ICard, ICardQuery, ICardsByPackDomain } from './cards.interfaces';
 import { cardsApi } from './cards.api';
 import { Nullable } from '../../common/utils/types/optional.types';
 import { getAllCardsMapper } from './utils/mappers/card.mapper';
@@ -44,7 +44,7 @@ const getAllCardsByPack = createAppAsyncThunk<ICardsByPackDomain, ICardQuery>('c
 });
 
 const addCard = createAppAsyncThunk<void, DomainDto<AddCardDto, null, ICardQuery>>(
-    'packs/addPack',
+    'card/addPack',
     async (arg: DomainDto<AddCardDto, null, ICardQuery>, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
         return thunkTryCatch(thunkAPI, async () => {
@@ -55,7 +55,7 @@ const addCard = createAppAsyncThunk<void, DomainDto<AddCardDto, null, ICardQuery
 );
 
 const removeCard = createAppAsyncThunk<void, DomainDto<{ id: string }, null, ICardQuery>>(
-    'packs/remove',
+    'card/remove',
     async (arg: DomainDto<{ id: string }, null, ICardQuery>, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
         return thunkTryCatch(thunkAPI, async () => {
@@ -64,6 +64,17 @@ const removeCard = createAppAsyncThunk<void, DomainDto<{ id: string }, null, ICa
         });
     }
 );
+
+const changeCard = createAppAsyncThunk<void, DomainDto<ChangeCardDto, null, ICardQuery>>(
+    'card/change',
+    async (arg: DomainDto<ChangeCardDto, null, ICardQuery>, thunkAPI) => {
+        const { dispatch, getState, rejectWithValue } = thunkAPI;
+        return thunkTryCatch(thunkAPI, async () => {
+            await cardsApi.changeCard(arg.dto);
+            await dispatch(cardThunks.getAllCardsByPack(arg.query)).unwrap();
+        });
+    }
+);
 export const cardReducer = slice.reducer;
 export const cardActions = slice.actions;
-export const cardThunks = { getAllCardsByPack, addCard, removeCard };
+export const cardThunks = { getAllCardsByPack, addCard, removeCard, changeCard };

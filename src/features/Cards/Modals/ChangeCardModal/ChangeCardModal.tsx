@@ -9,6 +9,7 @@ import { SendRequestButton } from '../../../../common/components/ButtonSendReque
 import { ChangeCardDto, ICard, ICardQuery } from '../../cards.interfaces';
 import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { changeCardDtoMapper } from '../../utils/mappers/card.mapper';
+import { cardThunks } from '../../cards.slice';
 
 interface ChangeCardModalProps {
     isOpen: boolean;
@@ -48,11 +49,12 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
     const changePackHandler = (packDto: ChangeCardFormValues) => {
         setIsSentRequest(true);
         const dto: ChangeCardDto = changeCardDtoMapper(packDto);
-        //
-        // dispatch(packThunks.updatePack({ dto, queryParams })).then(() => {
-        //     setIsSentRequest(false);
-        //     closeModal();
-        // });
+
+        dispatch(cardThunks.changeCard({ dto, query, params: null })).finally(() => {
+            setIsSentRequest(false);
+            closeModal();
+            setIsEmptyQuestion(true);
+        });
     };
 
     const onSubmit = (formValue: ChangeCardFormValues) => {
