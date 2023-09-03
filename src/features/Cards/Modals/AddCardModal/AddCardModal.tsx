@@ -42,7 +42,6 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
 
     const onSubmit = (formValue: AddCardFormValues) => {
         addCardHandler(formValue);
-        reset();
     };
 
     const addCardHandler = (cardDto: AddCardFormValues) => {
@@ -52,6 +51,7 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
             setIsSentRequest(false);
             closeModal();
             setIsEmptyQuestion(true);
+            reset();
         });
     };
 
