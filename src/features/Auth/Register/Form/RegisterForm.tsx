@@ -9,9 +9,11 @@ import { useAppDispatch } from '../../../../app/hooks';
 import { emailValidate } from 'common/utils/validationFormRules/email.validate';
 import { confirmPasswordValidate, passwordValidate } from 'common/utils/validationFormRules/password.validate';
 import { appActions } from '../../../../app/app.slice';
-import { MSG_AUTH } from '../../../../common/utils/constans/constans';
+import { MSG_AUTH } from '../../../../common/utils/constans/app-messages.const';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
+    const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [showPassword, setShowPassword] = useState(false);
     const [isSentRequest, setIsSentRequest] = useState(false);
@@ -33,13 +35,9 @@ export const RegisterForm = () => {
             .unwrap()
             .then((r) => {
                 dispatch(appActions.setDone({ done: MSG_AUTH.REGISTERED_SUCCESS(r.addedUser.email) }));
+                navigate('/login');
             })
-            .catch(() => {
-                console.log('catch');
-            })
-            .finally(() => {
-                setIsSentRequest(false);
-            });
+            .finally(() => setIsSentRequest(false));
     };
 
     // console.log(watch()); log input values

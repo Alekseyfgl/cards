@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { login, logout, me } from '../features/Auth/auth.slice';
-import { Nullable } from '../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../common/utils/types/optional.types';
 
 const slice = createSlice({
     name: 'app',

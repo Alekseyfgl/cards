@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, KeyboardEvent, memo, useEffect, useState } from
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
-import { Nullable } from '../../utils/optionalTypes/optional.types';
+import { Nullable } from '../../utils/types/optional.types';
 
 interface SearchInputProps {
     placeholder?: string;
@@ -29,7 +29,7 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputText: string = event.currentTarget.value;
-        setValue(inputText.trim());
+        setValue(inputText.trimStart());
     };
 
     const disableKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -39,10 +39,10 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
     return (
         <>
             <form>
-                <p>Search</p>
+                {/*<p>Search</p>*/}
                 <TextField
                     variant={'outlined'}
-                    //first init get from params, then get from input
+                    size={'small'}
                     value={value === null ? searchValue : value}
                     onChange={handleChange}
                     InputProps={{

@@ -1,4 +1,5 @@
 // =========API==========
+import { SortTypes } from 'common/utils/types/sort.types';
 import { buttonRowConst } from './utils/constans/button-row.const';
 
 export interface IPack {
@@ -17,7 +18,6 @@ export interface IPack {
     created: string;
     updated: string;
     more_id: string;
-    __v: number;
 }
 
 export interface IPacks {
@@ -27,10 +27,11 @@ export interface IPacks {
     cardPacksTotalCount: number;
     minCardsCount: number;
     maxCardsCount: number;
-    token: string;
-    tokenDeathTime: number;
 }
 
+export interface ICardsPackRes {
+    newCardsPack: IPack;
+}
 
 interface IPackQuery {
     page: string;
@@ -42,8 +43,23 @@ interface IPackQuery {
     max: string;
 }
 
-export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
+export interface IAddPack {
+    cardsPack: {
+        name: string;
+        deckCover: string;
+        private: boolean;
+    };
+}
 
+export interface IChangePack {
+    cardsPack: {
+        _id: string;
+        name: string;
+        private: boolean;
+    };
+}
+
+export type PackQueryTypes = Partial<Record<keyof IPackQuery, string>>;
 // ============DOMAIN============
 export interface PacksRow {
     _id: string;
@@ -52,14 +68,10 @@ export interface PacksRow {
     updated: string;
     created: string;
     actions: typeof buttonRowConst;
+    user_id: string;
+    private: boolean;
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
-export type SortTypes = '0' | '1';
 
-export type PackSortRequestTypes =
-    `${SortTypes}name`
-    | `${SortTypes}cardsCount`
-    | `${SortTypes}updated`
-    | `${SortTypes}created`
-    | `${SortTypes}actions`;
+export type PackSortRequestTypes = `${SortTypes}name` | `${SortTypes}cardsCount` | `${SortTypes}updated` | `${SortTypes}created` | `${SortTypes}actions`;

@@ -1,20 +1,23 @@
-import { PackSortRequestTypes, PackSortTypes, SortTypes } from '../packs.interfaces';
+import { SortTypes } from '../../../common/utils/types/sort.types';
 
 /**
  * change sort with direction(asc|desc)
- * @param newCriterionSort - criteria for sorts
+ * @param sortByName - criteria for sorts
  * @param currentSort - current sort with direction 0 | 1
  */
-export const superSortCreator = (newCriterionSort: PackSortTypes, currentSort: PackSortRequestTypes): PackSortRequestTypes => {
-    const direction = currentSort[0] as SortTypes;
-    return direction === '0' ? `${1}${newCriterionSort}` : `${0}${newCriterionSort}`;
+export const superSortCreator = <SortByType extends string, CurrentRequestType extends string>(
+    sortByName: SortByType,
+    currentSort: CurrentRequestType
+): `1${SortByType}` | `0${SortByType}` => {
+    const direction = currentSort[0] as SortByType;
+    return direction === '0' ? `${1}${sortByName}` : `${0}${sortByName}`;
 };
 
 /**
  * return type sorting asc| desc
  * @param currentSort
  */
-export const getDirectionSort = (currentSort: PackSortRequestTypes): 'asc' | 'desc' => {
+export const getDirectionSort = (currentSort: string): 'asc' | 'desc' => {
     const direction = currentSort[0] as SortTypes;
     return direction === '0' ? 'asc' : 'desc';
 };
