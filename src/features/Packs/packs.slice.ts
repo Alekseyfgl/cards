@@ -2,7 +2,24 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createAppAsyncThunk, thunkTryCatch } from '../../common/utils/thunks';
 import { packsApi } from './packs.api';
 import { IAddPack, IChangePack, IPacks, PackQueryTypes } from './packs.interfaces';
-import { Nullable } from '../../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../../common/utils/types/optional.types';
+import { logout } from '../Auth/auth.slice';
+
+const slice = createSlice({
+    name: 'packs',
+    initialState: {
+        packs: null as Nullable<IPacks>,
+    },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getAllPacks.fulfilled, (state, action) => {
+            state.packs = action.payload.packs;
+        });
+        builder.addCase(logout.fulfilled, (state, action) => {
+            state.packs = null;
+        });
+    },
+});
 
 const getAllPacks = createAppAsyncThunk<{ packs: IPacks }, PackQueryTypes>('packs/getAllPacks', async (arg: PackQueryTypes, thunkAPI) => {
     return thunkTryCatch(thunkAPI, async () => {
@@ -11,7 +28,8 @@ const getAllPacks = createAppAsyncThunk<{ packs: IPacks }, PackQueryTypes>('pack
     });
 });
 
-const addPack = createAppAsyncThunk<{ packs: IPacks }, { dto: IAddPack; queryParams: PackQueryTypes }>(
+// createAppAsyncThunk <responseType, requestType>
+const addPack = createAppAsyncThunk<void, { dto: IAddPack; queryParams: PackQueryTypes }>(
     'packs/addPack',
     async (arg: { dto: IAddPack; queryParams: PackQueryTypes }, thunkAPI) => {
         const { dispatch, getState, rejectWithValue } = thunkAPI;
@@ -44,25 +62,11 @@ const updatePack = createAppAsyncThunk<{ packs: IPacks }, { dto: IChangePack; qu
         return thunkTryCatch(thunkAPI, async () => {
             const { dto, queryParams } = arg;
             await packsApi.updatePack(dto);
-            const res: { packs: IPacks } = await dispatch(packThunks.getAllPacks(queryParams)).unwrap();
+            const res = await dispatch(packThunks.getAllPacks(queryParams)).unwrap();
             return { packs: res.packs };
         });
     }
 );
-
-const slice = createSlice({
-    name: 'packs',
-    initialState: {
-        packs: null as Nullable<IPacks>,
-        isLoadingPacks: true,
-    },
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(getAllPacks.fulfilled, (state, action) => {
-            state.packs = action.payload.packs;
-        });
-    },
-});
 
 export const packReducer = slice.reducer;
 export const packActions = slice.actions;

@@ -9,9 +9,9 @@ import { IAddPack } from '../../packs.interfaces';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { packThunks } from '../../packs.slice';
 import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
+import { MSG_PACK } from '../../../../common/utils/constans/app-messages.const';
 
 interface AddModalProps {
-    title: string;
     isOpen: boolean;
     closeModal: () => void;
     maxLength?: number;
@@ -24,13 +24,14 @@ export interface AddPackFormValues {
 }
 
 export const AddPackModal: FC<AddModalProps> = memo((props) => {
-    const { isOpen, closeModal, title, maxLength = 30, queryParams } = props;
+    const { isOpen, closeModal, maxLength = 30, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [disable, setDisable] = useState(true);
 
     const {
         register,
+        clearErrors, // this is for error removal when validation is correct
         handleSubmit,
         setValue,
         formState: { errors },
@@ -55,6 +56,7 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         if (inputValue) {
             disable && setDisable(false);
             setValue('name', inputValue);
+            clearErrors('name'); //this is for error removal when validation is correct
         } else {
             setDisable(true);
         }
@@ -65,7 +67,7 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         closeModal();
     };
     return (
-        <BasicModal isOpen={isOpen} title={title} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={MSG_PACK.ADD_NEW_PACK} handleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Name pack"

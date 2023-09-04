@@ -3,7 +3,7 @@ import CustomSearch from '../../../common/components/CustomSearch/CustomSearch';
 import { Button, ButtonGroup, IconButton } from '@mui/material';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import React, { FC } from 'react';
-import { Nullable, Optional } from '../../../common/utils/optionalTypes/optional.types';
+import { Nullable, Optional } from '../../../common/utils/types/optional.types';
 import { useAppSelector } from '../../../app/hooks';
 import { RangeSlider } from '../../../common/components/SupperSlider/SupperSlider';
 
@@ -23,19 +23,20 @@ interface PackSettingsProps {
     accessoryHandler: (value: string) => void;
     setAmountCards: (amountCards: number[]) => void;
     resetAllFilters: () => void;
+    disabled: boolean;
 }
 
 export const PackSettings: FC<PackSettingsProps> = (props) => {
-    const { searchHandler, accessoryHandler, setAmountCards, resetAllFilters, accessory, amountCards, searchValue } = props;
+    const { searchHandler, accessoryHandler, setAmountCards, resetAllFilters, accessory, disabled, amountCards, searchValue } = props;
     const myId: Optional<string> = useAppSelector((state) => state.auth!.profile!._id!);
 
     return (
         <div className={s.setting_panel}>
-            <CustomSearch placeholder={'write text'} searchHandler={searchHandler} searchValue={searchValue} />
+            <CustomSearch placeholder={'write pack name'} searchHandler={searchHandler} searchValue={searchValue} />
 
             <div>
-                <p>Show pack cards</p>
-                <ButtonGroup variant="contained" color="primary" size={'small'}>
+                {/*<p>Show pack cards</p>*/}
+                <ButtonGroup disabled={disabled} variant="contained" color="primary" size={'small'}>
                     <Button onClick={() => accessoryHandler(myId)} color={accessory === myId ? 'secondary' : 'primary'} size={'small'} sx={btnStyles}>
                         My
                     </Button>
@@ -45,7 +46,7 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
                 </ButtonGroup>
             </div>
 
-            <RangeSlider setAmountCards={setAmountCards} amountCards={amountCards} />
+            <RangeSlider disabled={disabled} setAmountCards={setAmountCards} amountCards={amountCards} />
 
             <IconButton
                 onClick={resetAllFilters}

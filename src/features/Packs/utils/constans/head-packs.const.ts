@@ -1,14 +1,6 @@
-import { PackSortTypes, PacksRow } from '../../packs.interfaces';
 
-export interface PacksCell {
-    id: keyof PacksRow;
-    numeric: boolean;
-    disablePadding: boolean;
-    label: string;
-    sortBy: PackSortTypes;
-}
 
-export const headCells: readonly PacksCell[] = [
+export const packHeadCells = [
     {
         id: 'name',
         numeric: false,
@@ -44,4 +36,4 @@ export const headCells: readonly PacksCell[] = [
         label: 'Actions',
         sortBy: 'actions',
     },
-];
+] as const

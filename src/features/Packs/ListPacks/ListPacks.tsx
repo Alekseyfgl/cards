@@ -1,5 +1,5 @@
 import s from './styles.module.scss';
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -9,7 +9,7 @@ import Table from '@mui/material/Table';
 import { THeaderPack } from './HeaderPack/THeaderPack';
 import { PaginationCustom } from '../PaginationCustom/Pagination';
 import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
-import { Nullable } from '../../../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../../../common/utils/types/optional.types';
 import { selectorPacks } from '../packs.selector';
 import { superSortCreator } from '../utils/super-sort';
 import { packThunks } from '../packs.slice';
@@ -18,10 +18,11 @@ import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
 import { Button } from '@mui/material';
 import { AddPackModal } from '../Modals/AddPackModal/AddPackModal';
+import { shallowEqual } from 'react-redux';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
-    const packs: Nullable<IPacks> = useAppSelector(selectorPacks);
+    const packs: Nullable<IPacks> = useAppSelector(selectorPacks, shallowEqual);
 
     const [searchParams, setSearchParams] = useSearchParams(createPackQuery());
     const params: PackQueryTypes = Object.fromEntries(searchParams);
@@ -33,9 +34,13 @@ export const ListPacks = () => {
     const [accessory, setAccessory] = useState(params.user_id || '');
     const [amountCards, setAmountCards] = useState<number[]>([+params.min!, +params.max!]);
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes));
+        setIsLoading(true);
+        dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes))
+            .unwrap()
+            .finally(() => setIsLoading(false));
     }, [searchParams]);
 
     const openModal = () => setIsOpenModal(true);
@@ -74,27 +79,22 @@ export const ListPacks = () => {
         setSearchParams(createPackQuery(newPage.toString(), rowsPerPage.toString(), sortPacks, searchValue, accessory, amountCards as number[]));
     };
     const handleChangePage = (event: unknown, newPage: number) => {
+        if (+page === newPage) return;
         onChangePagination(newPage, +rowsPerPage);
         setPage(newPage.toString());
     };
 
-    const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-        const rowsPerPage: number = +event.target.value;
-        setRowsPerPage(rowsPerPage.toString());
-        setPage('1');
-        onChangePagination(1, rowsPerPage);
-    };
-
     return (
         <>
-            {isOpenModal && <AddPackModal title={'Add new pack'} isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}
+            {isOpenModal && <AddPackModal isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}
             <div className={s.wr}>
-                <h1 className={s.title}>Packs</h1>
-                <Button onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
+                <h2 className={s.title}>Packs</h2>
+                <Button disabled={isLoading} onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
                     Add new pack
                 </Button>
             </div>
             <PackSettings
+                disabled={isLoading}
                 searchHandler={searchHandler}
                 accessoryHandler={accessoryHandler}
                 setAmountCards={setAmountCardsHandler}
@@ -107,19 +107,21 @@ export const ListPacks = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} />
-                            <BodyPack />
+                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} disabled={isLoading} />
+                            <BodyPack isLoading={isLoading} />
                         </Table>
                     </TableContainer>
 
-                    {packs && (
+                    {packs?.cardPacks.length ? (
                         <PaginationCustom
+                            disabled={isLoading}
                             page={packs.page}
                             rowsPerPage={+rowsPerPage}
                             totalCount={packs.cardPacksTotalCount}
                             handleChangePage={handleChangePage}
-                            handleChangeRowsPerPage={handleChangeRowsPerPage}
                         />
+                    ) : (
+                        ''
                     )}
                 </Paper>
             </Box>

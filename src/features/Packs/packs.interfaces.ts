@@ -1,4 +1,5 @@
 // =========API==========
+import { SortTypes } from 'common/utils/types/sort.types';
 import { buttonRowConst } from './utils/constans/button-row.const';
 
 export interface IPack {
@@ -17,7 +18,6 @@ export interface IPack {
     created: string;
     updated: string;
     more_id: string;
-    __v: number;
 }
 
 export interface IPacks {
@@ -27,14 +27,10 @@ export interface IPacks {
     cardPacksTotalCount: number;
     minCardsCount: number;
     maxCardsCount: number;
-    token: string;
-    tokenDeathTime: number;
 }
 
 export interface ICardsPackRes {
     newCardsPack: IPack;
-    token: string;
-    tokenDeathTime: number;
 }
 
 interface IPackQuery {
@@ -77,6 +73,5 @@ export interface PacksRow {
 }
 
 export type PackSortTypes = 'name' | 'cardsCount' | 'updated' | 'created' | 'actions';
-export type SortTypes = '0' | '1';
 
 export type PackSortRequestTypes = `${SortTypes}name` | `${SortTypes}cardsCount` | `${SortTypes}updated` | `${SortTypes}created` | `${SortTypes}actions`;

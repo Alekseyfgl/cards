@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { buttonRowConst, PackActionTypes } from '../../../utils/constans/button-row.const';
 import TableCell from '@mui/material/TableCell';
 import { IconButton } from '@mui/material';
@@ -28,11 +28,12 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
     const closeDeleteModal = () => setIsOpenRemoveModal(false);
     const openChangeModal = () => setIsOpenChangeModal(true);
     const closeChangeModal = () => setIsOpenChangeModal(false);
-    const onClickHandler = (actionType: PackActionTypes, rowPackId: string) => {
+
+    const onClickHandler = (actionType: PackActionTypes, e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         switch (actionType) {
             case 'learn':
-                console.log('click on ', actionType);
-                console.log('name', rowPackId);
+                // navigate(`/card/${rowPackId}`);
                 break;
             case 'remove':
                 openDeleteModal();
@@ -65,7 +66,7 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
                 <IconButton
                     key={button.id}
                     name={rowPackId} //id row for different actions
-                    onClick={() => onClickHandler(button.action, rowPackId)}
+                    onClick={(e) => onClickHandler(button.action, e)}
                 >
                     <button.icon />
                 </IconButton>

@@ -2,6 +2,7 @@ import { IAddPack, IChangePack, IPack, PackSortRequestTypes, PacksRow } from '..
 import { buttonRowConst } from '../constans/button-row.const';
 import { AddPackFormValues } from '../../Modals/AddPackModal/AddPackModal';
 import { ChangePackFormValues } from '../../Modals/ChangePackModal/ChangePackModal';
+import { formatISODate } from '../../../../common/utils/functions/date-converter/date-converter';
 
 export const createPackQuery = (
     page: string = '1',
@@ -27,8 +28,8 @@ export const createRowPack = (packs: IPack[]): PacksRow[] => {
         _id: p._id,
         name: p.name,
         cards: p.cardsCount,
-        created: p.created,
-        updated: p.updated,
+        created: formatISODate(p.created),
+        updated: formatISODate(p.updated),
         actions: buttonRowConst,
         user_id: p.user_id,
         private: p.private,

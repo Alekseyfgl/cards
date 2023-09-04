@@ -10,6 +10,7 @@ interface InputNumberProps {
     onChange: (value: number) => void;
     marginRight?: number;
     marginLeft?: number;
+    disabled: boolean;
 }
 
 const NoArrowsNumberInput = styled(TextField)({
@@ -26,7 +27,7 @@ const NoArrowsNumberInput = styled(TextField)({
 });
 
 export const InputNumber: FC<InputNumberProps> = memo((props) => {
-    const { value, height = 'auto', width = 60, marginLeft = 0, marginRight = 0, onChange } = props;
+    const { value, height = 'auto', width = 60, marginLeft = 0, marginRight = 0, onChange, disabled } = props;
 
     const handleInputChange = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         let inputValue = +event.currentTarget.value;
@@ -36,6 +37,7 @@ export const InputNumber: FC<InputNumberProps> = memo((props) => {
     };
     return (
         <NoArrowsNumberInput
+            disabled={disabled}
             value={value.toString()}
             type="number"
             variant="outlined"

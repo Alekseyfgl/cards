@@ -1,6 +1,6 @@
 import { instance } from '../../common/api/common.api';
 import { IAddPack, ICardsPackRes, IChangePack, IPacks, PackQueryTypes } from './packs.interfaces';
-import { Nullable } from '../../common/utils/optionalTypes/optional.types';
+import { Nullable } from '../../common/utils/types/optional.types';
 import { AxiosResponse } from 'axios';
 
 const base = 'cards';
