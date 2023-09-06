@@ -34,7 +34,7 @@ export const RemovePackModal: FC<RemovePackModalProps> = memo((props) => {
         closeModal();
     };
     return (
-        <BasicModal isOpen={isOpen} title={title} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={title} commonHandleClose={closeModalHandler}>
             <form onSubmit={onSubmit}>
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={!!isSentRequest}>

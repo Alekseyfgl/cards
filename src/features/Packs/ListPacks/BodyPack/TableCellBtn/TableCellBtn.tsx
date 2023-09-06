@@ -2,7 +2,7 @@ import React, { FC, MouseEvent, useState } from 'react';
 import { buttonRowConst, PackActionTypes } from '../../../utils/constans/button-row.const';
 import TableCell from '@mui/material/TableCell';
 import { IconButton } from '@mui/material';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { RemovePackModal } from '../../../Modals/RemovePackModal/RemovePackModal';
 import { PackQueryTypes } from '../../../packs.interfaces';
 import { ChangePackModal } from '../../../Modals/ChangePackModal/ChangePackModal';
@@ -17,6 +17,7 @@ interface TableCellBtnProps {
 }
 
 export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
+    const navigate = useNavigate();
     const { authorId, profileId, rowPackId, titlePack, isPrivatePack } = props;
     const [queryParams, setQueryParams] = useSearchParams();
     const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
@@ -33,7 +34,7 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
         e.stopPropagation();
         switch (actionType) {
             case 'learn':
-                // navigate(`/card/${rowPackId}`);
+                navigate(`/pack/learn/${rowPackId}`);
                 break;
             case 'remove':
                 openDeleteModal();

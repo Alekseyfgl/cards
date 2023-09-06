@@ -6,7 +6,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
   border-bottom: 1px solid #D9D9D9;
 }
 
@@ -15,3 +14,8 @@
   font-size: 18px;
 }
 
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}

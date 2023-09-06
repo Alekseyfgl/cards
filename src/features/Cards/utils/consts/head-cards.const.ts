@@ -21,11 +21,11 @@ export const cardHeadCells = [
         sortBy: 'updated',
     },
     {
-        id: 'grate',
+        id: 'grade',
         numeric: false,
         disablePadding: false,
-        label: 'Grate',
-        sortBy: 'grate',
+        label: 'Grade',
+        sortBy: 'grade',
     },
     {
         id: 'actions',

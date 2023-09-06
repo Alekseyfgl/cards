@@ -22,7 +22,7 @@ interface AddCardProps {
 export type AddCardFormValues = Pick<ICard, 'cardsPack_id' | 'answer' | 'question'>;
 
 export const AddCardModal: FC<AddCardProps> = (props) => {
-    const { isOpen, packId, closeModal, maxLength = 100, queryParams } = props;
+    const { isOpen, packId, closeModal, maxLength = 200, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [isEmptyQuestion, setIsEmptyQuestion] = useState(true);
@@ -71,7 +71,7 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
         }
     };
     return (
-        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Question"

@@ -10,6 +10,7 @@ import { RequireAuth } from '../common/components/RequerAuth/RequireAuth';
 import { Layout } from '../common/components/Layout/Layout';
 import { CardsList } from '../features/Cards/Card/CardsList';
 import { CircularIndeterminate } from '../common/components/Loader/Loader';
+import { LearnMode } from '../features/LearnMode/LearnMode/LearnMode';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -41,6 +42,14 @@ export const App = () => {
                         element={
                             <RequireAuth>
                                 <CardsList />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path="pack/learn/:id"
+                        element={
+                            <RequireAuth>
+                                <LearnMode />
                             </RequireAuth>
                         }
                     />
