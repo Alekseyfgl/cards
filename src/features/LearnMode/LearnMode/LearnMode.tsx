@@ -39,19 +39,24 @@ export const LearnMode = () => {
 
     const currentCard: ICard = cards[activeStep];
 
+    const setIsLoadingHandle = (value: boolean) => {
+        setIsLoading(value);
+    };
+
     useEffect(() => {
-        setIsLoading(true);
+        setIsLoadingHandle(true);
         dispatch(cardThunks.getAllCardsByPack({ cardsPack_id: id, pageCount: '100' }))
             .unwrap()
             .then((r) => setCards(r.cards))
             .catch(() => navigate('/404'))
-            .finally(() => setIsLoading(false));
+            .finally(() => setIsLoadingHandle(false));
     }, []);
 
     const handleOpen = () => {
         setOpenAccurateModal(true);
     };
     const handleClose = () => {
+        if (isLoading) return;
         setOpenAccurateModal(false);
     };
     const sendAnswerHandle = (grade: GradeTypes) => {
@@ -98,7 +103,13 @@ export const LearnMode = () => {
                 navigate(-1);
             }}
         >
-            <AccurateAnswerModal cardId={currentCard._id} inOpen={openAccurateModal} isSentRequest={isLoading} closeModal={handleClose} />
+            <AccurateAnswerModal
+                cardId={currentCard._id}
+                inOpen={openAccurateModal}
+                isLoading={isLoading}
+                handleClose={handleClose}
+                setIsLoadingHandle={setIsLoadingHandle}
+            />
             <div className={s.counter}>
                 {activeStep + 1} / {cards.length}
             </div>
