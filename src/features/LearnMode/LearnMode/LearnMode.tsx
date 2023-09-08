@@ -95,7 +95,6 @@ export const LearnMode = () => {
                 query: null,
             })
         ).finally(() => {
-            // setActiveStep((prevActiveStep) => prevActiveStep + 1);
             setActiveStepHandle();
             setIsLoading(false);
         });
@@ -113,7 +112,7 @@ export const LearnMode = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
-    if (!cards.length)
+    if (isLoading)
         return (
             <BasicModal
                 isOpen={true}
@@ -149,9 +148,9 @@ export const LearnMode = () => {
             />
             <FinalLearnModal isOpen={isOpenFinalLearnModal} closeModal={closeFinalLearnModalHandle} startAgain={startAgain} />
             <div className={s.counter}>{activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`}</div>
-            <div className={s.text}>{showAnswer ? currentCard?.answer : currentCard?.question}</div>
+            <div className={s.text}>{cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question}</div>
 
-            <ButtonGroup disabled={isLoading} variant={'contained'} sx={{ display: 'flex' }}>
+            <ButtonGroup disabled={cards.length === 0 || isLoading} variant={'contained'} sx={{ display: 'flex' }}>
                 <Button sx={{ width: '100%' }} onClick={handleBack} disabled={activeStep === 0}>
                     <KeyboardReturnIcon />
                 </Button>
