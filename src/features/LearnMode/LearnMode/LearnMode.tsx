@@ -9,7 +9,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { AccurateAnswerModal } from './Modals/AccurateAnswerModal/AccurateAnswerModal';
 import { Button } from '@mui/material';
 import s from './styles.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,12 +19,16 @@ import { ICard } from '../../Cards/cards.interfaces';
 import { cardsByPackSelector } from '../../Cards/cards.selector';
 import { shuffleArray } from '../../../common/utils/functions/shuffle-array/shuffle-array';
 import Skeleton from '@mui/material/Skeleton';
+import { AccurateAnswerModal } from '../Modals/AccurateAnswerModal/AccurateAnswerModal';
+import { learnThunks } from '../learn-mode.slice';
+import { GradeTypes } from '../learn.interfaces';
 
 export const LearnMode = () => {
-    const { id } = useParams<{ id: string }>();
-    const dispatch = useAppDispatch();
+    const { id } = useParams<{ id: string }>(); // packId
     const navigate = useNavigate();
+    if (!id) navigate('/404');
 
+    const dispatch = useAppDispatch();
     const cardsList: Nullable<ICard[]> = useAppSelector(cardsByPackSelector);
 
     const [cards, setCards] = useState<ICard[]>([]);
@@ -33,6 +36,8 @@ export const LearnMode = () => {
     const [showAnswer, setShowAnswer] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [openAccurateModal, setOpenAccurateModal] = useState(false);
+
+    const currentCard: ICard = cards[activeStep];
 
     useEffect(() => {
         setIsLoading(true);
@@ -49,8 +54,18 @@ export const LearnMode = () => {
     const handleClose = () => {
         setOpenAccurateModal(false);
     };
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const sendAnswerHandle = (grade: GradeTypes) => {
+        setIsLoading(true);
+        dispatch(
+            learnThunks.sendAnswerByCard({
+                dto: { grade, card_id: currentCard._id },
+                params: null,
+                query: null,
+            })
+        ).finally(() => {
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setIsLoading(false);
+        });
     };
 
     const handleBack = () => {
@@ -83,21 +98,22 @@ export const LearnMode = () => {
                 navigate(-1);
             }}
         >
-            <AccurateAnswerModal inOpen={openAccurateModal} isSentRequest={isLoading} closeModal={handleClose} />
+            <AccurateAnswerModal cardId={currentCard._id} inOpen={openAccurateModal} isSentRequest={isLoading} closeModal={handleClose} />
             <div className={s.counter}>
                 {activeStep + 1} / {cards.length}
             </div>
-            <div className={s.text}>{showAnswer ? cards[activeStep].answer : cards[activeStep].question}</div>
-            <ButtonGroup variant={'contained'} sx={{ display: 'flex' }}>
+            <div className={s.text}>{showAnswer ? currentCard.answer : currentCard.question}</div>
+
+            <ButtonGroup disabled={isLoading} variant={'contained'} sx={{ display: 'flex' }}>
                 <Button sx={{ width: '100%' }} onClick={handleBack} disabled={activeStep === 0}>
                     <KeyboardReturnIcon />
                 </Button>
 
-                <Button sx={{ width: '100%' }}>
+                <Button onClick={() => sendAnswerHandle(1)} sx={{ width: '100%' }}>
                     <CancelIcon />
                 </Button>
 
-                <Button onClick={handleNext} disabled={cardsList ? activeStep === cards.length - 1 : true} sx={{ width: '100%' }}>
+                <Button onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length - 1 : true} sx={{ width: '100%' }}>
                     <CheckCircleIcon />
                 </Button>
                 <Button
