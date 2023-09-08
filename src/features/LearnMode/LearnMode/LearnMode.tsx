@@ -39,6 +39,7 @@ export const LearnMode = () => {
     const [isOpenAccurateModal, setIsOpenAccurateModal] = useState(false);
     const [isOpenFinalLearnModal, setIsOpenFinalLearnModal] = useState(false);
 
+    const [isEnd, setIsEnd] = useState(false);
     const currentCard: ICard = cards[activeStep];
 
     const setIsLoadingHandle = (value: boolean) => {
@@ -51,8 +52,15 @@ export const LearnMode = () => {
         closeFinalLearnModalHandle();
     };
     useEffect(() => {
-        const isLastCard = cards.length - 1 === activeStep;
-        if (isLastCard) openFinalLearnModalHandle();
+        if (cards.length !== 0 && cards.length === activeStep) {
+            openFinalLearnModalHandle();
+        }
+
+        // const isLastCard = cards.length === activeStep;
+        // if (isLastCard) {
+        //     // setIsEnd(true)
+        //     openFinalLearnModalHandle();
+        // }
     }, [activeStep]);
 
     useEffect(() => {
@@ -127,17 +135,15 @@ export const LearnMode = () => {
             }}
         >
             <AccurateAnswerModal
-                cardId={currentCard._id}
+                cardId={currentCard?._id}
                 inOpen={isOpenAccurateModal}
                 isLoading={isLoading}
                 handleClose={closeAccurateModalHandle}
                 setIsLoadingHandle={setIsLoadingHandle}
             />
             <FinalLearnModal isOpen={isOpenFinalLearnModal} closeModal={closeFinalLearnModalHandle} startAgain={startAgain} />
-            <div className={s.counter}>
-                {activeStep + 1} / {cards.length}
-            </div>
-            <div className={s.text}>{showAnswer ? currentCard.answer : currentCard.question}</div>
+            <div className={s.counter}>{activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`}</div>
+            <div className={s.text}>{showAnswer ? currentCard?.answer : currentCard?.question}</div>
 
             <ButtonGroup disabled={isLoading} variant={'contained'} sx={{ display: 'flex' }}>
                 <Button sx={{ width: '100%' }} onClick={handleBack} disabled={activeStep === 0}>
@@ -148,7 +154,7 @@ export const LearnMode = () => {
                     <CancelIcon />
                 </Button>
 
-                <Button onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length - 1 : true} sx={{ width: '100%' }}>
+                <Button onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length : true} sx={{ width: '100%' }}>
                     <CheckCircleIcon />
                 </Button>
                 <Button

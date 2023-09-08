@@ -16,18 +16,11 @@ export const FinalLearnModal: FC<FinalLearnModalProps> = (props) => {
 
     const backToPacks = () => {
         navigate('/pack');
+        closeModal();
     };
 
-    // const startAgain = () => {
-    //     shuffleCards();
-    //     closeModal();
-    // };
-    // const closeModalHandler = () => {
-    //     closeModal();
-    //     // navigate('/pack');
-    // };
     return (
-        <BasicModal isOpen={isOpen} title={'Do you want to start again or close current pack?'} commonHandleClose={closeModal}>
+        <BasicModal isOpen={isOpen} title={'Do you want to start again or close current pack?'} commonHandleClose={backToPacks}>
             <div>
                 <div className={s.btns}>
                     <Button variant="contained" color={'inherit'} onClick={startAgain}>
