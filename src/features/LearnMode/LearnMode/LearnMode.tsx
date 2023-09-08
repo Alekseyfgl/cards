@@ -22,6 +22,7 @@ import Skeleton from '@mui/material/Skeleton';
 import { AccurateAnswerModal } from '../Modals/AccurateAnswerModal/AccurateAnswerModal';
 import { learnThunks } from '../learn-mode.slice';
 import { GradeTypes } from '../learn.interfaces';
+import { FinalLearnModal } from '../Modals/FinalLearnModal/FinalLearnModal';
 
 export const LearnMode = () => {
     const { id } = useParams<{ id: string }>(); // packId
@@ -35,13 +36,24 @@ export const LearnMode = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [openAccurateModal, setOpenAccurateModal] = useState(false);
+    const [isOpenAccurateModal, setIsOpenAccurateModal] = useState(false);
+    const [isOpenFinalLearnModal, setIsOpenFinalLearnModal] = useState(false);
 
     const currentCard: ICard = cards[activeStep];
 
     const setIsLoadingHandle = (value: boolean) => {
         setIsLoading(value);
     };
+
+    const startAgain = () => {
+        shuffleCards();
+        setActiveStep(0);
+        closeFinalLearnModalHandle();
+    };
+    useEffect(() => {
+        const isLastCard = cards.length - 1 === activeStep;
+        if (isLastCard) openFinalLearnModalHandle();
+    }, [activeStep]);
 
     useEffect(() => {
         setIsLoadingHandle(true);
@@ -52,12 +64,19 @@ export const LearnMode = () => {
             .finally(() => setIsLoadingHandle(false));
     }, []);
 
-    const handleOpen = () => {
-        setOpenAccurateModal(true);
+    const openAccurateModalHandle = () => {
+        setIsOpenAccurateModal(true);
     };
-    const handleClose = () => {
+    const closeAccurateModalHandle = () => {
         if (isLoading) return;
-        setOpenAccurateModal(false);
+        setIsOpenAccurateModal(false);
+    };
+
+    const openFinalLearnModalHandle = () => {
+        setIsOpenFinalLearnModal(true);
+    };
+    const closeFinalLearnModalHandle = () => {
+        setIsOpenFinalLearnModal(false);
     };
     const sendAnswerHandle = (grade: GradeTypes) => {
         setIsLoading(true);
@@ -71,6 +90,10 @@ export const LearnMode = () => {
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
             setIsLoading(false);
         });
+    };
+
+    const shuffleCards = () => {
+        setCards(shuffleArray(cards));
     };
 
     const handleBack = () => {
@@ -105,11 +128,12 @@ export const LearnMode = () => {
         >
             <AccurateAnswerModal
                 cardId={currentCard._id}
-                inOpen={openAccurateModal}
+                inOpen={isOpenAccurateModal}
                 isLoading={isLoading}
-                handleClose={handleClose}
+                handleClose={closeAccurateModalHandle}
                 setIsLoadingHandle={setIsLoadingHandle}
             />
+            <FinalLearnModal isOpen={isOpenFinalLearnModal} closeModal={closeFinalLearnModalHandle} startAgain={startAgain} />
             <div className={s.counter}>
                 {activeStep + 1} / {cards.length}
             </div>
@@ -130,7 +154,7 @@ export const LearnMode = () => {
                 <Button
                     sx={{ width: '100%' }}
                     onClick={() => {
-                        setCards(shuffleArray(cards));
+                        shuffleCards();
                         setActiveStep(0);
                         setShowAnswer(false);
                     }}
@@ -140,7 +164,7 @@ export const LearnMode = () => {
                 <Button sx={{ width: '100%' }} onClick={() => setShowAnswer(!showAnswer)}>
                     {showAnswer ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </Button>
-                <Button sx={{ width: '100%' }} onClick={handleOpen}>
+                <Button sx={{ width: '100%' }} onClick={openAccurateModalHandle}>
                     <ListAltIcon />
                 </Button>
             </ButtonGroup>
