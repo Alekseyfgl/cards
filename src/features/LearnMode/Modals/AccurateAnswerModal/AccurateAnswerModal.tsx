@@ -14,13 +14,14 @@ import { addAnswerValidate } from '../../../../common/utils/validationFormRules/
 interface AccurateAnswerModal {
     inOpen: boolean;
     setIsLoadingHandle: (value: boolean) => void;
+    setActiveStepHandle: () => void;
     handleClose: () => void;
     isLoading: boolean;
     cardId: string;
 }
 
 export const AccurateAnswerModal: FC<AccurateAnswerModal> = (props) => {
-    const { inOpen, isLoading, cardId, setIsLoadingHandle, handleClose } = props;
+    const { inOpen, isLoading, cardId, setIsLoadingHandle, handleClose, setActiveStepHandle } = props;
     const dispatch = useAppDispatch();
 
     const { register, handleSubmit, getValues, setValue } = useForm<LearnDto>({
@@ -42,6 +43,7 @@ export const AccurateAnswerModal: FC<AccurateAnswerModal> = (props) => {
         setIsLoadingHandle(true);
         dispatch(learnThunks.sendAnswerByCard({ dto: formValue, params: null, query: null })).finally(() => {
             setIsLoadingHandle(false);
+            setActiveStepHandle();
             closeModal();
         });
     };

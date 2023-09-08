@@ -95,7 +95,8 @@ export const LearnMode = () => {
                 query: null,
             })
         ).finally(() => {
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setActiveStepHandle();
             setIsLoading(false);
         });
     };
@@ -106,6 +107,10 @@ export const LearnMode = () => {
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const setActiveStepHandle = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
     if (!cards.length)
@@ -140,6 +145,7 @@ export const LearnMode = () => {
                 isLoading={isLoading}
                 handleClose={closeAccurateModalHandle}
                 setIsLoadingHandle={setIsLoadingHandle}
+                setActiveStepHandle={setActiveStepHandle}
             />
             <FinalLearnModal isOpen={isOpenFinalLearnModal} closeModal={closeFinalLearnModalHandle} startAgain={startAgain} />
             <div className={s.counter}>{activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`}</div>
