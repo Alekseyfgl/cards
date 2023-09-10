@@ -47,6 +47,7 @@ export const LearnMode = () => {
     };
 
     const startAgain = () => {
+        setShowAnswer(false);
         shuffleCards();
         setActiveStep(0);
         closeFinalLearnModalHandle();
@@ -87,6 +88,7 @@ export const LearnMode = () => {
                 query: null,
             })
         ).finally(() => {
+            setShowAnswer(false);
             setActiveStepHandle();
             setIsSendingAnswer(false);
         });
