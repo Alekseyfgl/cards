@@ -28,9 +28,9 @@ export const App = () => {
         <div>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<Navigate to={'/pack'} />} />
+                    <Route index element={<Navigate to={'/packs'} />} />
                     <Route
-                        path="pack"
+                        path="packs"
                         element={
                             <RequireAuth>
                                 <ListPacks />
@@ -46,7 +46,7 @@ export const App = () => {
                         }
                     />
                     <Route
-                        path="pack/learn/:id"
+                        path="packs/learn/:id"
                         element={
                             <RequireAuth>
                                 <LearnMode />
@@ -60,7 +60,7 @@ export const App = () => {
                         element={
                             <div>
                                 <p>Not found</p>
-                                <NavLink to={'/pack'}>Go to the main age</NavLink>
+                                <NavLink to={'/packs'}>Go to the main age</NavLink>
                             </div>
                         }
                     />
