@@ -127,6 +127,7 @@ export const LearnMode = () => {
             title={'Learning'}
             commonHandleClose={() => {}}
             customHandleClose={() => {
+                if (isLoadingLearnMode || isSendingAnswer) return;
                 navigate(-1);
             }}
         >
