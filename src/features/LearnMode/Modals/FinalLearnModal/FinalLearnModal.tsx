@@ -15,7 +15,7 @@ export const FinalLearnModal: FC<FinalLearnModalProps> = (props) => {
     const navigate = useNavigate();
 
     const backToPacks = () => {
-        navigate('/pack');
+        navigate('/packs');
         closeModal();
     };
 
