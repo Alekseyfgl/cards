@@ -19,13 +19,13 @@ interface ChangeCardModalProps {
     question: string;
     answer: string;
     questionImg: string;
-    maxLength?: number;
 }
 
 export type ChangeCardFormValues = Pick<ICard, 'question' | 'answer' | '_id' | 'questionImg'>;
-
+const maxQuestionLength = 200;
+const maxAnswerLength = 1000;
 export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
-    const { isOpen, closeModal, maxLength = 30, question, answer, cardId, query, questionImg } = props;
+    const { isOpen, closeModal, question, answer, cardId, query, questionImg } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [isEmptyQuestion, setIsEmptyQuestion] = useState(true);
@@ -90,13 +90,13 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
     };
 
     return (
-        <BasicModal isOpen={isOpen} title={'Измените вопрос или ответ карточки'} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={'Измените вопрос или ответ карточки'} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Question"
                     variant="standard"
                     fullWidth={true}
-                    inputProps={{ maxLength }}
+                    inputProps={{ maxLength: maxQuestionLength }}
                     sx={{ marginBottom: 3 }}
                     {...register('question', addQuestionValidate)}
                     error={!!errors.question}
@@ -108,7 +108,7 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
                     label="Answer"
                     variant="standard"
                     fullWidth={true}
-                    inputProps={{ maxLength }}
+                    inputProps={{ maxLength: maxAnswerLength }}
                     sx={{ marginBottom: 3 }}
                     {...register('answer', addAnswerValidate)}
                     error={!!errors.answer}

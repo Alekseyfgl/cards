@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import { SkeletonString } from '../SkeletonString/SkeletonString';
+import { SkeletonElement } from '../SkeletonElement/SkeletonElement';
 
 interface SkeletonTableProps {
     totalRow: number;
@@ -16,12 +16,12 @@ export const SkeletonTable: FC<SkeletonTableProps> = (props) => {
                 return (
                     <TableRow key={index} tabIndex={-1} sx={{ height }}>
                         <TableCell align={'center'}>
-                            <SkeletonString />
+                            <SkeletonElement />
                         </TableCell>
-                        <TableCell align="center">{<SkeletonString />}</TableCell>
-                        <TableCell align="center">{<SkeletonString />}</TableCell>
-                        <TableCell align="center">{<SkeletonString />}</TableCell>
-                        <TableCell align="center">{<SkeletonString />}</TableCell>
+                        <TableCell align="center">{<SkeletonElement />}</TableCell>
+                        <TableCell align="center">{<SkeletonElement />}</TableCell>
+                        <TableCell align="center">{<SkeletonElement />}</TableCell>
+                        <TableCell align="center">{<SkeletonElement />}</TableCell>
                     </TableRow>
                 );
             })}

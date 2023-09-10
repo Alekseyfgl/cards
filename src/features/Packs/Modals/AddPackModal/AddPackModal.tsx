@@ -67,7 +67,7 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
         closeModal();
     };
     return (
-        <BasicModal isOpen={isOpen} title={MSG_PACK.ADD_NEW_PACK} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={MSG_PACK.ADD_NEW_PACK} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Name pack"

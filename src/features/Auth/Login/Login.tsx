@@ -10,7 +10,7 @@ export const Login = () => {
     const isAppInit: boolean = useAppSelector(selectorIsAppInit);
 
     useEffect(() => {
-        if (isAppInit) navigate('/pack');
+        if (isAppInit) navigate('/packs');
     }, [isAppInit]);
 
     return (

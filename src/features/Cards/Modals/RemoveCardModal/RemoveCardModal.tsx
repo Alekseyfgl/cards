@@ -34,7 +34,7 @@ export const RemoveCardModal: FC<RemoveCardModalProps> = memo((props) => {
         closeModal();
     };
     return (
-        <BasicModal isOpen={isOpen} title={MSG_CARD.REMOVE_CARD} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={MSG_CARD.REMOVE_CARD} commonHandleClose={closeModalHandler}>
             <form onSubmit={onSubmit}>
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={!!isSentRequest}>

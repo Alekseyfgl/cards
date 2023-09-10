@@ -1,0 +1,19 @@
+.wr {
+  padding: 0 20px;
+  margin-bottom: 40px;
+}
+.body {
+  flex: 1 0 auto;
+  height: 100%;
+}
+
+.text{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 auto;
+}
+.counter {
+  text-align: center;
+}
