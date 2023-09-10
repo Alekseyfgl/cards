@@ -35,15 +35,15 @@ export const LearnMode = () => {
     const [cards, setCards] = useState<ICard[]>([]);
     const [activeStep, setActiveStep] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingLearnMode, setIsLoadingLearnMode] = useState(false);
+    const [isSendingAnswer, setIsSendingAnswer] = useState(false);
     const [isOpenAccurateModal, setIsOpenAccurateModal] = useState(false);
     const [isOpenFinalLearnModal, setIsOpenFinalLearnModal] = useState(false);
 
-    const [isEnd, setIsEnd] = useState(false);
     const currentCard: ICard = cards[activeStep];
 
     const setIsLoadingHandle = (value: boolean) => {
-        setIsLoading(value);
+        setIsLoadingLearnMode(value);
     };
 
     const startAgain = () => {
@@ -52,15 +52,7 @@ export const LearnMode = () => {
         closeFinalLearnModalHandle();
     };
     useEffect(() => {
-        if (cards.length !== 0 && cards.length === activeStep) {
-            openFinalLearnModalHandle();
-        }
-
-        // const isLastCard = cards.length === activeStep;
-        // if (isLastCard) {
-        //     // setIsEnd(true)
-        //     openFinalLearnModalHandle();
-        // }
+        if (cards.length !== 0 && cards.length === activeStep) openFinalLearnModalHandle();
     }, [activeStep]);
 
     useEffect(() => {
@@ -76,7 +68,7 @@ export const LearnMode = () => {
         setIsOpenAccurateModal(true);
     };
     const closeAccurateModalHandle = () => {
-        if (isLoading) return;
+        if (isLoadingLearnMode || isSendingAnswer) return;
         setIsOpenAccurateModal(false);
     };
 
@@ -87,7 +79,7 @@ export const LearnMode = () => {
         setIsOpenFinalLearnModal(false);
     };
     const sendAnswerHandle = (grade: GradeTypes) => {
-        setIsLoading(true);
+        setIsSendingAnswer(true);
         dispatch(
             learnThunks.sendAnswerByCard({
                 dto: { grade, card_id: currentCard._id },
@@ -96,7 +88,7 @@ export const LearnMode = () => {
             })
         ).finally(() => {
             setActiveStepHandle();
-            setIsLoading(false);
+            setIsSendingAnswer(false);
         });
     };
 
@@ -112,7 +104,7 @@ export const LearnMode = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
-    if (isLoading)
+    if (isLoadingLearnMode)
         return (
             <BasicModal
                 isOpen={true}
@@ -141,7 +133,7 @@ export const LearnMode = () => {
             <AccurateAnswerModal
                 cardId={currentCard?._id}
                 inOpen={isOpenAccurateModal}
-                isLoading={isLoading}
+                isLoading={isLoadingLearnMode}
                 handleClose={closeAccurateModalHandle}
                 setIsLoadingHandle={setIsLoadingHandle}
                 setActiveStepHandle={setActiveStepHandle}
@@ -150,7 +142,7 @@ export const LearnMode = () => {
             <div className={s.counter}>{activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`}</div>
             <div className={s.text}>{cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question}</div>
 
-            <ButtonGroup disabled={cards.length === 0 || isLoading} variant={'contained'} sx={{ display: 'flex' }}>
+            <ButtonGroup disabled={cards.length === 0 || isSendingAnswer} variant={'contained'} sx={{ display: 'flex' }}>
                 <Button sx={{ width: '100%' }} onClick={handleBack} disabled={activeStep === 0}>
                     <KeyboardReturnIcon />
                 </Button>
