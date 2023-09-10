@@ -88,7 +88,6 @@ export const LearnMode = () => {
                 query: null,
             })
         ).finally(() => {
-            setShowAnswer(false);
             setActiveStepHandle();
             setIsSendingAnswer(false);
         });
@@ -99,10 +98,12 @@ export const LearnMode = () => {
     };
 
     const handleBack = () => {
+        setShowAnswer(false);
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
     const setActiveStepHandle = () => {
+        setShowAnswer(false);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
