@@ -34,7 +34,7 @@ export const TableCellBtn: FC<TableCellBtnProps> = (props) => {
         e.stopPropagation();
         switch (actionType) {
             case 'learn':
-                navigate(`/pack/learn/${rowPackId}`);
+                navigate(`/packs/learn/${rowPackId}`);
                 break;
             case 'remove':
                 openDeleteModal();
