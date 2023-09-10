@@ -79,7 +79,7 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
     };
 
     return (
-        <BasicModal isOpen={isOpen} title={title} handleClose={closeModalHandler}>
+        <BasicModal isOpen={isOpen} title={title} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Name pack"

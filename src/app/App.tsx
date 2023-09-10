@@ -10,6 +10,7 @@ import { RequireAuth } from '../common/components/RequerAuth/RequireAuth';
 import { Layout } from '../common/components/Layout/Layout';
 import { CardsList } from '../features/Cards/Card/CardsList';
 import { CircularIndeterminate } from '../common/components/Loader/Loader';
+import { LearnMode } from '../features/LearnMode/LearnMode/LearnMode';
 
 export const App = () => {
     const isLoading = useAppSelector(selectorIsLoadingApp);
@@ -27,9 +28,9 @@ export const App = () => {
         <div>
             <Routes>
                 <Route path="/" element={<Layout />}>
-                    <Route index element={<Navigate to={'/pack'} />} />
+                    <Route index element={<Navigate to={'/packs'} />} />
                     <Route
-                        path="pack"
+                        path="packs"
                         element={
                             <RequireAuth>
                                 <ListPacks />
@@ -44,6 +45,14 @@ export const App = () => {
                             </RequireAuth>
                         }
                     />
+                    <Route
+                        path="packs/learn/:id"
+                        element={
+                            <RequireAuth>
+                                <LearnMode />
+                            </RequireAuth>
+                        }
+                    />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route
@@ -51,7 +60,7 @@ export const App = () => {
                         element={
                             <div>
                                 <p>Not found</p>
-                                <NavLink to={'/pack'}>Go to the main age</NavLink>
+                                <NavLink to={'/packs'}>Go to the main age</NavLink>
                             </div>
                         }
                     />

@@ -1,12 +1,13 @@
 import { Nullable } from '../../common/utils/types/optional.types';
 import { instance } from '../../common/api/common.api';
-import { AddCardDto, ChangeCardDto, ICardQuery, ICardsByPack } from './cards.interfaces';
+import { AddCardDto, CardQueryTypes, ChangeCardDto, ICardsByPack } from './cards.interfaces';
 import { AxiosResponse } from 'axios';
+import { LearnDto } from '../LearnMode/learn.interfaces';
 
 const base = 'cards';
 let abortController: Nullable<AbortController> = null;
 export const cardsApi = {
-    getAllCardsByPack: (query: ICardQuery) => {
+    getAllCardsByPack: (query: CardQueryTypes) => {
         //cancel request
         if (abortController) abortController.abort();
         abortController = new AbortController();
@@ -22,5 +23,8 @@ export const cardsApi = {
     },
     changeCard: (payload: ChangeCardDto) => {
         return instance.put<{}, AxiosResponse<unknown>, ChangeCardDto>(`${base}/card`, payload);
+    },
+    sendAnswer: (payload: LearnDto) => {
+        return instance.put<{}, AxiosResponse<unknown>, LearnDto>(`${base}/grade`, payload);
     },
 };

@@ -10,7 +10,7 @@ export const Register = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isAppInit) navigate('/pack');
+        if (isAppInit) navigate('/packs');
     }, []);
 
     return (

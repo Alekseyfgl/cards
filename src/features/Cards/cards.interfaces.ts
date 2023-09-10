@@ -45,6 +45,8 @@ export interface ICardQuery {
     cardsPack_id: string;
 }
 
+export type CardQueryTypes = Partial<ICardQuery>;
+
 export interface AddCardDto {
     card: AddCardFormValues;
 }
