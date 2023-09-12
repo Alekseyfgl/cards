@@ -1,6 +1,6 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import React, { ChangeEvent, FC, memo, useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import { IChangePack, PackQueryTypes } from '../../packs.interfaces';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 import { packThunks } from '../../packs.slice';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
 
 interface ChangePackModalProps {
     title: string;
@@ -97,11 +99,11 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
 
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={disable}>
-                        Save
+                        {MSG_BTN.SAVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
-                        Cancel
-                    </Button>
+                    <CustomButton onClick={closeModalHandler} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
                 </div>
             </form>
         </BasicModal>

@@ -1,5 +1,5 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import { Button, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import s from '../../../Packs/Modals/AddPackModal/styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import React, { ChangeEvent, FC, useState } from 'react';
@@ -7,9 +7,10 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { AddCardDto, ICard, ICardQuery } from '../../cards.interfaces';
 import { addCardDtoMapper } from '../../utils/mappers/card.mapper';
-import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
+import { MSG_BTN, MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
 import { cardThunks } from '../../cards.slice';
 import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
 
 interface AddCardProps {
     isOpen: boolean;
@@ -99,11 +100,11 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
 
                 <div className={s.btns}>
                     <SendRequestButton disabled={isEmptyQuestion} isSentRequest={isSentRequest}>
-                        Save
+                        {MSG_BTN.SAVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModal}>
-                        Cancel
-                    </Button>
+                    <CustomButton onClick={closeModal} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
                 </div>
             </form>
         </BasicModal>

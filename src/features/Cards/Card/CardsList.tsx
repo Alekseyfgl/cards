@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { PaginationCustom } from '../../Packs/PaginationCustom/Pagination';
-import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { selectorProfileId } from '../../Auth/auth.selector';
@@ -20,6 +19,8 @@ import { superSortCreator } from '../../Packs/utils/super-sort';
 import { BodyCards } from './BodyCards/BodyCards';
 import CustomSearch from 'common/components/CustomSearch/CustomSearch';
 import { AddCardModal } from '../Modals/AddCardModal/AddCardModal';
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
+import { MSG_BTN } from '../../../common/utils/constans/app-messages.const';
 
 export const CardsList = () => {
     const { id } = useParams<{ id: string }>(); // id pack
@@ -75,16 +76,13 @@ export const CardsList = () => {
     return (
         <>
             <AddCardModal isOpen={isOpenModal} closeModal={closeModal} queryParams={params} packId={id!} />
-            <Button startIcon={<ArrowBackIcon />} onClick={backHandler} variant="contained" sx={{ borderRadius: 5, marginBottom: '30px' }}>
-                back
-            </Button>
+            <CustomButton onClick={backHandler} startIcon={<ArrowBackIcon />} marginBottom={'30px'}>
+                {MSG_BTN.BACK}
+            </CustomButton>
+
             <div className={s.wr}>
                 <div className={s.title}>{isLoading ? '' : currentPackTitle}</div>
-                {profilerId === packUserId && (
-                    <Button onClick={() => setIsOpenModal(true)} variant="contained" sx={{ borderRadius: 5 }}>
-                        Create new card
-                    </Button>
-                )}
+                {profilerId === packUserId && <CustomButton onClick={() => setIsOpenModal(true)}>{MSG_BTN.CRETE_NEW_CARD}</CustomButton>}
             </div>
             <div className={s.setting_panel}>
                 <CustomSearch placeholder={'write question'} searchHandler={searchHandler} searchValue={params.cardQuestion} />

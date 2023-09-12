@@ -5,7 +5,6 @@ import { CustomAppBar } from '../../../features/Header/Header';
 import React from 'react';
 
 export const Layout = () => {
-    console.log('Layout');
     return (
         <>
             <GlobalNotify />

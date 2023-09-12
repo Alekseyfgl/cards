@@ -3,13 +3,14 @@ import { useAppDispatch } from '../../../../common/utils/hooks';
 import { useForm } from 'react-hook-form';
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import s from '../../../Packs/Modals/ChangePackModal/styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import { ChangeCardDto, ICard, ICardQuery } from '../../cards.interfaces';
 import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { changeCardDtoMapper } from '../../utils/mappers/card.mapper';
 import { cardThunks } from '../../cards.slice';
+import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
 
 interface ChangeCardModalProps {
     isOpen: boolean;
@@ -119,11 +120,15 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
 
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={isEmptyQuestion}>
-                        Save
+                        {MSG_BTN.SAVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
-                        Cancel
-                    </Button>
+
+                    <CustomButton onClick={closeModalHandler} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
+                    {/*<Button variant="contained" color={'inherit'} onClick={closeModalHandler}>*/}
+                    {/*    Cancel*/}
+                    {/*</Button>*/}
                 </div>
             </form>
         </BasicModal>

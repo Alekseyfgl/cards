@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../../../app/hooks';
 import { emailValidate } from 'common/utils/validationFormRules/email.validate';
 import { passwordValidate } from 'common/utils/validationFormRules/password.validate';
+import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
 
 export const LoginForm = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -77,7 +78,7 @@ export const LoginForm = () => {
                     )}
                 </FormControl>
                 <FormControlLabel label={'Remember me'} control={<Checkbox {...register('rememberMe')} />} />
-                <SendRequestButton isSentRequest={isSentRequest}>Login</SendRequestButton>
+                <SendRequestButton isSentRequest={isSentRequest}>{MSG_BTN.SING_IN}</SendRequestButton>
             </FormGroup>
         </form>
     );

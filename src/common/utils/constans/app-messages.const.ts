@@ -5,6 +5,17 @@ export const MSG_AUTH = {
     REGISTERED_SUCCESS: (email: string) => `You registered successfully with email: ${email}`,
 };
 
+export const MSG_BTN = {
+    SAVE: 'Save',
+    CANCEL: 'Cancel',
+    BACK: 'Back',
+    REMOVE: 'Remove',
+    CRETE_NEW_CARD: 'Create new card',
+    SING_IN: 'Sing in',
+    SING_OUT: 'Sing out',
+    REGISTRATION: 'Registration',
+};
+
 export const MSG_PACK = {
     REQUIRED: 'Fill in title',
     TITLE_LENGTH: 'Title must be at least 3 characters long',

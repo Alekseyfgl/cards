@@ -16,9 +16,9 @@ import { packThunks } from '../packs.slice';
 import { createPackQuery } from '../utils/mappers/pack.mapper';
 import { PackSettings } from '../Settings/PackSettings';
 import { BodyPack } from './BodyPack/BodyPack';
-import { Button } from '@mui/material';
 import { AddPackModal } from '../Modals/AddPackModal/AddPackModal';
 import { shallowEqual } from 'react-redux';
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -89,9 +89,9 @@ export const ListPacks = () => {
             {isOpenModal && <AddPackModal isOpen={isOpenModal} closeModal={closeModal} queryParams={searchParams} />}
             <div className={s.wr}>
                 <h2 className={s.title}>Packs</h2>
-                <Button disabled={isLoading} onClick={openModal} variant="contained" sx={{ borderRadius: 5 }}>
+                <CustomButton disabled={isLoading} onClick={openModal}>
                     Add new pack
-                </Button>
+                </CustomButton>
             </div>
             <PackSettings
                 disabled={isLoading}

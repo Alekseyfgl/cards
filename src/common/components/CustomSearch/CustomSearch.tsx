@@ -39,7 +39,6 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
     return (
         <>
             <form>
-                {/*<p>Search</p>*/}
                 <TextField
                     variant={'outlined'}
                     size={'small'}

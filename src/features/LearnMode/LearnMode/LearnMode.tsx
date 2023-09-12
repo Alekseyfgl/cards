@@ -9,7 +9,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Button } from '@mui/material';
 import s from './styles.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -23,6 +22,7 @@ import { AccurateAnswerModal } from '../Modals/AccurateAnswerModal/AccurateAnswe
 import { learnThunks } from '../learn-mode.slice';
 import { GradeTypes } from '../learn.interfaces';
 import { FinalLearnModal } from '../Modals/FinalLearnModal/FinalLearnModal';
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
 
 export const LearnMode = () => {
     const { id } = useParams<{ id: string }>(); // packId
@@ -52,6 +52,7 @@ export const LearnMode = () => {
         setActiveStep(0);
         closeFinalLearnModalHandle();
     };
+
     useEffect(() => {
         if (cards.length !== 0 && cards.length === activeStep) openFinalLearnModalHandle();
     }, [activeStep]);
@@ -147,33 +148,36 @@ export const LearnMode = () => {
             <div className={s.text}>{cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question}</div>
 
             <ButtonGroup disabled={cards.length === 0 || isSendingAnswer} variant={'contained'} sx={{ display: 'flex' }}>
-                <Button sx={{ width: '100%' }} onClick={handleBack} disabled={activeStep === 0}>
+                <CustomButton onClick={handleBack} disabled={activeStep === 0} fullWidthProp={true}>
                     <KeyboardReturnIcon />
-                </Button>
+                </CustomButton>
 
-                <Button onClick={() => sendAnswerHandle(1)} sx={{ width: '100%' }}>
+                <CustomButton onClick={() => sendAnswerHandle(1)} fullWidthProp={true}>
                     <CancelIcon />
-                </Button>
+                </CustomButton>
 
-                <Button onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length : true} sx={{ width: '100%' }}>
+                <CustomButton onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length : true} fullWidthProp={true}>
                     <CheckCircleIcon />
-                </Button>
-                <Button
-                    sx={{ width: '100%' }}
+                </CustomButton>
+
+                <CustomButton
                     onClick={() => {
                         shuffleCards();
                         setActiveStep(0);
                         setShowAnswer(false);
                     }}
+                    fullWidthProp={true}
                 >
                     <ShuffleIcon />
-                </Button>
-                <Button sx={{ width: '100%' }} onClick={() => setShowAnswer(!showAnswer)}>
+                </CustomButton>
+
+                <CustomButton onClick={() => setShowAnswer(!showAnswer)} fullWidthProp={true}>
                     {showAnswer ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </Button>
-                <Button sx={{ width: '100%' }} onClick={openAccurateModalHandle}>
+                </CustomButton>
+
+                <CustomButton onClick={openAccurateModalHandle} fullWidthProp={true}>
                     <ListAltIcon />
-                </Button>
+                </CustomButton>
             </ButtonGroup>
         </BasicModal>
     );
