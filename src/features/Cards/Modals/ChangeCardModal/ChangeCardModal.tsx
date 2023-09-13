@@ -2,7 +2,6 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { useForm } from 'react-hook-form';
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import TextField from '@mui/material/TextField';
 import s from '../../../Packs/Modals/ChangePackModal/styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import { ChangeCardDto, ICard, ICardQuery } from '../../cards.interfaces';
@@ -11,6 +10,8 @@ import { changeCardDtoMapper } from '../../utils/mappers/card.mapper';
 import { cardThunks } from '../../cards.slice';
 import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
 import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
+import { maxAnswerLength, maxQuestionLength } from '../../utils/consts/lmits.const';
 
 interface ChangeCardModalProps {
     isOpen: boolean;
@@ -23,8 +24,7 @@ interface ChangeCardModalProps {
 }
 
 export type ChangeCardFormValues = Pick<ICard, 'question' | 'answer' | '_id' | 'questionImg'>;
-const maxQuestionLength = 200;
-const maxAnswerLength = 1000;
+
 export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
     const { isOpen, closeModal, question, answer, cardId, query, questionImg } = props;
     const dispatch = useAppDispatch();
@@ -93,28 +93,25 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
     return (
         <BasicModal isOpen={isOpen} title={'Измените вопрос или ответ карточки'} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Question"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength: maxQuestionLength }}
-                    sx={{ marginBottom: 3 }}
+                <CustomTextField
+                    label={'Question'}
                     {...register('question', addQuestionValidate)}
                     error={!!errors.question}
                     helperText={errors.question?.message}
                     disabled={isSentRequest}
+                    maxLength={maxQuestionLength}
+                    marginBottom={'20px'}
                     onChange={changeQuestionName}
                 />
-                <TextField
-                    label="Answer"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength: maxAnswerLength }}
-                    sx={{ marginBottom: 3 }}
+
+                <CustomTextField
+                    label={'Answer'}
                     {...register('answer', addAnswerValidate)}
                     error={!!errors.answer}
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}
+                    maxLength={maxAnswerLength}
+                    marginBottom={'20px'}
                     onChange={changeAnswerName}
                 />
 
@@ -126,9 +123,6 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
                     <CustomButton onClick={closeModalHandler} color={'inherit'}>
                         {MSG_BTN.CANCEL}
                     </CustomButton>
-                    {/*<Button variant="contained" color={'inherit'} onClick={closeModalHandler}>*/}
-                    {/*    Cancel*/}
-                    {/*</Button>*/}
                 </div>
             </form>
         </BasicModal>

@@ -17,7 +17,7 @@ import s from './styles.module.scss';
 import { HeaderCards } from './HeaderCards/HeaderCards';
 import { superSortCreator } from '../../Packs/utils/super-sort';
 import { BodyCards } from './BodyCards/BodyCards';
-import CustomSearch from 'common/components/CustomSearch/CustomSearch';
+import { CustomSearch } from 'common/components/CustomSearch/CustomSearch';
 import { AddCardModal } from '../Modals/AddCardModal/AddCardModal';
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
 import { MSG_BTN } from '../../../common/utils/constans/app-messages.const';

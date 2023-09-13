@@ -1,8 +1,9 @@
 import React, { ChangeEvent, FC, KeyboardEvent, memo, useEffect, useState } from 'react';
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDebounce } from '../../utils/hooks';
 import { Nullable } from '../../utils/types/optional.types';
+import { CustomTextField } from '../CustomTextField/CustomTextField';
 
 interface SearchInputProps {
     placeholder?: string;
@@ -10,7 +11,7 @@ interface SearchInputProps {
     searchHandler: (searchValue: Nullable<string>) => void;
 }
 
-const CustomSearch: FC<SearchInputProps> = memo((props) => {
+export const CustomSearch: FC<SearchInputProps> = memo((props) => {
     const { placeholder = 'Search...', searchHandler, searchValue } = props;
 
     //null need for first render
@@ -39,20 +40,16 @@ const CustomSearch: FC<SearchInputProps> = memo((props) => {
     return (
         <>
             <form>
-                <TextField
-                    variant={'outlined'}
-                    size={'small'}
+                <CustomTextField
+                    marginBottom={'0px'}
                     value={value === null ? searchValue : value}
                     onChange={handleChange}
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">{<SearchIcon />}</InputAdornment>,
-                        placeholder,
-                    }}
+                    startAdornment={<InputAdornment position="start">{<SearchIcon />}</InputAdornment>}
+                    placeholder={placeholder}
                     onKeyDown={disableKeyDown}
+                    variant={'outlined'}
                 />
             </form>
         </>
     );
 });
-
-export default CustomSearch;

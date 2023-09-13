@@ -1,5 +1,4 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import { TextField } from '@mui/material';
 import s from '../../../Packs/Modals/AddPackModal/styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import React, { ChangeEvent, FC, useState } from 'react';
@@ -11,6 +10,8 @@ import { MSG_BTN, MSG_CARD } from '../../../../common/utils/constans/app-message
 import { cardThunks } from '../../cards.slice';
 import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
+import { maxAnswerLength, maxQuestionLength } from '../../utils/consts/lmits.const';
 
 interface AddCardProps {
     isOpen: boolean;
@@ -23,7 +24,7 @@ interface AddCardProps {
 export type AddCardFormValues = Pick<ICard, 'cardsPack_id' | 'answer' | 'question'>;
 
 export const AddCardModal: FC<AddCardProps> = (props) => {
-    const { isOpen, packId, closeModal, maxLength = 200, queryParams } = props;
+    const { isOpen, packId, closeModal, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [isEmptyQuestion, setIsEmptyQuestion] = useState(true);
@@ -74,30 +75,25 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
     return (
         <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Question"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength }}
-                    sx={{ marginBottom: 3 }}
+                <CustomTextField
+                    label={'Question'}
                     {...register('question', addQuestionValidate)}
                     error={!!errors.question}
                     helperText={errors.question?.message}
                     disabled={isSentRequest}
+                    maxLength={maxQuestionLength}
+                    marginBottom={'20px'}
                     onChange={changeQuestionName}
                 />
-                <TextField
-                    label="Answer"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength }}
-                    sx={{ marginBottom: 3 }}
+                <CustomTextField
+                    label={'Answer'}
                     {...register('answer', addAnswerValidate)}
                     error={!!errors.answer}
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}
+                    maxLength={maxAnswerLength}
+                    marginBottom={'20px'}
                 />
-
                 <div className={s.btns}>
                     <SendRequestButton disabled={isEmptyQuestion} isSentRequest={isSentRequest}>
                         {MSG_BTN.SAVE}
