@@ -65,6 +65,7 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue: string = e.target.value.trimStart();
+        console.log(inputValue);
         if (inputValue) {
             disable && setDisable(false);
             setValue('name', inputValue);

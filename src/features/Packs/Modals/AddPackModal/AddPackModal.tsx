@@ -1,6 +1,6 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import React, { ChangeEvent, FC, memo, useState } from 'react';
-import { Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { packThunks } from '../../packs.slice';
 import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 import { MSG_BTN, MSG_PACK } from '../../../../common/utils/constans/app-messages.const';
 import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
 
 interface AddModalProps {
     isOpen: boolean;
@@ -70,17 +71,14 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
     return (
         <BasicModal isOpen={isOpen} title={MSG_PACK.ADD_NEW_PACK} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Name pack"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength }}
-                    sx={{ marginBottom: 3 }}
-                    {...register('name', addPackValidate)}
+                <CustomTextField
+                    label={'Name pack'}
+                    variant={'standard'}
+                    register={{ ...register('name', addPackValidate) }}
                     error={!!errors.name}
                     helperText={errors.name?.message}
-                    onChange={handleNameChange}
                     disabled={isSentRequest}
+                    onChange={handleNameChange}
                 />
                 <FormControlLabel control={<Checkbox />} label="Private pack" sx={{ marginBottom: 3 }} {...register('private', { required: false })} />
 
