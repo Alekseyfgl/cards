@@ -74,9 +74,14 @@ export const CardsList = () => {
         dispatch(cardActions.resetCurrentPack({}));
     };
 
+    const learnPack = () => {
+        navigate(`/packs/learn/${id}`);
+    };
+
     return (
         <>
             <AddCardModal isOpen={isOpenModal} closeModal={closeModal} queryParams={params} packId={id!} />
+
             <CustomButton onClick={backHandler} startIcon={<ArrowBackIcon />} marginBottom={'30px'}>
                 {MSG_BTN.BACK}
             </CustomButton>
@@ -87,6 +92,7 @@ export const CardsList = () => {
             </div>
             <div className={s.setting_panel}>
                 <CustomSearch placeholder={'write question'} searchHandler={searchHandler} searchValue={params.cardQuestion} />
+                <CustomButton onClick={learnPack}>{MSG_BTN.LEARN_PACK}</CustomButton>
             </div>
             <Box sx={{ width: '100%' }}>
                 <Paper elevation={3}>

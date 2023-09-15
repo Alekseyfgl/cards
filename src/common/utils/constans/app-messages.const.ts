@@ -17,6 +17,7 @@ export const MSG_BTN = {
     SEND_ANSWER: 'Send answer',
     START_AGAIN: 'Start again',
     CLOSE: 'Close',
+    LEARN_PACK: 'Learn pack',
 };
 
 export const MSG_PACK = {
