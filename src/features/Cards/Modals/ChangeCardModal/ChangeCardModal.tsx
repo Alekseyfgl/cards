@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { useForm } from 'react-hook-form';
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import s from '../../../Packs/Modals/ChangePackModal/styles.module.scss';
+
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import { ChangeCardDto, ICard, ICardQuery } from '../../cards.interfaces';
 import { changeCardDtoMapper } from '../../utils/mappers/card.mapper';
@@ -12,6 +12,7 @@ import { CustomButton } from '../../../../common/components/CustomButton/CustomB
 import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
 import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { maxAnswerLength, maxQuestionLength } from '../../utils/consts/lmits.const';
+import s from './styles.module.scss';
 
 interface ChangeCardModalProps {
     isOpen: boolean;
@@ -95,6 +96,7 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CustomTextField
                     label={'Question'}
+                    value={question}
                     register={{ ...register('question', addQuestionValidate) }}
                     error={!!errors.question}
                     helperText={errors.question?.message}
@@ -106,7 +108,8 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
 
                 <CustomTextField
                     label={'Answer'}
-                    {...register('answer', addAnswerValidate)}
+                    value={answer}
+                    register={{ ...register('answer', addAnswerValidate) }}
                     error={!!errors.answer}
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}

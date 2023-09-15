@@ -1,5 +1,5 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import s from '../../../Packs/Modals/AddPackModal/styles.module.scss';
+
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import React, { FC, FormEvent, memo, useState } from 'react';
 import { useAppDispatch } from '../../../../common/utils/hooks';
@@ -7,6 +7,7 @@ import { ICardQuery } from '../../cards.interfaces';
 import { cardThunks } from '../../cards.slice';
 import { MSG_BTN, MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
 import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import s from './styles.module.scss';
 
 interface RemoveCardModalProps {
     isOpen: boolean;

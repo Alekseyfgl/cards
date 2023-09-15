@@ -1,5 +1,5 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import s from '../../../Packs/Modals/AddPackModal/styles.module.scss';
+import s from './styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import React, { ChangeEvent, FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -71,6 +71,17 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
             setIsEmptyQuestion(true);
         }
     };
+
+    const changeAnswerName = (e: ChangeEvent<HTMLInputElement>) => {
+        const inputValue: string = e.target.value.trimStart();
+        if (inputValue) {
+            isEmptyQuestion && setIsEmptyQuestion(false);
+            setValue('answer', inputValue);
+            clearErrors('answer'); //this is for error removal when validation is correct
+        } else {
+            setIsEmptyQuestion(true);
+        }
+    };
     return (
         <BasicModal isOpen={isOpen} title={MSG_CARD.ADD_CARD} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,6 +102,7 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}
                     maxLength={maxAnswerLength}
+                    onChange={changeAnswerName}
                 />
                 <div className={s.btns}>
                     <SendRequestButton disabled={isEmptyQuestion} isSentRequest={isSentRequest}>

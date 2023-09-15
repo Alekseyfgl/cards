@@ -82,6 +82,7 @@ export const ChangePackModal: FC<ChangePackModalProps> = (props) => {
         <BasicModal isOpen={isOpen} title={title} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CustomTextField
+                    value={titlePack}
                     label={'Name pack'}
                     variant={'standard'}
                     register={{ ...register('name', addPackValidate) }}
