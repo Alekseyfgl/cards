@@ -2,15 +2,20 @@ import { Outlet } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { GlobalNotify } from '../GlobalNotify/GlobalNotify';
 import { CustomAppBar } from '../../../features/Header/Header';
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 
-export const Layout = () => {
+interface LayoutProps {
+    children?: ReactNode;
+}
+
+export const Layout: FC<LayoutProps> = (props) => {
+    const { children } = props;
     return (
         <>
             <GlobalNotify />
             <CustomAppBar />
             <Container maxWidth="lg" sx={{ p: 8 }}>
-                <Outlet />
+                {children ? children : <Outlet />}
             </Container>
         </>
     );
