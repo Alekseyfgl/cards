@@ -14,13 +14,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { selectorProfileId } from '../../Auth/auth.selector';
 import { cardsByPackSelector, cardsTotalCountSelector, currentPackTitleSelector, packUserIdSelector } from '../cards.selector';
 import s from './styles.module.scss';
-import { HeaderCards } from './HeaderCards/HeaderCards';
 import { superSortCreator } from '../../Packs/utils/super-sort';
 import { BodyCards } from './BodyCards/BodyCards';
-import CustomSearch from 'common/components/CustomSearch/CustomSearch';
+import { CustomSearch } from 'common/components/CustomSearch/CustomSearch';
 import { AddCardModal } from '../Modals/AddCardModal/AddCardModal';
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
 import { MSG_BTN } from '../../../common/utils/constans/app-messages.const';
+import { CustomTableHeader } from '../../../common/components/Tables/CustomTableHeader/CustomTableHeader';
+import { cardHeadCells } from '../utils/consts/head-cards.const';
 
 export const CardsList = () => {
     const { id } = useParams<{ id: string }>(); // id pack
@@ -91,7 +92,8 @@ export const CardsList = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-                            <HeaderCards disabled={isLoading} changeSort={sortCardsHandler} orderBy={params.sortCards} />
+                            {/*<HeaderCards disabled={isLoading} changeSort={sortCardsHandler} orderBy={params.sortCards} />*/}
+                            <CustomTableHeader changeSort={sortCardsHandler as any} orderBy={params.sortCards} disabled={isLoading} cells={cardHeadCells} />
                             <BodyCards isLoading={isLoading} query={params} />
                         </Table>
                     </TableContainer>

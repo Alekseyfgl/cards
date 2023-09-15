@@ -1,5 +1,5 @@
 import s from '../ListPacks/styles.module.scss';
-import CustomSearch from '../../../common/components/CustomSearch/CustomSearch';
+import { CustomSearch } from '../../../common/components/CustomSearch/CustomSearch';
 import { Button, ButtonGroup, IconButton } from '@mui/material';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import React, { FC } from 'react';
@@ -35,7 +35,6 @@ export const PackSettings: FC<PackSettingsProps> = (props) => {
             <CustomSearch placeholder={'write pack name'} searchHandler={searchHandler} searchValue={searchValue} />
 
             <div>
-                {/*<p>Show pack cards</p>*/}
                 <ButtonGroup disabled={disabled} variant="contained" color="primary" size={'small'}>
                     <Button onClick={() => accessoryHandler(myId)} color={accessory === myId ? 'secondary' : 'primary'} size={'small'} sx={btnStyles}>
                         My

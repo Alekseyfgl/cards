@@ -16,7 +16,7 @@ import { Nullable, Optional } from '../../common/utils/types/optional.types';
 import { authThunks } from '../Auth/auth.slice';
 import { useNavigate } from 'react-router-dom';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 export const CustomAppBar = () => {
     const navigate = useNavigate();

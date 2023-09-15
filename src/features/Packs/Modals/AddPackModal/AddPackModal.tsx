@@ -16,7 +16,6 @@ import { CustomTextField } from '../../../../common/components/CustomTextField/C
 interface AddModalProps {
     isOpen: boolean;
     closeModal: () => void;
-    maxLength?: number;
     queryParams: any;
 }
 
@@ -26,7 +25,7 @@ export interface AddPackFormValues {
 }
 
 export const AddPackModal: FC<AddModalProps> = memo((props) => {
-    const { isOpen, closeModal, maxLength = 30, queryParams } = props;
+    const { isOpen, closeModal, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [disable, setDisable] = useState(true);

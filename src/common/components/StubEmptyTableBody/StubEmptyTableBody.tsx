@@ -14,7 +14,7 @@ export const StubEmptyTableBody: FC<StubEmptyTableBodyProps> = (props) => {
         <TableBody>
             <TableRow>
                 <TableCell colSpan={colSpan} align="center" className={s.wr}>
-                    <p>${text}</p>
+                    <p>{text}</p>
                 </TableCell>
             </TableRow>
         </TableBody>

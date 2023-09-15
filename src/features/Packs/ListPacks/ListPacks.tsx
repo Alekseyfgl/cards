@@ -1,12 +1,11 @@
 import s from './styles.module.scss';
-import React, { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
-import { THeaderPack } from './HeaderPack/THeaderPack';
 import { PaginationCustom } from '../PaginationCustom/Pagination';
 import { IPacks, PackQueryTypes, PackSortRequestTypes, PackSortTypes } from '../packs.interfaces';
 import { Nullable } from '../../../common/utils/types/optional.types';
@@ -19,6 +18,8 @@ import { BodyPack } from './BodyPack/BodyPack';
 import { AddPackModal } from '../Modals/AddPackModal/AddPackModal';
 import { shallowEqual } from 'react-redux';
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
+import { packHeadCells } from '../utils/constans/head-packs.const';
+import { CustomTableHeader } from 'common/components/Tables/CustomTableHeader/CustomTableHeader';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -69,7 +70,7 @@ export const ListPacks = () => {
         setSearchParams(createPackQuery(page, rowsPerPage, sortPacks, searchValue, accessory, amountCards));
     };
 
-    const handleRequestSort = (e: MouseEvent<unknown>, property: PackSortTypes) => {
+    const handleRequestSort = (property: PackSortTypes) => {
         const prop: PackSortRequestTypes = superSortCreator(property, sortPacks);
         setSearchParams(createPackQuery(page, rowsPerPage, prop, searchValue, accessory, amountCards));
         setSortPacks(prop);
@@ -107,7 +108,7 @@ export const ListPacks = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-                            <THeaderPack orderBy={sortPacks} onRequestSort={handleRequestSort} disabled={isLoading} />
+                            <CustomTableHeader changeSort={handleRequestSort as any} orderBy={sortPacks} disabled={isLoading} cells={packHeadCells} />
                             <BodyPack isLoading={isLoading} />
                         </Table>
                     </TableContainer>

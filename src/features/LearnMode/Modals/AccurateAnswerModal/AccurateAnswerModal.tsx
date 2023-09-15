@@ -10,6 +10,8 @@ import { GradeTypes, LearnDto } from '../../learn.interfaces';
 import { learnThunks } from '../../learn-mode.slice';
 import { useAppDispatch } from '../../../../app/hooks';
 import { addAnswerValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
+import { MSG_BTN, MSG_LEARN } from '../../../../common/utils/constans/app-messages.const';
+import { accurateAnswers } from '../../utils/constans/common.consts';
 
 interface AccurateAnswerModal {
     inOpen: boolean;
@@ -53,7 +55,7 @@ export const AccurateAnswerModal: FC<AccurateAnswerModal> = (props) => {
     };
 
     return (
-        <BasicModal width={'360px'} isOpen={inOpen} title={'Choose a more accurate answer'} commonHandleClose={closeModal}>
+        <BasicModal width={'360px'} isOpen={inOpen} title={MSG_LEARN.ACCURATE_ANSWER} commonHandleClose={closeModal}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl {...register('grade', addAnswerValidate)} disabled={isLoading} sx={{ width: '100%' }}>
                     <InputLabel id="demo-simple-select-autowidth-label">rate your answer</InputLabel>
@@ -65,16 +67,16 @@ export const AccurateAnswerModal: FC<AccurateAnswerModal> = (props) => {
                         autoWidth
                         label="Rate your answer"
                     >
-                        <MenuItem value={5}>Correct answer</MenuItem>
-                        <MenuItem value={4}>I was almost right</MenuItem>
-                        <MenuItem value={3}>Half correct answer</MenuItem>
-                        <MenuItem value={2}>Guessed the answer :)</MenuItem>
-                        <MenuItem value={1}>Incorrect answer :(</MenuItem>
+                        {accurateAnswers.map(({ text, value }, i) => (
+                            <MenuItem key={i} value={value}>
+                                {text}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isLoading} disabled={isLoading}>
-                        Send answer
+                        {MSG_BTN.SEND_ANSWER}
                     </SendRequestButton>
                 </div>
             </form>
