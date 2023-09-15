@@ -92,7 +92,6 @@ export const CardsList = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-                            {/*<HeaderCards disabled={isLoading} changeSort={sortCardsHandler} orderBy={params.sortCards} />*/}
                             <CustomTableHeader changeSort={sortCardsHandler as any} orderBy={params.sortCards} disabled={isLoading} cells={cardHeadCells} />
                             <BodyCards isLoading={isLoading} query={params} />
                         </Table>
