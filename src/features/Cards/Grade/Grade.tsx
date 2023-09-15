@@ -1,6 +1,6 @@
-import { Rating } from '@mui/lab';
 import StarIcon from '@mui/icons-material/Star';
 import { FC } from 'react';
+import { Rating } from '@mui/material';
 
 interface GradeProps {
     value: number;

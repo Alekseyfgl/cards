@@ -1,14 +1,16 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import React, { ChangeEvent, FC, memo, useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
 import { changePackMapper } from '../../utils/mappers/pack.mapper';
 import { IChangePack, PackQueryTypes } from '../../packs.interfaces';
 import { useAppDispatch } from '../../../../common/utils/hooks';
-import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 import { packThunks } from '../../packs.slice';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
+import { CustomTextField } from 'common/components/CustomTextField/CustomTextField';
+import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 
 interface ChangePackModalProps {
     title: string;
@@ -18,7 +20,6 @@ interface ChangePackModalProps {
     rowPackId: string;
     titlePack: string;
     isPrivatePack: boolean;
-    maxLength?: number;
 }
 
 export interface ChangePackFormValues {
@@ -27,8 +28,8 @@ export interface ChangePackFormValues {
     private: boolean;
 }
 
-export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
-    const { isOpen, closeModal, title, titlePack, isPrivatePack, rowPackId, maxLength = 30, queryParams } = props;
+export const ChangePackModal: FC<ChangePackModalProps> = (props) => {
+    const { isOpen, closeModal, title, titlePack, isPrivatePack, rowPackId, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [disable, setDisable] = useState(true);
@@ -72,8 +73,7 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
         }
     };
 
-    const closeModalHandler = (e?: unknown) => {
-        (e as Event)?.stopPropagation();
+    const closeModalHandler = () => {
         if (isSentRequest) return;
         closeModal();
     };
@@ -81,29 +81,25 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
     return (
         <BasicModal isOpen={isOpen} title={title} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Name pack"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength }}
-                    sx={{ marginBottom: 3 }}
-                    {...register('name', addPackValidate)}
+                <CustomTextField
+                    value={titlePack}
+                    label={'Name pack'}
+                    variant={'standard'}
+                    register={{ ...register('name', addPackValidate) }}
                     error={!!errors.name}
                     helperText={errors.name?.message}
-                    onChange={handleNameChange}
                     disabled={isSentRequest}
+                    onChange={handleNameChange}
                 />
-                {/*<FormControlLabel control={<Checkbox />} label="Private pack" sx={{ marginBottom: 3 }} {...register('private', { required: false })} />*/}
-
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={disable}>
-                        Save
+                        {MSG_BTN.SAVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
-                        Cancel
-                    </Button>
+                    <CustomButton onClick={closeModalHandler} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
                 </div>
             </form>
         </BasicModal>
     );
-});
+};

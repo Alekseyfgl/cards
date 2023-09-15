@@ -1,12 +1,13 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import { Button } from '@mui/material';
-import s from '../../../Packs/Modals/AddPackModal/styles.module.scss';
+
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import React, { FC, FormEvent, memo, useState } from 'react';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { ICardQuery } from '../../cards.interfaces';
 import { cardThunks } from '../../cards.slice';
-import { MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
+import { MSG_BTN, MSG_CARD } from '../../../../common/utils/constans/app-messages.const';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import s from './styles.module.scss';
 
 interface RemoveCardModalProps {
     isOpen: boolean;
@@ -37,12 +38,12 @@ export const RemoveCardModal: FC<RemoveCardModalProps> = memo((props) => {
         <BasicModal isOpen={isOpen} title={MSG_CARD.REMOVE_CARD} commonHandleClose={closeModalHandler}>
             <form onSubmit={onSubmit}>
                 <div className={s.btns}>
-                    <SendRequestButton isSentRequest={isSentRequest} disabled={!!isSentRequest}>
-                        Remove
+                    <SendRequestButton isSentRequest={isSentRequest} disabled={isSentRequest}>
+                        {MSG_BTN.REMOVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
-                        Cancel
-                    </Button>
+                    <CustomButton onClick={closeModalHandler} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
                 </div>
             </form>
         </BasicModal>

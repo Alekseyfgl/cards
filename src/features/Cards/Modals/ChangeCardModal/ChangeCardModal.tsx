@@ -2,14 +2,17 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { useForm } from 'react-hook-form';
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import s from '../../../Packs/Modals/ChangePackModal/styles.module.scss';
+
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import { ChangeCardDto, ICard, ICardQuery } from '../../cards.interfaces';
-import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { changeCardDtoMapper } from '../../utils/mappers/card.mapper';
 import { cardThunks } from '../../cards.slice';
+import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
+import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
+import { maxAnswerLength, maxQuestionLength } from '../../utils/consts/lmits.const';
+import s from './styles.module.scss';
 
 interface ChangeCardModalProps {
     isOpen: boolean;
@@ -22,8 +25,7 @@ interface ChangeCardModalProps {
 }
 
 export type ChangeCardFormValues = Pick<ICard, 'question' | 'answer' | '_id' | 'questionImg'>;
-const maxQuestionLength = 200;
-const maxAnswerLength = 1000;
+
 export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
     const { isOpen, closeModal, question, answer, cardId, query, questionImg } = props;
     const dispatch = useAppDispatch();
@@ -92,38 +94,37 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
     return (
         <BasicModal isOpen={isOpen} title={'Измените вопрос или ответ карточки'} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Question"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength: maxQuestionLength }}
-                    sx={{ marginBottom: 3 }}
-                    {...register('question', addQuestionValidate)}
+                <CustomTextField
+                    label={'Question'}
+                    value={question}
+                    register={{ ...register('question', addQuestionValidate) }}
                     error={!!errors.question}
                     helperText={errors.question?.message}
                     disabled={isSentRequest}
+                    maxLength={maxQuestionLength}
+                    marginBottom={'16px'}
                     onChange={changeQuestionName}
                 />
-                <TextField
-                    label="Answer"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength: maxAnswerLength }}
-                    sx={{ marginBottom: 3 }}
-                    {...register('answer', addAnswerValidate)}
+
+                <CustomTextField
+                    label={'Answer'}
+                    value={answer}
+                    register={{ ...register('answer', addAnswerValidate) }}
                     error={!!errors.answer}
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}
+                    maxLength={maxAnswerLength}
                     onChange={changeAnswerName}
                 />
 
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={isEmptyQuestion}>
-                        Save
+                        {MSG_BTN.SAVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
-                        Cancel
-                    </Button>
+
+                    <CustomButton onClick={closeModalHandler} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
                 </div>
             </form>
         </BasicModal>

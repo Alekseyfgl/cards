@@ -15,11 +15,10 @@ import { selectorUserName, selectorUserPhoto } from '../Auth/auth.selector';
 import { Nullable, Optional } from '../../common/utils/types/optional.types';
 import { authThunks } from '../Auth/auth.slice';
 import { useNavigate } from 'react-router-dom';
-// const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const settings = ['Profile', 'Logout'];
 
 export const CustomAppBar = () => {
-    console.log('CustomAppBar');
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
@@ -42,8 +41,6 @@ export const CustomAppBar = () => {
             .unwrap()
             .then(() => {
                 navigate('/login');
-                // <Navigate to={'/login'} />; // don't use it in functions
-                // redirect('/login');
             });
     };
 

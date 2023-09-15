@@ -9,17 +9,19 @@ import Paper from '@mui/material/Paper';
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import { PaginationCustom } from '../../Packs/PaginationCustom/Pagination';
-import Button from '@mui/material/Button';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import { selectorProfileId } from '../../Auth/auth.selector';
 import { cardsByPackSelector, cardsTotalCountSelector, currentPackTitleSelector, packUserIdSelector } from '../cards.selector';
 import s from './styles.module.scss';
-import { HeaderCards } from './HeaderCards/HeaderCards';
 import { superSortCreator } from '../../Packs/utils/super-sort';
 import { BodyCards } from './BodyCards/BodyCards';
-import CustomSearch from 'common/components/CustomSearch/CustomSearch';
+import { CustomSearch } from 'common/components/CustomSearch/CustomSearch';
 import { AddCardModal } from '../Modals/AddCardModal/AddCardModal';
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
+import { MSG_BTN } from '../../../common/utils/constans/app-messages.const';
+import { CustomTableHeader } from '../../../common/components/Tables/CustomTableHeader/CustomTableHeader';
+import { cardHeadCells } from '../utils/consts/head-cards.const';
 
 export const CardsList = () => {
     const { id } = useParams<{ id: string }>(); // id pack
@@ -75,16 +77,13 @@ export const CardsList = () => {
     return (
         <>
             <AddCardModal isOpen={isOpenModal} closeModal={closeModal} queryParams={params} packId={id!} />
-            <Button startIcon={<ArrowBackIcon />} onClick={backHandler} variant="contained" sx={{ borderRadius: 5, marginBottom: '30px' }}>
-                back
-            </Button>
+            <CustomButton onClick={backHandler} startIcon={<ArrowBackIcon />} marginBottom={'30px'}>
+                {MSG_BTN.BACK}
+            </CustomButton>
+
             <div className={s.wr}>
                 <div className={s.title}>{isLoading ? '' : currentPackTitle}</div>
-                {profilerId === packUserId && (
-                    <Button onClick={() => setIsOpenModal(true)} variant="contained" sx={{ borderRadius: 5 }}>
-                        Create new card
-                    </Button>
-                )}
+                {profilerId === packUserId && <CustomButton onClick={() => setIsOpenModal(true)}>{MSG_BTN.CRETE_NEW_CARD}</CustomButton>}
             </div>
             <div className={s.setting_panel}>
                 <CustomSearch placeholder={'write question'} searchHandler={searchHandler} searchValue={params.cardQuestion} />
@@ -93,7 +92,8 @@ export const CardsList = () => {
                 <Paper elevation={3}>
                     <TableContainer>
                         <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-                            <HeaderCards disabled={isLoading} changeSort={sortCardsHandler} orderBy={params.sortCards} />
+                            {/*<HeaderCards disabled={isLoading} changeSort={sortCardsHandler} orderBy={params.sortCards} />*/}
+                            <CustomTableHeader changeSort={sortCardsHandler as any} orderBy={params.sortCards} disabled={isLoading} cells={cardHeadCells} />
                             <BodyCards isLoading={isLoading} query={params} />
                         </Table>
                     </TableContainer>

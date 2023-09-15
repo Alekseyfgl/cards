@@ -5,6 +5,20 @@ export const MSG_AUTH = {
     REGISTERED_SUCCESS: (email: string) => `You registered successfully with email: ${email}`,
 };
 
+export const MSG_BTN = {
+    SAVE: 'Save',
+    CANCEL: 'Cancel',
+    BACK: 'Back',
+    REMOVE: 'Remove',
+    CRETE_NEW_CARD: 'Create new card',
+    SING_IN: 'Sing in',
+    SING_OUT: 'Sing out',
+    REGISTRATION: 'Registration',
+    SEND_ANSWER: 'Send answer',
+    START_AGAIN: 'Start again',
+    CLOSE: 'Close',
+};
+
 export const MSG_PACK = {
     REQUIRED: 'Fill in title',
     TITLE_LENGTH: 'Title must be at least 3 characters long',
@@ -21,4 +35,15 @@ export const MSG_CARD = {
     ADD_CARD: 'Write the name of the question and the answer to it if you want to add a card',
     TITLE_LENGTH: 'Title must be at least 3 characters long',
     CARDS_NOT_FOUND: "There aren't cards",
+};
+
+export const MSG_LEARN = {
+    LEARNING: 'Learning',
+    START_AGAIN: 'Do you want to start again or close current pack?',
+    ACCURATE_ANSWER: 'Choose a more accurate answer',
+    CORRECT_ANSWER: 'Correct answer',
+    ALMOST_RIGHT: 'I was almost right',
+    HALF_CORRECT: 'Half correct answer',
+    GUESSED_ANSWER: 'Guessed the answer :)',
+    INCORRECT_ANSWER: 'Incorrect answer :(',
 };

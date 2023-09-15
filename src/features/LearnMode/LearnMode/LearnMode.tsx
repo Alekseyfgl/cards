@@ -9,7 +9,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Button } from '@mui/material';
 import s from './styles.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
@@ -18,11 +17,12 @@ import { Nullable } from '../../../common/utils/types/optional.types';
 import { ICard } from '../../Cards/cards.interfaces';
 import { cardsByPackSelector } from '../../Cards/cards.selector';
 import { shuffleArray } from '../../../common/utils/functions/shuffle-array/shuffle-array';
-import Skeleton from '@mui/material/Skeleton';
 import { AccurateAnswerModal } from '../Modals/AccurateAnswerModal/AccurateAnswerModal';
 import { learnThunks } from '../learn-mode.slice';
 import { GradeTypes } from '../learn.interfaces';
 import { FinalLearnModal } from '../Modals/FinalLearnModal/FinalLearnModal';
+import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
+import { StubLearningMode } from '../StubLearningMode/StubLearningMode';
 
 export const LearnMode = () => {
     const { id } = useParams<{ id: string }>(); // packId
@@ -35,32 +35,28 @@ export const LearnMode = () => {
     const [cards, setCards] = useState<ICard[]>([]);
     const [activeStep, setActiveStep] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingLearnMode, setIsLoadingLearnMode] = useState(false);
+    const [isSendingAnswer, setIsSendingAnswer] = useState(false);
     const [isOpenAccurateModal, setIsOpenAccurateModal] = useState(false);
     const [isOpenFinalLearnModal, setIsOpenFinalLearnModal] = useState(false);
 
-    const [isEnd, setIsEnd] = useState(false);
     const currentCard: ICard = cards[activeStep];
 
+    const showSteps: string = activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`;
+    const showText: string = cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question;
     const setIsLoadingHandle = (value: boolean) => {
-        setIsLoading(value);
+        setIsLoadingLearnMode(value);
     };
 
     const startAgain = () => {
+        setShowAnswer(false);
         shuffleCards();
         setActiveStep(0);
         closeFinalLearnModalHandle();
     };
-    useEffect(() => {
-        if (cards.length !== 0 && cards.length === activeStep) {
-            openFinalLearnModalHandle();
-        }
 
-        // const isLastCard = cards.length === activeStep;
-        // if (isLastCard) {
-        //     // setIsEnd(true)
-        //     openFinalLearnModalHandle();
-        // }
+    useEffect(() => {
+        if (cards.length !== 0 && cards.length === activeStep) openFinalLearnModalHandle();
     }, [activeStep]);
 
     useEffect(() => {
@@ -76,7 +72,7 @@ export const LearnMode = () => {
         setIsOpenAccurateModal(true);
     };
     const closeAccurateModalHandle = () => {
-        if (isLoading) return;
+        if (isLoadingLearnMode || isSendingAnswer) return;
         setIsOpenAccurateModal(false);
     };
 
@@ -87,7 +83,7 @@ export const LearnMode = () => {
         setIsOpenFinalLearnModal(false);
     };
     const sendAnswerHandle = (grade: GradeTypes) => {
-        setIsLoading(true);
+        setIsSendingAnswer(true);
         dispatch(
             learnThunks.sendAnswerByCard({
                 dto: { grade, card_id: currentCard._id },
@@ -96,7 +92,7 @@ export const LearnMode = () => {
             })
         ).finally(() => {
             setActiveStepHandle();
-            setIsLoading(false);
+            setIsSendingAnswer(false);
         });
     };
 
@@ -105,28 +101,17 @@ export const LearnMode = () => {
     };
 
     const handleBack = () => {
+        setShowAnswer(false);
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
     const setActiveStepHandle = () => {
+        setShowAnswer(false);
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
-    if (isLoading)
-        return (
-            <BasicModal
-                isOpen={true}
-                width={'30%'}
-                commonHandleClose={() => {}}
-                title={'Learning'}
-                customHandleClose={() => {
-                    navigate(-1);
-                }}
-            >
-                <Skeleton variant="rectangular" width={'100%'} height={180} sx={{ marginBottom: '20px' }} />
-                <Skeleton variant="rectangular" width={'100%'} height={30} />
-            </BasicModal>
-        );
+    if (isLoadingLearnMode) return <StubLearningMode />;
+
     return (
         <BasicModal
             height={'40%'}
@@ -135,49 +120,53 @@ export const LearnMode = () => {
             title={'Learning'}
             commonHandleClose={() => {}}
             customHandleClose={() => {
+                if (isLoadingLearnMode || isSendingAnswer) return;
                 navigate(-1);
             }}
         >
             <AccurateAnswerModal
                 cardId={currentCard?._id}
                 inOpen={isOpenAccurateModal}
-                isLoading={isLoading}
+                isLoading={isLoadingLearnMode}
                 handleClose={closeAccurateModalHandle}
                 setIsLoadingHandle={setIsLoadingHandle}
                 setActiveStepHandle={setActiveStepHandle}
             />
             <FinalLearnModal isOpen={isOpenFinalLearnModal} closeModal={closeFinalLearnModalHandle} startAgain={startAgain} />
-            <div className={s.counter}>{activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`}</div>
-            <div className={s.text}>{cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question}</div>
+            <div className={s.counter}>{showSteps}</div>
+            <div className={s.text}>{showText}</div>
 
-            <ButtonGroup disabled={cards.length === 0 || isLoading} variant={'contained'} sx={{ display: 'flex' }}>
-                <Button sx={{ width: '100%' }} onClick={handleBack} disabled={activeStep === 0}>
+            <ButtonGroup disabled={cards.length === 0 || isSendingAnswer} variant={'contained'} sx={{ display: 'flex' }}>
+                <CustomButton onClick={handleBack} disabled={activeStep === 0} fullWidthProp={true}>
                     <KeyboardReturnIcon />
-                </Button>
+                </CustomButton>
 
-                <Button onClick={() => sendAnswerHandle(1)} sx={{ width: '100%' }}>
+                <CustomButton onClick={() => sendAnswerHandle(1)} fullWidthProp={true}>
                     <CancelIcon />
-                </Button>
+                </CustomButton>
 
-                <Button onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length : true} sx={{ width: '100%' }}>
+                <CustomButton onClick={() => sendAnswerHandle(5)} disabled={cardsList ? activeStep === cards.length : true} fullWidthProp={true}>
                     <CheckCircleIcon />
-                </Button>
-                <Button
-                    sx={{ width: '100%' }}
+                </CustomButton>
+
+                <CustomButton
                     onClick={() => {
                         shuffleCards();
                         setActiveStep(0);
                         setShowAnswer(false);
                     }}
+                    fullWidthProp={true}
                 >
                     <ShuffleIcon />
-                </Button>
-                <Button sx={{ width: '100%' }} onClick={() => setShowAnswer(!showAnswer)}>
+                </CustomButton>
+
+                <CustomButton onClick={() => setShowAnswer(!showAnswer)} fullWidthProp={true}>
                     {showAnswer ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </Button>
-                <Button sx={{ width: '100%' }} onClick={openAccurateModalHandle}>
+                </CustomButton>
+
+                <CustomButton onClick={openAccurateModalHandle} fullWidthProp={true}>
                     <ListAltIcon />
-                </Button>
+                </CustomButton>
             </ButtonGroup>
         </BasicModal>
     );

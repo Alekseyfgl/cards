@@ -2,7 +2,7 @@ import { Optional } from '../../../../common/utils/types/optional.types';
 import { useAppSelector } from '../../../../app/hooks';
 import { selectorCardPacks } from '../../packs.selector';
 import { selectorProfileId } from '../../../Auth/auth.selector';
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, ReactElement } from 'react';
 import { SkeletonTable } from '../../../../common/components/Skeleton/SkeletonTable/SkeletonTable';
 import { truncateText } from '../../../../common/utils/functions/truncate-text/truncate-text';
 import { CustomTooltip } from '../../../../common/components/CustomTooltip/CustomTooltip';
@@ -40,7 +40,7 @@ export const BodyPack: FC<BodyPackProps> = (props) => {
                     const truncatedName: string = truncateText(name, 20);
                     const isNameTruncated: boolean = name.length > 20;
 
-                    const showTooltip: JSX.Element = isNameTruncated ? <CustomTooltip fullText={name} truncatedText={truncatedName} /> : <div>{name}</div>;
+                    const showTooltip: ReactElement = isNameTruncated ? <CustomTooltip fullText={name} truncatedText={truncatedName} /> : <div>{name}</div>;
                     return (
                         <TableRow
                             hover

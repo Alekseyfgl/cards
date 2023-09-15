@@ -1,6 +1,6 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
 import React, { ChangeEvent, FC, memo, useState } from 'react';
-import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import { Checkbox, FormControlLabel } from '@mui/material';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
@@ -9,12 +9,13 @@ import { IAddPack } from '../../packs.interfaces';
 import { useAppDispatch } from '../../../../common/utils/hooks';
 import { packThunks } from '../../packs.slice';
 import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
-import { MSG_PACK } from '../../../../common/utils/constans/app-messages.const';
+import { MSG_BTN, MSG_PACK } from '../../../../common/utils/constans/app-messages.const';
+import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
+import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
 
 interface AddModalProps {
     isOpen: boolean;
     closeModal: () => void;
-    maxLength?: number;
     queryParams: any;
 }
 
@@ -24,7 +25,7 @@ export interface AddPackFormValues {
 }
 
 export const AddPackModal: FC<AddModalProps> = memo((props) => {
-    const { isOpen, closeModal, maxLength = 30, queryParams } = props;
+    const { isOpen, closeModal, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
     const [disable, setDisable] = useState(true);
@@ -69,27 +70,24 @@ export const AddPackModal: FC<AddModalProps> = memo((props) => {
     return (
         <BasicModal isOpen={isOpen} title={MSG_PACK.ADD_NEW_PACK} commonHandleClose={closeModalHandler}>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Name pack"
-                    variant="standard"
-                    fullWidth={true}
-                    inputProps={{ maxLength }}
-                    sx={{ marginBottom: 3 }}
-                    {...register('name', addPackValidate)}
+                <CustomTextField
+                    label={'Name pack'}
+                    variant={'standard'}
+                    register={{ ...register('name', addPackValidate) }}
                     error={!!errors.name}
                     helperText={errors.name?.message}
-                    onChange={handleNameChange}
                     disabled={isSentRequest}
+                    onChange={handleNameChange}
                 />
                 <FormControlLabel control={<Checkbox />} label="Private pack" sx={{ marginBottom: 3 }} {...register('private', { required: false })} />
 
                 <div className={s.btns}>
                     <SendRequestButton isSentRequest={isSentRequest} disabled={disable}>
-                        Save
+                        {MSG_BTN.SAVE}
                     </SendRequestButton>
-                    <Button variant="contained" color={'inherit'} onClick={closeModalHandler}>
-                        Cancel
-                    </Button>
+                    <CustomButton onClick={closeModalHandler} color={'inherit'}>
+                        {MSG_BTN.CANCEL}
+                    </CustomButton>
                 </div>
             </form>
         </BasicModal>
