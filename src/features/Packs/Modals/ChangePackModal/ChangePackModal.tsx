@@ -1,16 +1,16 @@
 import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModal';
-import React, { ChangeEvent, FC, memo, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import s from './styles.module.scss';
 import { useForm } from 'react-hook-form';
 import { changePackMapper } from '../../utils/mappers/pack.mapper';
 import { IChangePack, PackQueryTypes } from '../../packs.interfaces';
 import { useAppDispatch } from '../../../../common/utils/hooks';
-import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 import { packThunks } from '../../packs.slice';
 import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
 import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
-import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
+import { CustomTextField } from 'common/components/CustomTextField/CustomTextField';
+import { addPackValidate } from '../../../../common/utils/validationFormRules/add-pack-modal.validate';
 
 interface ChangePackModalProps {
     title: string;
@@ -28,7 +28,7 @@ export interface ChangePackFormValues {
     private: boolean;
 }
 
-export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
+export const ChangePackModal: FC<ChangePackModalProps> = (props) => {
     const { isOpen, closeModal, title, titlePack, isPrivatePack, rowPackId, queryParams } = props;
     const dispatch = useAppDispatch();
     const [isSentRequest, setIsSentRequest] = useState(false);
@@ -101,4 +101,4 @@ export const ChangePackModal: FC<ChangePackModalProps> = memo((props) => {
             </form>
         </BasicModal>
     );
-});
+};

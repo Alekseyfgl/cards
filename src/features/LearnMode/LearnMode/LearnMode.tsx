@@ -17,12 +17,12 @@ import { Nullable } from '../../../common/utils/types/optional.types';
 import { ICard } from '../../Cards/cards.interfaces';
 import { cardsByPackSelector } from '../../Cards/cards.selector';
 import { shuffleArray } from '../../../common/utils/functions/shuffle-array/shuffle-array';
-import Skeleton from '@mui/material/Skeleton';
 import { AccurateAnswerModal } from '../Modals/AccurateAnswerModal/AccurateAnswerModal';
 import { learnThunks } from '../learn-mode.slice';
 import { GradeTypes } from '../learn.interfaces';
 import { FinalLearnModal } from '../Modals/FinalLearnModal/FinalLearnModal';
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
+import { StubLearningMode } from '../StubLearningMode/StubLearningMode';
 
 export const LearnMode = () => {
     const { id } = useParams<{ id: string }>(); // packId
@@ -42,6 +42,8 @@ export const LearnMode = () => {
 
     const currentCard: ICard = cards[activeStep];
 
+    const showSteps: string = activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`;
+    const showText: string = cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question;
     const setIsLoadingHandle = (value: boolean) => {
         setIsLoadingLearnMode(value);
     };
@@ -108,21 +110,8 @@ export const LearnMode = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
-    if (isLoadingLearnMode)
-        return (
-            <BasicModal
-                isOpen={true}
-                width={'30%'}
-                commonHandleClose={() => {}}
-                title={'Learning'}
-                customHandleClose={() => {
-                    navigate(-1);
-                }}
-            >
-                <Skeleton variant="rectangular" width={'100%'} height={180} sx={{ marginBottom: '20px' }} />
-                <Skeleton variant="rectangular" width={'100%'} height={30} />
-            </BasicModal>
-        );
+    if (isLoadingLearnMode) return <StubLearningMode />;
+
     return (
         <BasicModal
             height={'40%'}
@@ -144,8 +133,8 @@ export const LearnMode = () => {
                 setActiveStepHandle={setActiveStepHandle}
             />
             <FinalLearnModal isOpen={isOpenFinalLearnModal} closeModal={closeFinalLearnModalHandle} startAgain={startAgain} />
-            <div className={s.counter}>{activeStep === cards.length ? '' : `${activeStep + 1} / ${cards.length}`}</div>
-            <div className={s.text}>{cards.length === 0 ? 'This pack is empty :(' : showAnswer ? currentCard?.answer : currentCard?.question}</div>
+            <div className={s.counter}>{showSteps}</div>
+            <div className={s.text}>{showText}</div>
 
             <ButtonGroup disabled={cards.length === 0 || isSendingAnswer} variant={'contained'} sx={{ display: 'flex' }}>
                 <CustomButton onClick={handleBack} disabled={activeStep === 0} fullWidthProp={true}>

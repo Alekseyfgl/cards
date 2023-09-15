@@ -38,6 +38,7 @@ export const MSG_CARD = {
 };
 
 export const MSG_LEARN = {
+    LEARNING: 'Learning',
     START_AGAIN: 'Do you want to start again or close current pack?',
     ACCURATE_ANSWER: 'Choose a more accurate answer',
     CORRECT_ANSWER: 'Correct answer',

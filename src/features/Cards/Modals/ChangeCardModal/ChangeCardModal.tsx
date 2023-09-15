@@ -5,12 +5,12 @@ import { BasicModal } from '../../../../common/components/GlobalModal/GlobalModa
 import s from '../../../Packs/Modals/ChangePackModal/styles.module.scss';
 import { SendRequestButton } from '../../../../common/components/ButtonSendRequest/SendRequestButton';
 import { ChangeCardDto, ICard, ICardQuery } from '../../cards.interfaces';
-import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { changeCardDtoMapper } from '../../utils/mappers/card.mapper';
 import { cardThunks } from '../../cards.slice';
 import { MSG_BTN } from '../../../../common/utils/constans/app-messages.const';
 import { CustomButton } from '../../../../common/components/CustomButton/CustomButton';
 import { CustomTextField } from '../../../../common/components/CustomTextField/CustomTextField';
+import { addAnswerValidate, addQuestionValidate } from '../../../../common/utils/validationFormRules/add-card-modal.validate';
 import { maxAnswerLength, maxQuestionLength } from '../../utils/consts/lmits.const';
 
 interface ChangeCardModalProps {
@@ -95,12 +95,12 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CustomTextField
                     label={'Question'}
-                    {...register('question', addQuestionValidate)}
+                    register={{ ...register('question', addQuestionValidate) }}
                     error={!!errors.question}
                     helperText={errors.question?.message}
                     disabled={isSentRequest}
                     maxLength={maxQuestionLength}
-                    marginBottom={'20px'}
+                    marginBottom={'16px'}
                     onChange={changeQuestionName}
                 />
 
@@ -111,7 +111,6 @@ export const ChangePackModal: FC<ChangeCardModalProps> = (props) => {
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}
                     maxLength={maxAnswerLength}
-                    marginBottom={'20px'}
                     onChange={changeAnswerName}
                 />
 

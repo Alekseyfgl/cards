@@ -23,8 +23,9 @@ interface CustomTextFieldProps {
 }
 
 const StylesTextField = styled(TextField)({});
+// export const CustomTextField = forwardRef<HTMLInputElement, CustomTextFieldProps>((props, ref) => {
 export const CustomTextField: FC<CustomTextFieldProps> = (props) => {
-    const { variant = 'standard', fullWidth = true, maxLength = 50, marginBottom = '0px', startAdornment, placeholder, size = 'medium', ...rest } = props;
+    const { variant = 'standard', fullWidth = true, maxLength = 50, marginBottom = '26px', startAdornment, placeholder, size = 'medium', ...rest } = props;
 
     return (
         <StylesTextField

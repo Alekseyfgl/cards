@@ -16,7 +16,6 @@ import { maxAnswerLength, maxQuestionLength } from '../../utils/consts/lmits.con
 interface AddCardProps {
     isOpen: boolean;
     closeModal: () => void;
-    maxLength?: number;
     queryParams: ICardQuery;
     packId: string;
 }
@@ -77,22 +76,21 @@ export const AddCardModal: FC<AddCardProps> = (props) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <CustomTextField
                     label={'Question'}
-                    {...register('question', addQuestionValidate)}
+                    register={{ ...register('question', addQuestionValidate) }}
                     error={!!errors.question}
                     helperText={errors.question?.message}
                     disabled={isSentRequest}
                     maxLength={maxQuestionLength}
-                    marginBottom={'20px'}
+                    marginBottom={'16px'}
                     onChange={changeQuestionName}
                 />
                 <CustomTextField
                     label={'Answer'}
-                    {...register('answer', addAnswerValidate)}
+                    register={{ ...register('answer', addAnswerValidate) }}
                     error={!!errors.answer}
                     helperText={errors.answer?.message}
                     disabled={isSentRequest}
                     maxLength={maxAnswerLength}
-                    marginBottom={'20px'}
                 />
                 <div className={s.btns}>
                     <SendRequestButton disabled={isEmptyQuestion} isSentRequest={isSentRequest}>
