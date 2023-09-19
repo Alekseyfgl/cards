@@ -1,5 +1,5 @@
 import s from './styles.module.scss';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -20,6 +20,7 @@ import { shallowEqual } from 'react-redux';
 import { CustomButton } from '../../../common/components/CustomButton/CustomButton';
 import { packHeadCells } from '../utils/constans/head-packs.const';
 import { CustomTableHeader } from 'common/components/Tables/CustomTableHeader/CustomTableHeader';
+import { useCreateDeckMutation, useGetDecksQuery } from '../../../services/decks/decks';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -37,8 +38,19 @@ export const ListPacks = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    /**
+     * @TODO add deck
+     */
+    const [createDeck, { isError, isSuccess }] = useCreateDeckMutation();
+    /**
+     * @TODO чекаем ркт на новой АПИ
+     */
+    const data = useGetDecksQuery();
+    console.log(data);
+
     useEffect(() => {
         setIsLoading(true);
+
         dispatch(packThunks.getAllPacks(searchParams as PackQueryTypes))
             .unwrap()
             .finally(() => setIsLoading(false));
@@ -92,6 +104,13 @@ export const ListPacks = () => {
                 <h2 className={s.title}>Packs</h2>
                 <CustomButton disabled={isLoading} onClick={openModal}>
                     Add new pack
+                </CustomButton>
+                <CustomButton
+                    onClick={() => {
+                        createDeck({ name: '123' });
+                    }}
+                >
+                    Create Deck
                 </CustomButton>
             </div>
             <PackSettings

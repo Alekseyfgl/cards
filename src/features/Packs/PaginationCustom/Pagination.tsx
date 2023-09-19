@@ -13,7 +13,6 @@ export interface PaginationProps {
 
 export const PaginationCustom: FC<PaginationProps> = (props) => {
     const { totalCount, rowsPerPage, page, disabled, handleChangePage } = props;
-    console.log('disabled', disabled);
     return (
         <div className={s.container}>
             <Pagination
