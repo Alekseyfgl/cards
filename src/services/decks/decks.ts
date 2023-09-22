@@ -1,9 +1,10 @@
 import { baseApi } from '../base-api/base-api';
+import { DecksQuery, DecksResponse } from './types';
 
 const decksApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getDecks: builder.query<any, void>({
-            query: () => ({ url: 'v1/decks', method: 'GET' }),
+        getDecks: builder.query<DecksResponse, DecksQuery>({
+            query: (params) => ({ url: 'v1/decks', method: 'GET', params }),
 
             providesTags: ['Decks'],
         }),

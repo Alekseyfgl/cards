@@ -21,6 +21,7 @@ import { CustomButton } from '../../../common/components/CustomButton/CustomButt
 import { packHeadCells } from '../utils/constans/head-packs.const';
 import { CustomTableHeader } from 'common/components/Tables/CustomTableHeader/CustomTableHeader';
 import { useCreateDeckMutation, useGetDecksQuery } from '../../../services/decks/decks';
+import { useLoginMutation, useSingUpMutation } from '../../../services/auth/auth';
 
 export const ListPacks = () => {
     const dispatch = useAppDispatch();
@@ -42,10 +43,13 @@ export const ListPacks = () => {
      * @TODO add deck
      */
     const [createDeck, { isError, isSuccess }] = useCreateDeckMutation();
+    const [login, { error }] = useLoginMutation();
+    const [singUp, {}] = useSingUpMutation();
+
     /**
      * @TODO чекаем ркт на новой АПИ
      */
-    const data = useGetDecksQuery();
+    const data = useGetDecksQuery({});
     console.log(data);
 
     useEffect(() => {
@@ -111,6 +115,20 @@ export const ListPacks = () => {
                     }}
                 >
                     Create Deck
+                </CustomButton>
+                <CustomButton
+                    onClick={() => {
+                        login({ email: 'alwx@gmail.com', password: '2123423543' });
+                    }}
+                >
+                    login
+                </CustomButton>
+                <CustomButton
+                    onClick={() => {
+                        singUp({ email: 'alwx@gmail.com', password: '2123423543' });
+                    }}
+                >
+                    Sing Up
                 </CustomButton>
             </div>
             <PackSettings
